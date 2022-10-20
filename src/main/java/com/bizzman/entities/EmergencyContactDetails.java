@@ -32,13 +32,9 @@ public class EmergencyContactDetails {
     }
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue
     @Column(name = "id")
     private long id;
-
-    @NotNull
-    @OneToOne(mappedBy = "emergencyContactDetails")
-    private Employee employee;
 
     @Column(name = "phoneNumber")
     @NotNull
@@ -51,16 +47,7 @@ public class EmergencyContactDetails {
     @NotNull
     private String name;
 
-
     public EmergencyContactDetails() {}
-
-    public Employee getEmployee() {
-        return employee;
-    }
-
-    public void setEmployee(Employee employee) {
-        this.employee = employee;
-    }
 
     public String getName() {
         return name;

@@ -9,12 +9,14 @@
 package com.bizzman.dao;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.BDDMockito.given;
 
 import java.util.List;
 
+import com.bizzman.entities.EmergencyContactDetails;
+import com.bizzman.entities.PersonalDetails;
 import org.junit.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.DirtiesContext;
@@ -32,13 +34,23 @@ import com.bizzman.entities.Employee;
 @ActiveProfiles("test")
 public class EmployeeServiceTest extends AbstractTransactionalJUnit4SpringContextTests {
 
+    // Test any custom method in employeeService
     @Autowired
     private EmployeeService employeeService;
 
     @Test
-    public void savingEmployeeShouldReturnEmployeeObject() {
-        Employee employee = Mockito.mock(Employee.class, "employee");
-        assertThat(employeeService.save(employee)).isInstanceOf(Employee.class);
+    public void getEmployeeEmergencyDetailsReturnsEmergencyContact() {
+        Employee employee = ((List<Employee>) employeeService.findAllEmployees()).get(0);
+        assertThat(employeeService.getEmployeeEmergencyContactDetails(employee)).isInstanceOf(List.class);
+        assertThat(((List<EmergencyContactDetails>) employeeService.getEmployeeEmergencyContactDetails(employee)).get(0))
+                .isEqualTo(employee.getEmergencyContactDetails().get(0));
+    }
+
+    @Test
+    public void getEmployeePersonalDetailsReturnsPersonalDetails() {
+        Employee employee = ((List<Employee>) employeeService.findAllEmployees()).get(0);
+        assertThat(employeeService.getEmployeePersonalDetails(employee)).isInstanceOf(PersonalDetails.class);
+        assertThat(employeeService.getEmployeePersonalDetails(employee)).isEqualTo(employee.getPersonalDetails());
     }
 
     @Test
@@ -53,12 +65,12 @@ public class EmployeeServiceTest extends AbstractTransactionalJUnit4SpringContex
 
     @Test
     public void sortByJoiningDateDescendingReturnsTrue() {
-        assertThat(((List<Employee>) employeeService.getAllEmployeeSortedByJoiningDateDescending()).get(0).getName()).isEqualTo("B");
+        assertThat(((List<Employee>) employeeService.getAllEmployeeSortedByJoiningDateDescending()).get(0).getName()).isEqualTo("Aziz");
     }
 
     @Test
     public void sortByJoiningDateAscendingReturnsTrue() {
-        assertThat(((List<Employee>) employeeService.getAllEmployeeSortedByJoiningDateAscending()).get(0).getName()).isEqualTo("Aziz");
+        assertThat(((List<Employee>) employeeService.getAllEmployeeSortedByJoiningDateAscending()).get(0).getName()).isEqualTo("B");
     }
 
     @Test
@@ -78,7 +90,7 @@ public class EmployeeServiceTest extends AbstractTransactionalJUnit4SpringContex
     }
 
     @Test
-    public void getEmergencyContactShouldReturnEmergencyContact(){
+    public void getEmergencyContactShouldReturnEmergencyContact() {
         Employee employee = ((List<Employee>) employeeService.findAllEmployees()).get(0);
         assertThat(employeeService.getEmployeeEmergencyContactDetails(employee)).isEqualTo(employee.getEmergencyContactDetails());
     }

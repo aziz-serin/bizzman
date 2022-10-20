@@ -5,8 +5,8 @@ import org.springframework.data.repository.CrudRepository;
 
 public interface EmployeeRepository extends CrudRepository<Employee, Long> {
 
-    @Override
-    Employee save(Employee employee);
+
+    //Employee save(Employee employee);
     @Override
     long count();
 }

@@ -27,13 +27,9 @@ import com.sun.istack.NotNull;
 @Table(name = "personaldetails")
 public class PersonalDetails {
 
-    @OneToOne(mappedBy = "personalDetails")
-    @NotNull
-    private Employee employee;
-
     @Id
     @Column(name = "id")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue
     private long id;
 
     @Column(name = "passportNumber")
@@ -56,14 +52,6 @@ public class PersonalDetails {
     private LocalDate birthDate;
 
     public PersonalDetails() {}
-
-    public Employee getEmployee() {
-        return employee;
-    }
-
-    public void setEmployee(Employee employee) {
-        this.employee = employee;
-    }
 
     public String getPassportNumber() {
         return passportNumber;

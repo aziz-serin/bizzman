@@ -13,7 +13,7 @@ public interface EmployeeService {
 
     PersonalDetails getEmployeePersonalDetails(Employee employee);
 
-    EmergencyContactDetails getEmployeeEmergencyContactDetails(Employee employee);
+    Iterable<EmergencyContactDetails> getEmployeeEmergencyContactDetails(Employee employee);
 
     Iterable<Employee> getAllEmployeeSortedBySalaryAscending();
     Iterable<Employee> getAllEmployeeSortedBySalaryDescending();

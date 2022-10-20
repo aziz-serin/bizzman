@@ -41,7 +41,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
-    public EmergencyContactDetails getEmployeeEmergencyContactDetails(Employee employee) {
+    public List<EmergencyContactDetails> getEmployeeEmergencyContactDetails(Employee employee) {
         return employee.getEmergencyContactDetails();
     }
 
@@ -80,7 +80,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     public Iterable<Employee> getAllEmployeeSortedByAgeAscending() {
         List<Employee> employeeList = (List<Employee>) employeeRepository.findAll();
         employeeList.sort((e1, e2) ->
-                (int) (e2.getPersonalDetails().getAge() - e1.getPersonalDetails().getAge()));
+                (int) (e1.getPersonalDetails().getAge() - e2.getPersonalDetails().getAge()));
         return employeeList;
     }
 
