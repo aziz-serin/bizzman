@@ -8,20 +8,19 @@
 
 package com.bizzman.entities;
 
-import java.io.Serializable;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.MapsId;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import com.sun.istack.NotNull;
 
 @Entity
-@Table(name = "emergency_contact")
+@Table(name = "emergencycontact")
 public class EmergencyContactDetails {
 
     public enum Relationship{
@@ -38,17 +37,17 @@ public class EmergencyContactDetails {
     private long id;
 
     @NotNull
-    @OneToOne
+    @OneToOne(mappedBy = "emergencyContactDetails")
     private Employee employee;
 
-    @Column(name = "phone_number")
+    @Column(name = "phoneNumber")
     @NotNull
     private String phoneNumber;
 
     @Column(name = "relationship")
     private Relationship relationship;
 
-    @Column(name = "em_name")
+    @Column(name = "emName")
     @NotNull
     private String name;
 

@@ -7,9 +7,6 @@
  */
 
 package com.bizzman.entities;
-
-
-import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 
@@ -17,6 +14,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
+import javax.persistence.MapsId;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Id;
@@ -26,10 +24,11 @@ import org.springframework.format.annotation.DateTimeFormat;
 import com.sun.istack.NotNull;
 
 @Entity
-@Table(name = "personal_details")
+@Table(name = "personaldetails")
 public class PersonalDetails {
 
-    @OneToOne
+    @OneToOne(mappedBy = "personalDetails")
+    @NotNull
     private Employee employee;
 
     @Id

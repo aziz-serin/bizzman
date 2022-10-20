@@ -32,10 +32,10 @@ public class Persistence {
 
     // Connection properties.
     private final static Path DB_PATH = Paths.get(System.getProperty("user.dir"), "db", "bizzman-dev");
-    private final static String DB_OPTS = "DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE;DATABASE_TO_UPPER=false";
+    private final static String DB_OPTS = "DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE;DATABASE_TO_LOWER=TRUE";
 
     // Hibernate properties.
-    private final static boolean H2_SHOW_SQL = false;
+    private final static boolean H2_SHOW_SQL = true;
     private final static String H2_USERNAME = "h2";
     private final static String H2_PASSWORD = "spring";
 

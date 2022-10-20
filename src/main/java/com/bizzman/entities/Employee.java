@@ -9,6 +9,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.MapsId;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
@@ -25,13 +26,13 @@ public class Employee {
     private long id;
 
     @NotNull
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "pd_id", referencedColumnName = "id")
+    @OneToOne(cascade = {CascadeType.ALL})
+    @JoinColumn(name = "personalDetails", referencedColumnName = "id")
     private PersonalDetails personalDetails;
 
     @NotNull
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "e_c", referencedColumnName = "id")
+    @OneToOne(cascade = {CascadeType.ALL})
+    @JoinColumn(name = "emergencyContact", referencedColumnName = "id")
     private EmergencyContactDetails emergencyContactDetails;
 
     @Column(name = "name")
@@ -41,7 +42,7 @@ public class Employee {
     @Column(name = "ni")
     private String nationalInsurance;
 
-    @Column(name = "joining data")
+    @Column(name = "joiningDate")
     @DateTimeFormat
     @NotNull
     private LocalDate joiningDate;
