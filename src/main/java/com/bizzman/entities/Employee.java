@@ -1,10 +1,14 @@
 package com.bizzman.entities;
 
-import java.util.Date;
+import java.time.LocalDate;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
@@ -17,33 +21,39 @@ import com.sun.istack.NotNull;
 public class Employee {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
     @NotNull
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "pd_id", referencedColumnName = "id")
     private PersonalDetails personalDetails;
 
-    @OneToOne
     @NotNull
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "e_c", referencedColumnName = "id")
     private EmergencyContactDetails emergencyContactDetails;
 
+    @Column(name = "name")
     @NotNull
     private String name;
 
+    @Column(name = "ni")
     private String nationalInsurance;
 
+    @Column(name = "joining data")
     @DateTimeFormat
     @NotNull
-    private String joiningDate;
+    private LocalDate joiningDate;
 
+    @Column(name = "salary")
     private double salary;
 
+    @Column(name = "other_expenses")
     private double other_expenses;
 
     public Employee() {
-        Date date = new Date();
-        joiningDate = date.toString();
+        this.joiningDate = LocalDate.now();
     }
 
     public PersonalDetails getPersonalDetails() {
@@ -54,11 +64,11 @@ public class Employee {
         this.personalDetails = personalDetails;
     }
 
-    public String getJoiningDate() {
+    public LocalDate getJoiningDate() {
         return joiningDate;
     }
 
-    public void setJoiningDate(String joiningDate) {
+    public void setJoiningDate(LocalDate joiningDate) {
         this.joiningDate = joiningDate;
     }
 

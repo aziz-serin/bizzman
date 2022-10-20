@@ -9,11 +9,14 @@
 package com.bizzman.entities;
 
 
+import java.io.Serializable;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Id;
@@ -26,27 +29,32 @@ import com.sun.istack.NotNull;
 @Table(name = "personal_details")
 public class PersonalDetails {
 
-    @Id
     @OneToOne
     private Employee employee;
 
     @Id
-    @GeneratedValue
+    @Column(name = "id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
+    @Column(name = "passportNumber")
     @NotNull
     private String passportNumber;
 
+    @Column(name = "phoneNumber")
     private String phoneNumber;
 
+    @Column(name = "address")
     private String address;
 
+    @Column(name = "age")
     @NotNull
-    private static long age;
+    private long age;
 
+    @Column(name = "birthDate")
     @NotNull
     @DateTimeFormat
-    private String birthDate;
+    private LocalDate birthDate;
 
     public PersonalDetails() {}
 
@@ -86,18 +94,16 @@ public class PersonalDetails {
         return age;
     }
 
-    public void setAge(long age) {
+    private void setAge(long age) {
         this.age = age;
     }
 
-    public String getBirthDate() {
+    public LocalDate getBirthDate() {
         return birthDate;
     }
 
-    public void setBirthDate(String birthDate) {
-        LocalDate today_date = LocalDate.now();
-        LocalDateTime personBirthDate = LocalDateTime.parse(birthDate);
-        long age = java.time.temporal.ChronoUnit.YEARS.between( today_date , personBirthDate );
+    public void setBirthDate(LocalDate birthDate) {
+        this.age = ChronoUnit.YEARS.between(LocalDate.now(), birthDate);
         this.birthDate = birthDate;
     }
 }

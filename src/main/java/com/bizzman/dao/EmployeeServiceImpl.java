@@ -64,7 +64,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     public Iterable<Employee> getAllEmployeeSortedByJoiningDateAscending() {
         List<Employee> employeeList = (List<Employee>) employeeRepository.findAll();
         employeeList.sort((e1, e2) ->
-                (LocalDate.parse(e1.getJoiningDate()).compareTo(LocalDate.parse(e2.getJoiningDate()))));
+                (e1.getJoiningDate().compareTo(e2.getJoiningDate())));
         return employeeList;
     }
 
@@ -72,7 +72,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     public Iterable<Employee> getAllEmployeeSortedByJoiningDateDescending() {
         List<Employee> employeeList = (List<Employee>) employeeRepository.findAll();
         employeeList.sort((e1, e2) ->
-                (LocalDate.parse(e2.getJoiningDate()).compareTo(LocalDate.parse(e1.getJoiningDate()))));
+                (e2.getJoiningDate().compareTo(e1.getJoiningDate())));
         return employeeList;
     }
 

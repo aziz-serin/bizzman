@@ -1,28 +1,35 @@
+/*
+ * Copyright 2022 ForgeRock AS. All Rights Reserved
+ *
+ * Use of this code requires a commercial software license with ForgeRock AS.
+ * or with one of its affiliates. All use shall be exclusively subject
+ * to such license between the licensee and ForgeRock AS.
+ */
+
 package com.bizzman.config.data;
 
 import java.time.LocalDate;
 
-import com.bizzman.dao.services.EmployeeService;
-import com.bizzman.entities.EmergencyContactDetails;
-import com.bizzman.entities.Employee;
-import com.bizzman.entities.PersonalDetails;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 
+import com.bizzman.dao.services.EmployeeService;
+import com.bizzman.entities.EmergencyContactDetails;
+import com.bizzman.entities.Employee;
+import com.bizzman.entities.PersonalDetails;
+
 @Configuration
-@Profile("default")
-public class InitialDataLoader {
-
-    private final static Logger log = LoggerFactory.getLogger(InitialDataLoader.class);
-
+@Profile("test")
+public class TestDataLoader {
+    private final static Logger log = LoggerFactory.getLogger(TestDataLoader.class);
     @Autowired
-    private EmployeeService employeeService;
+    EmployeeService employeeService;
 
     @Bean
     CommandLineRunner initDatabase(){
@@ -73,5 +80,6 @@ public class InitialDataLoader {
 //                log.info("Loading data: " + employeeService.save(employee2));
 //            }
         };
+
     }
 }

@@ -1,7 +1,14 @@
+/*
+ * Copyright 2022 ForgeRock AS. All Rights Reserved
+ *
+ * Use of this code requires a commercial software license with ForgeRock AS.
+ * or with one of its affiliates. All use shall be exclusively subject
+ * to such license between the licensee and ForgeRock AS.
+ */
+
 package com.bizzman.config;
 
-import java.nio.file.Path;
-import java.nio.file.Paths;
+import java.util.Properties;
 
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.ValidationMode;
@@ -21,21 +28,22 @@ import org.springframework.orm.jpa.vendor.Database;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.transaction.PlatformTransactionManager;
 
-@Configuration
-@Profile("default")
-public class Persistence {
 
-    private final static Logger log = LoggerFactory.getLogger(Persistence.class);
+@Configuration
+@Profile("test")
+public class TestPersistence {
+    private final static Logger log = LoggerFactory.getLogger(TestPersistence.class);
 
     // Persistence objects.
     private final static String PACKAGES = "com.bizzman.entities";
 
     // Connection properties.
-    private final static Path DB_PATH = Paths.get(System.getProperty("user.dir"), "db", "bizzman-dev");
-    private final static String DB_OPTS = "DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE;DATABASE_TO_UPPER=false";
+    private final static String DB_PATH = "mem:bizzman-test";
+    private final static String DB_OPTS = "DB_CLOSE_DELAY=-1;DATABASE_TO_UPPER=false";
 
     // Hibernate properties.
-    private final static boolean H2_SHOW_SQL = false;
+    private final static boolean H2_SHOW_SQL = true;
+    private final static String H2_HBM2DDL_AUTO = "create-drop";
     private final static String H2_USERNAME = "h2";
     private final static String H2_PASSWORD = "spring";
 
@@ -60,6 +68,7 @@ public class Persistence {
         bean.setDataSource(dataSource());
         bean.setJpaVendorAdapter(jpaVendorAdapter());
         bean.setPackagesToScan(PACKAGES);
+        bean.setJpaProperties(hibernateProperties());
 
         // Entities are validated in controllers, don't need to do it twice.
         bean.setValidationMode(ValidationMode.NONE);
@@ -89,5 +98,12 @@ public class Persistence {
         transactionManager.setEntityManagerFactory(emf);
 
         return transactionManager;
+    }
+
+    private Properties hibernateProperties() {
+        Properties properties = new Properties();
+        properties.setProperty("hibernate.hbm2ddl.auto", H2_HBM2DDL_AUTO);
+
+        return properties;
     }
 }

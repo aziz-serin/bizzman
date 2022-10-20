@@ -8,8 +8,12 @@
 
 package com.bizzman.entities;
 
+import java.io.Serializable;
+
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
@@ -20,7 +24,7 @@ import com.sun.istack.NotNull;
 @Table(name = "emergency_contact")
 public class EmergencyContactDetails {
 
-    private enum Relationship{
+    public enum Relationship{
         FRIEND,
         IMMEDIATE_FAMILY,
         FAMILY,
@@ -29,24 +33,25 @@ public class EmergencyContactDetails {
     }
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
+    private long id;
+
     @NotNull
     @OneToOne
     private Employee employee;
 
-    @Id
-    @GeneratedValue
-    private long id;
-
+    @Column(name = "phone_number")
     @NotNull
     private String phoneNumber;
 
+    @Column(name = "relationship")
     private Relationship relationship;
 
+    @Column(name = "em_name")
     @NotNull
     private String name;
 
-    @NotNull
-    private String surname;
 
     public EmergencyContactDetails() {}
 
@@ -64,14 +69,6 @@ public class EmergencyContactDetails {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public String getSurname() {
-        return surname;
-    }
-
-    public void setSurname(String surname) {
-        this.surname = surname;
     }
 
     public String getPhoneNumber() {
