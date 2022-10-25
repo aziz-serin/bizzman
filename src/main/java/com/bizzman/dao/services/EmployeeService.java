@@ -26,8 +26,6 @@ public interface EmployeeService {
 
     Iterable<Employee> getAllEmployeeSortedByAgeDescending();
 
-    Iterable<Employee> findEmployeeByNationalInsuranceNumber(String nationalInsuranceNumber);
-
     long count();
 
     Iterable<Employee> findAllEmployees();

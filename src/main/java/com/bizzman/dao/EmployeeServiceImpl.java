@@ -9,7 +9,6 @@ import com.bizzman.entities.PersonalDetails;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -90,11 +89,6 @@ public class EmployeeServiceImpl implements EmployeeService {
         employeeList.sort((e1, e2) ->
                 (int) (e2.getPersonalDetails().getAge() - e1.getPersonalDetails().getAge()));
         return employeeList;
-    }
-
-    @Override
-    public Iterable<Employee> findEmployeeByNationalInsuranceNumber(String nationalInsuranceNumber) {
-        return null;
     }
 
     @Override

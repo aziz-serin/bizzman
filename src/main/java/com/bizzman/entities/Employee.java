@@ -14,6 +14,7 @@ import com.sun.istack.NotNull;
 public class Employee {
 
     @Id
+    @Column(name = "id")
     @GeneratedValue
     private long id;
 
