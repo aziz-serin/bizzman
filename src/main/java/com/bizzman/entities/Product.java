@@ -19,8 +19,9 @@ public class Product {
     private String category;
 
     @NotNull
-    @Column(name = "supplier")
-    private String supplier;
+    @OneToOne
+    @JoinColumn(name = "supplier")
+    private Supplier supplier;
 
     @NotNull
     @Column(name = "unitPrice")
@@ -28,7 +29,7 @@ public class Product {
 
     @NotNull
     @Column(name = "weight")
-    private long weight;
+    private double stockWeight;
 
     @NotNull
     @Column(name = "arrivalDate")
@@ -37,6 +38,10 @@ public class Product {
     // As the name suggests, this attribute DOES NOT save the image, saves the path of the image in the filesystem
     @Column(name = "imagePath")
     private String imagePath;
+
+    @NotNull
+    @Column(name = "quantity")
+    private long quantity;
 
     public long getId() {
         return id;
@@ -55,11 +60,11 @@ public class Product {
     }
 
 
-    public String getSupplier() {
+    public Supplier getSupplier() {
         return supplier;
     }
 
-    public void setSupplier(String supplier) {
+    public void setSupplier(Supplier supplier) {
         this.supplier = supplier;
     }
 
@@ -71,12 +76,12 @@ public class Product {
         this.unitPrice = unitPrice;
     }
 
-    public long getWeight() {
-        return weight;
+    public double getStockWeight() {
+        return stockWeight;
     }
 
-    public void setWeight(long weight) {
-        this.weight = weight;
+    public void setStockWeight(double stockWeight) {
+        this.stockWeight = stockWeight;
     }
 
     public LocalDate getArrivalDate() {
@@ -94,4 +99,13 @@ public class Product {
     public void setImagePath(String imagePath) {
         this.imagePath = imagePath;
     }
+
+    public long getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(long quantity) {
+        this.quantity = quantity;
+    }
+
 }
