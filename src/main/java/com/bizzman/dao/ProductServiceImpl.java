@@ -28,6 +28,21 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    public void deleteById(Long id) {
+        productRepository.deleteById(id);
+    }
+
+    @Override
+    public void deleteAll() {
+        productRepository.deleteAll();
+    }
+
+    @Override
+    public void deleteAll(Iterable<Product> products) {
+        productRepository.deleteAll(products);
+    }
+
+    @Override
     public long count(){
         return productRepository.count();
     }
@@ -41,6 +56,17 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    public Iterable<Product> getAllProducts() {
+        return productRepository.findAll();
+    }
+
+    @Override
+    public Iterable<Supplier> getAllProductSuppliers() {
+        List<Product> products = (List<Product>) getAllProducts();
+        return products.stream().map(Product::getSupplier).collect(Collectors.toList());
+    }
+
+    @Override
     public double getWeightOfAllProductsFromSameSupplier(Supplier supplier) {
         List<Product> productList = (List<Product>) productRepository.findAll();
         return productList.stream()
@@ -50,25 +76,23 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public LocalDate getOldestDateOfItemEntry(Long id) {
-        List<Product> productList = (List<Product>) productRepository.findAll();
-        return Collections.max(productList.stream()
-                .filter(o -> o.getId() == id)
-                .map(Product::getArrivalDate)
-                .collect(Collectors.toList()));
-    }
-
-    @Override
-    public LocalDate getMostRecentDateOfItemEntry(Long id) {
+    public LocalDate getOldestDateOfItemEntry() {
         List<Product> productList = (List<Product>) productRepository.findAll();
         return Collections.min(productList.stream()
-                .filter(o -> o.getId() == id)
                 .map(Product::getArrivalDate)
                 .collect(Collectors.toList()));
     }
 
     @Override
-    public Iterable<Product> getAllProductsFromSameCategory(String category) {
+    public LocalDate getMostRecentDateOfItemEntry() {
+        List<Product> productList = (List<Product>) productRepository.findAll();
+        return Collections.max(productList.stream()
+                .map(Product::getArrivalDate)
+                .collect(Collectors.toList()));
+    }
+
+    @Override
+    public Iterable<Product> getAllProductsFromSameCategory(Product.ProductCategory category) {
         List<Product> productList = (List<Product>) productRepository.findAll();
         return productList.stream()
                 .filter(o -> o.getCategory().equals(category))
@@ -89,7 +113,11 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public double getProductTotalPrice(Product product) {
-        return product.getUnitPrice() * product.getStockWeight();
+        if(product.getCategory().equals(Product.ProductCategory.PROFILE)) {
+            return product.getUnitPrice() * product.getStockWeight();
+        } else {
+            return product.getUnitPrice() * product.getQuantity();
+        }
     }
 
     @Override
@@ -101,7 +129,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public double getTotalWeightOfCategory(String category) {
+    public double getTotalWeightOfCategory(Product.ProductCategory category) {
         List<Product> productList = (List<Product>) productRepository.findAll();
         return productList.stream()
                 .filter(o -> o.getCategory().equals(category))
@@ -110,14 +138,18 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public double getTotalPriceOfCategory(String category) {
+    public double getTotalPriceOfCategory(Product.ProductCategory category) {
         List<Product> productList = (List<Product>) productRepository.findAll();
         List<Product> categoryProducts = productList.stream()
                 .filter(o -> o.getCategory().equals(category))
                 .collect(Collectors.toList());
         double sum = 0;
         for (Product product : categoryProducts) {
-            sum += product.getStockWeight() * product.getUnitPrice();
+            if (product.getCategory().equals(Product.ProductCategory.PROFILE)) {
+                sum += product.getStockWeight() * product.getUnitPrice();
+            } else {
+                sum += product.getQuantity() * product.getUnitPrice();
+            }
         }
         return sum;
     }
@@ -126,24 +158,13 @@ public class ProductServiceImpl implements ProductService {
     public double getTotalPrice(){
         List<Product> productList = (List<Product>) productRepository.findAll();
         double sum = 0;
-        for (Product product : productList){
-            sum += product.getStockWeight() * product.getUnitPrice();
+        for (Product product : productList) {
+            if (product.getCategory().equals(Product.ProductCategory.PROFILE)) {
+                sum += product.getStockWeight() * product.getUnitPrice();
+            } else {
+                sum += product.getQuantity() * product.getUnitPrice();
+            }
         }
         return sum;
     }
-
-    // stock price = unitPrice*quantity,
-    @Override
-    public Iterable<Product> getProductListSortedByStockPrice(boolean isAscending) {
-        List<Product> productList = (List<Product>) productRepository.findAll();
-        if (isAscending) {
-            productList.sort((p1, p2) ->
-                    (int) ((p1.getUnitPrice() * p1.getStockWeight() - p2.getUnitPrice() * p2.getStockWeight()) * 1000));
-        } else {
-            productList.sort((p1, p2) ->
-                    (int) ((p2.getUnitPrice() * p2.getStockWeight() - p1.getUnitPrice() * p1.getStockWeight()) * 1000));
-        }
-        return productList;
-    }
-
 }

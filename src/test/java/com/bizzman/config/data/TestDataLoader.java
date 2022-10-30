@@ -11,7 +11,11 @@ package com.bizzman.config.data;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
+import com.bizzman.dao.services.ProductService;
+import com.bizzman.dao.services.SupplierService;
+import com.bizzman.entities.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -22,9 +26,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 
 import com.bizzman.dao.services.EmployeeService;
-import com.bizzman.entities.EmergencyContactDetails;
-import com.bizzman.entities.Employee;
-import com.bizzman.entities.PersonalDetails;
 
 @Configuration
 @Profile("test")
@@ -33,8 +34,15 @@ public class TestDataLoader {
     @Autowired
     EmployeeService employeeService;
 
+    @Autowired
+    ProductService productService;
+
+    @Autowired
+    SupplierService supplierService;
+
     @Bean
     CommandLineRunner initDatabase(){
+
         Employee employee1 = new Employee();
         PersonalDetails personalDetails1 = new PersonalDetails();
         EmergencyContactDetails emergencyContactDetail1 = new EmergencyContactDetails();
@@ -72,12 +80,66 @@ public class TestDataLoader {
         emergencyContactDetail1.setPhoneNumber("89028139012");
         employee2.setEmergencyContactDetails(new ArrayList<>(List.of(emergencyContactDetail2)));
 
+        Product product1 = new Product();
+        Product product2 = new Product();
+        Product product3 = new Product();
+        Product product4 = new Product();
+        Supplier supplier1 = new Supplier();
+        Supplier supplier2 = new Supplier();
+
+        product1.setCategory(Product.ProductCategory.PROFILE);
+        product1.setArrivalDate(LocalDate.of(2022, 10, 9));
+        product1.setQuantity(5);
+        product1.setStockWeight(100.8);
+        product1.setUnitPrice(40);
+        supplier1.setContacts(Map.of("Ahmed", "738219321", "Melissa", "39382948490"));
+        supplier1.setName("Alu");
+        product1.setSupplier(supplier1);
+
+        product2.setCategory(Product.ProductCategory.ACCESSORY);
+        product2.setArrivalDate(LocalDate.of(2022, 10, 17));
+        product2.setQuantity(100);
+        product2.setStockWeight(21.2);
+        product2.setUnitPrice(5);
+        supplier2.setContacts(Map.of("Jen", "738439321", "Ben", "39382948490"));
+        supplier2.setName("Acc");
+        product2.setSupplier(supplier2);
+
+        product3.setCategory(Product.ProductCategory.PROFILE);
+        product3.setArrivalDate(LocalDate.of(2022, 10, 5));
+        product3.setQuantity(25);
+        product3.setStockWeight(2500);
+        product3.setUnitPrice(43);
+        product3.setSupplier(supplier1);
+
+        product4.setCategory(Product.ProductCategory.ACCESSORY);
+        product4.setArrivalDate(LocalDate.of(2022, 10, 12));
+        product4.setQuantity(10);
+        product4.setStockWeight(200);
+        product4.setUnitPrice(95);
+        product4.setSupplier(supplier2);
+
+
         return args -> {
             if (employeeService.count() > 0) {
                 log.info("Database already populated with employees. Skipping employee initialization.");
             } else {
-                log.info("Loading data: " +employeeService.save(employee1));
+                log.info("Loading data: " + employeeService.save(employee1));
                 log.info("Loading data: " + employeeService.save(employee2));
+            }
+            if (supplierService.count() > 0) {
+                log.info("Database already populated with suppliers. Skipping product initialization.");
+            } else {
+                log.info("Loading data: " + supplierService.save(supplier1));
+                log.info("Loading data: " + supplierService.save(supplier2));
+            }
+            if (productService.count() > 0) {
+                log.info("Database already populated with products. Skipping product initialization.");
+            } else {
+                log.info("Loading data: " + productService.save(product1));
+                log.info("Loading data: " + productService.save(product2));
+                log.info("Loading data: " + productService.save(product3));
+                log.info("Loading data: " + productService.save(product4));
             }
         };
     }

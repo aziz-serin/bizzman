@@ -9,6 +9,11 @@ import java.time.LocalDate;
 @Table(name = "product")
 public class Product {
 
+    public enum ProductCategory{
+        PROFILE,
+        ACCESSORY
+    }
+
     @Id
     @Column(name = "id")
     @GeneratedValue
@@ -16,11 +21,11 @@ public class Product {
 
     @NotNull
     @Column(name = "category")
-    private String category;
+    private ProductCategory category;
 
-    @NotNull
     @OneToOne
-    @JoinColumn(name = "supplier")
+    @JoinColumn(name = "supplier_id")
+    @NotNull
     private Supplier supplier;
 
     @NotNull
@@ -51,14 +56,13 @@ public class Product {
         this.id = id;
     }
 
-    public String getCategory() {
+    public ProductCategory getCategory() {
         return category;
     }
 
-    public void setCategory(String category) {
+    public void setCategory(ProductCategory category) {
         this.category = category;
     }
-
 
     public Supplier getSupplier() {
         return supplier;

@@ -11,6 +11,12 @@ public interface EmployeeService {
 
     Employee save(Employee employee);
 
+    void delete(Long id);
+
+    void deleteAll();
+
+    void deleteAll(Iterable<Employee> employees);
+
     PersonalDetails getEmployeePersonalDetails(Employee employee);
 
     Iterable<EmergencyContactDetails> getEmployeeEmergencyContactDetails(Employee employee);

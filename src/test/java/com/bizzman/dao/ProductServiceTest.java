@@ -1,7 +1,11 @@
 package com.bizzman.dao;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import com.bizzman.BizzmanApplication;
 import com.bizzman.dao.services.ProductService;
+import com.bizzman.entities.Product;
+import com.bizzman.entities.Supplier;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,10 +15,10 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.context.junit4.AbstractTransactionalJUnit4SpringContextTests;
 
-/* TODO
-*   Initialise the database with product and supplier objects
-*   Write the tests
-*/
+import java.time.LocalDate;
+import java.util.List;
+
+// These tests will need modification if the TestDataLoader class's product initialisation is modified.
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(classes = BizzmanApplication.class)
@@ -25,63 +29,129 @@ class ProductServiceTest extends AbstractTransactionalJUnit4SpringContextTests {
     @Autowired
     ProductService productService;
 
+    // Test only custom methods here, the other ones don't need to be tested, e.g. deleteById, save
+
     @Test
-    public void getProductById() {
+    public void getAllProductsFromSameSupplierReturnsTrueList() {
+        List<Supplier> supplierList = (List<Supplier>) productService.getAllProductSuppliers();
+        List<Product> productList = (List<Product>) productService.getAllProducts();
+
+        assertThat(productList.get(0).getSupplier()).isEqualTo(supplierList.get(0));
     }
 
     @Test
-    public void save() {
+    public void getWeightOfAllProductsFromSameSupplierReturnsTrueWeight() {
+        List<Product> productList = (List<Product>) productService.getAllProducts();
+        double productFromSameSupplierWeight = productService
+                .getWeightOfAllProductsFromSameSupplier(productList.get(0).getSupplier());
+        double weight = productList.get(0).getStockWeight() + productList.get(2).getStockWeight();
+
+        assertThat(productFromSameSupplierWeight == weight).isTrue();
     }
 
     @Test
-    public void count() {
+    public void getOldestDateOfItemEntryReturnsOldestDate() {
+        LocalDate oldestDate = productService.getOldestDateOfItemEntry();
+        LocalDate oldest = ( (List<Product>) productService.getAllProducts()).get(2).getArrivalDate();
+
+        assertThat(oldestDate).isEqualTo(oldest);
     }
 
     @Test
-    public void getAllProductsFromSameSupplier() {
+    public void getMostRecentDateOfItemEntryReturnsMostRecentEntry() {
+        LocalDate mostRecentDate = productService.getMostRecentDateOfItemEntry();
+        LocalDate mostRecent = ( (List<Product>) productService.getAllProducts()).get(1).getArrivalDate();
+
+        assertThat(mostRecentDate).isEqualTo(mostRecent);
     }
 
     @Test
-    public void getWeightOfAllProductsFromSameSupplier() {
+    public void getAllProductsFromSameCategoryReturnsTrueForProfileCategory() {
+        List<Product> productsFromSameCategory = (List<Product>) productService
+                .getAllProductsFromSameCategory(Product.ProductCategory.PROFILE);
+        List<Product> products = (List<Product>) productService.getAllProducts();
+
+        assertThat(productsFromSameCategory.size() == 2).isTrue();
+        assertThat(productsFromSameCategory.contains(products.get(0))).isTrue();
+        assertThat(productsFromSameCategory.get(0).getCategory()).isEqualTo(Product.ProductCategory.PROFILE);
+        assertThat(productsFromSameCategory.contains(products.get(2))).isTrue();
+        assertThat(productsFromSameCategory.get(1).getCategory()).isEqualTo(Product.ProductCategory.PROFILE);
+        assertThat(productsFromSameCategory.contains(products.get(3))).isFalse();
     }
 
     @Test
-    public void getOldestDateOfItemEntry() {
+    public void getAllProductsFromSameCategoryReturnsTrueForAccessoryCategory() {
+        List<Product> productsFromSameCategory = (List<Product>) productService
+                .getAllProductsFromSameCategory(Product.ProductCategory.ACCESSORY);
+        List<Product> products = (List<Product>) productService.getAllProducts();
+
+        assertThat(productsFromSameCategory.size() == 2).isTrue();
+        assertThat(productsFromSameCategory.contains(products.get(1))).isTrue();
+        assertThat(productsFromSameCategory.get(0).getCategory()).isEqualTo(Product.ProductCategory.ACCESSORY);
+        assertThat(productsFromSameCategory.contains(products.get(3))).isTrue();
+        assertThat(productsFromSameCategory.get(1).getCategory()).isEqualTo(Product.ProductCategory.ACCESSORY);
+        assertThat(productsFromSameCategory.contains(products.get(0))).isFalse();
     }
 
     @Test
-    public void getMostRecentDateOfItemEntry() {
+    public void getProductListSortedByWeightReturnsWeightAscending() {
+        List<Product> products = (List<Product>) productService.getAllProducts();
+        List<Product> sorted = (List<Product>) productService.getProductListSortedByWeight(true);
+
+        assertThat(sorted.get(0)).isEqualTo(products.get(1));
     }
 
     @Test
-    public void getAllProductsFromSameCategory() {
+    public void getProductListSortedByWeightReturnsWeightDescending() {
+        List<Product> products = (List<Product>) productService.getAllProducts();
+        List<Product> sorted = (List<Product>) productService.getProductListSortedByWeight(false);
+
+        assertThat(sorted.get(0)).isEqualTo(products.get(2));
     }
 
     @Test
-    public void getProductListSortedByWeight() {
+    public void getProductTotalPriceReturnsTruePriceForProfile() {
+        List<Product> products = (List<Product>) productService.getAllProducts();
+        double totalPrice = products.get(0).getUnitPrice() * products.get(0).getStockWeight();
+
+        assertThat(totalPrice).isEqualTo(productService.getProductTotalPrice(products.get(0)));
     }
 
     @Test
-    public void getProductTotalPrice() {
+    public void getProductTotalPriceReturnsTruePriceForAccessory() {
+        List<Product> products = (List<Product>) productService.getAllProducts();
+        double totalPrice = products.get(1).getUnitPrice() * products.get(1).getQuantity();
+
+        assertThat(totalPrice).isEqualTo(productService.getProductTotalPrice(products.get(1)));
     }
 
     @Test
-    public void getTotalWeight() {
+    public void getTotalWeightReturnsTrueWeight() {
+        assertThat(productService.getTotalWeight()).isEqualTo(2822);
     }
 
     @Test
-    public void getTotalWeightOfCategory() {
+    public void getTotalWeightOfCategoryReturnsTrueWeightForProfile() {
+        assertThat(productService.getTotalWeightOfCategory(Product.ProductCategory.PROFILE)).isEqualTo(2600.8);
     }
 
     @Test
-    public void getTotalPriceOfCategory() {
+    public void getTotalWeightOfCategoryReturnsTrueWeightForAccessory() {
+        assertThat(productService.getTotalWeightOfCategory(Product.ProductCategory.ACCESSORY)).isEqualTo(221.2);
+    }
+
+    @Test
+    public void getTotalPriceOfCategoryReturnsTruePriceForProfile() {
+        assertThat(productService.getTotalPriceOfCategory(Product.ProductCategory.PROFILE)).isEqualTo(111532);
+    }
+
+    @Test
+    public void getTotalPriceOfCategoryReturnsTruePriceForAccessory() {
+        assertThat(productService.getTotalPriceOfCategory(Product.ProductCategory.ACCESSORY)).isEqualTo(1450);
     }
 
     @Test
     public void getTotalPrice() {
-    }
-
-    @Test
-    public void getProductListSortedByStockPrice() {
+        assertThat(productService.getTotalPrice()).isEqualTo(112982.0);
     }
 }

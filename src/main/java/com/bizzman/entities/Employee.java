@@ -46,10 +46,6 @@ public class Employee {
     @Column(name = "other_expenses")
     private double other_expenses;
 
-    public Employee() {
-        this.joiningDate = LocalDate.now();
-    }
-
     public PersonalDetails getPersonalDetails() {
         return personalDetails;
     }
