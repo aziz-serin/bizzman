@@ -3,7 +3,7 @@ package com.bizzman.dao;
 import com.bizzman.dao.repos.ProductRepository;
 import com.bizzman.dao.services.ProductService;
 import com.bizzman.entities.Product;
-import com.bizzman.entities.Supplier;
+import com.bizzman.entities.BusinessRelationship;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -48,10 +48,10 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public Iterable<Product> getAllProductsFromSameSupplier(Supplier supplier) {
+    public Iterable<Product> getAllProductsFromSameSupplier(BusinessRelationship businessRelationship) {
         List<Product> productList = (List<Product>) productRepository.findAll();
         return productList.stream()
-                .filter(o -> o.getSupplier().equals(supplier))
+                .filter(o -> o.getSupplier().equals(businessRelationship))
                 .collect(Collectors.toList());
     }
 
@@ -61,16 +61,16 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public Iterable<Supplier> getAllProductSuppliers() {
+    public Iterable<BusinessRelationship> getAllProductSuppliers() {
         List<Product> products = (List<Product>) getAllProducts();
         return products.stream().map(Product::getSupplier).collect(Collectors.toList());
     }
 
     @Override
-    public double getWeightOfAllProductsFromSameSupplier(Supplier supplier) {
+    public double getWeightOfAllProductsFromSameSupplier(BusinessRelationship businessRelationship) {
         List<Product> productList = (List<Product>) productRepository.findAll();
         return productList.stream()
-                .filter(o -> o.getSupplier().equals(supplier))
+                .filter(o -> o.getSupplier().equals(businessRelationship))
                 .map(Product::getStockWeight)
                 .reduce(0.0, Double::sum);
     }

@@ -6,13 +6,22 @@ import javax.persistence.*;
 import java.util.Map;
 
 @Entity
-@Table(name = "customer")
-public class Customer {
+@Table(name = "supplier")
+public class BusinessRelationship {
+
+    public enum Type{
+        CUSTOMER,
+        SUPPLIER
+    }
 
     @Id
     @GeneratedValue
     @Column(name = "id")
     private long id;
+
+    @NotNull
+    @Column(name = "type")
+    Type type;
 
     @NotNull
     @Column(name = "name")
@@ -29,6 +38,14 @@ public class Customer {
 
     public void setId(long id) {
         this.id = id;
+    }
+
+    public Type getType() {
+        return type;
+    }
+
+    public void setType(Type type) {
+        this.type = type;
     }
 
     public String getName() {

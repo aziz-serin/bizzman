@@ -5,7 +5,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import com.bizzman.BizzmanApplication;
 import com.bizzman.dao.services.ProductService;
 import com.bizzman.entities.Product;
-import com.bizzman.entities.Supplier;
+import com.bizzman.entities.BusinessRelationship;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,10 +33,10 @@ class ProductServiceTest extends AbstractTransactionalJUnit4SpringContextTests {
 
     @Test
     public void getAllProductsFromSameSupplierReturnsTrueList() {
-        List<Supplier> supplierList = (List<Supplier>) productService.getAllProductSuppliers();
+        List<BusinessRelationship> businessRelationshipList = (List<BusinessRelationship>) productService.getAllProductSuppliers();
         List<Product> productList = (List<Product>) productService.getAllProducts();
 
-        assertThat(productList.get(0).getSupplier()).isEqualTo(supplierList.get(0));
+        assertThat(productList.get(0).getSupplier()).isEqualTo(businessRelationshipList.get(0));
     }
 
     @Test

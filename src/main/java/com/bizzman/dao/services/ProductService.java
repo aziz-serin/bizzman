@@ -2,7 +2,7 @@ package com.bizzman.dao.services;
 
 
 import com.bizzman.entities.Product;
-import com.bizzman.entities.Supplier;
+import com.bizzman.entities.BusinessRelationship;
 
 import java.time.LocalDate;
 import java.util.Optional;
@@ -21,13 +21,13 @@ public interface ProductService {
 
     long count();
 
-    Iterable<Product> getAllProductsFromSameSupplier(Supplier supplier);
+    Iterable<Product> getAllProductsFromSameSupplier(BusinessRelationship businessRelationship);
 
     Iterable<Product> getAllProducts();
 
-    Iterable<Supplier> getAllProductSuppliers();
+    Iterable<BusinessRelationship> getAllProductSuppliers();
 
-    double getWeightOfAllProductsFromSameSupplier(Supplier supplier);
+    double getWeightOfAllProductsFromSameSupplier(BusinessRelationship businessRelationship);
 
     LocalDate getOldestDateOfItemEntry();
 

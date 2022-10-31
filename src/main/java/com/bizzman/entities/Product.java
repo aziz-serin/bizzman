@@ -26,7 +26,7 @@ public class Product {
     @OneToOne
     @JoinColumn(name = "supplier_id")
     @NotNull
-    private Supplier supplier;
+    private BusinessRelationship businessRelationship;
 
     @NotNull
     @Column(name = "unitPrice")
@@ -64,12 +64,12 @@ public class Product {
         this.category = category;
     }
 
-    public Supplier getSupplier() {
-        return supplier;
+    public BusinessRelationship getSupplier() {
+        return businessRelationship;
     }
 
-    public void setSupplier(Supplier supplier) {
-        this.supplier = supplier;
+    public void setSupplier(BusinessRelationship businessRelationship) {
+        this.businessRelationship = businessRelationship;
     }
 
     public long getUnitPrice() {

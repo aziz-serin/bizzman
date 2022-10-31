@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.bizzman.dao.services.ProductService;
-import com.bizzman.dao.services.SupplierService;
+import com.bizzman.dao.services.BusinessRelationshipService;
 import com.bizzman.entities.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -38,7 +38,7 @@ public class TestDataLoader {
     ProductService productService;
 
     @Autowired
-    SupplierService supplierService;
+    BusinessRelationshipService supplierService;
 
     @Bean
     CommandLineRunner initDatabase(){
@@ -84,40 +84,43 @@ public class TestDataLoader {
         Product product2 = new Product();
         Product product3 = new Product();
         Product product4 = new Product();
-        Supplier supplier1 = new Supplier();
-        Supplier supplier2 = new Supplier();
+        BusinessRelationship businessRelationship1 = new BusinessRelationship();
+        BusinessRelationship businessRelationship2 = new BusinessRelationship();
 
         product1.setCategory(Product.ProductCategory.PRICE_BY_WEIGHT);
         product1.setArrivalDate(LocalDate.of(2022, 10, 9));
         product1.setQuantity(5);
         product1.setStockWeight(100.8);
         product1.setUnitPrice(40);
-        supplier1.setContacts(Map.of("Ahmed", "738219321", "Melissa", "39382948490"));
-        supplier1.setName("Alu");
-        product1.setSupplier(supplier1);
+        businessRelationship1.setContacts(Map.of("Ahmed", "738219321", "Melissa", "39382948490"));
+        businessRelationship1.setName("Alu");
+        businessRelationship1.setType(BusinessRelationship.Type.SUPPLIER);
+        product1.setSupplier(businessRelationship1);
 
         product2.setCategory(Product.ProductCategory.PRICE_BY_QUANTITY);
         product2.setArrivalDate(LocalDate.of(2022, 10, 17));
         product2.setQuantity(100);
         product2.setStockWeight(21.2);
         product2.setUnitPrice(5);
-        supplier2.setContacts(Map.of("Jen", "738439321", "Ben", "39382948490"));
-        supplier2.setName("Acc");
-        product2.setSupplier(supplier2);
+        businessRelationship2.setContacts(Map.of("Jen", "738439321", "Ben", "39382948490"));
+        businessRelationship2.setType(BusinessRelationship.Type.SUPPLIER);
+        businessRelationship2.setName("Acc");
+
+        product2.setSupplier(businessRelationship2);
 
         product3.setCategory(Product.ProductCategory.PRICE_BY_WEIGHT);
         product3.setArrivalDate(LocalDate.of(2022, 10, 5));
         product3.setQuantity(25);
         product3.setStockWeight(2500);
         product3.setUnitPrice(43);
-        product3.setSupplier(supplier1);
+        product3.setSupplier(businessRelationship1);
 
         product4.setCategory(Product.ProductCategory.PRICE_BY_QUANTITY);
         product4.setArrivalDate(LocalDate.of(2022, 10, 12));
         product4.setQuantity(10);
         product4.setStockWeight(200);
         product4.setUnitPrice(95);
-        product4.setSupplier(supplier2);
+        product4.setSupplier(businessRelationship2);
 
 
         return args -> {
@@ -130,8 +133,8 @@ public class TestDataLoader {
             if (supplierService.count() > 0) {
                 log.info("Database already populated with suppliers. Skipping product initialization.");
             } else {
-                log.info("Loading data: " + supplierService.save(supplier1));
-                log.info("Loading data: " + supplierService.save(supplier2));
+                log.info("Loading data: " + supplierService.save(businessRelationship1));
+                log.info("Loading data: " + supplierService.save(businessRelationship2));
             }
             if (productService.count() > 0) {
                 log.info("Database already populated with products. Skipping product initialization.");
