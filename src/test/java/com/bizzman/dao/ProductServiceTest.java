@@ -68,28 +68,28 @@ class ProductServiceTest extends AbstractTransactionalJUnit4SpringContextTests {
     @Test
     public void getAllProductsFromSameCategoryReturnsTrueForProfileCategory() {
         List<Product> productsFromSameCategory = (List<Product>) productService
-                .getAllProductsFromSameCategory(Product.ProductCategory.PROFILE);
+                .getAllProductsFromSameCategory(Product.ProductCategory.PRICE_BY_WEIGHT);
         List<Product> products = (List<Product>) productService.getAllProducts();
 
         assertThat(productsFromSameCategory.size() == 2).isTrue();
         assertThat(productsFromSameCategory.contains(products.get(0))).isTrue();
-        assertThat(productsFromSameCategory.get(0).getCategory()).isEqualTo(Product.ProductCategory.PROFILE);
+        assertThat(productsFromSameCategory.get(0).getCategory()).isEqualTo(Product.ProductCategory.PRICE_BY_WEIGHT);
         assertThat(productsFromSameCategory.contains(products.get(2))).isTrue();
-        assertThat(productsFromSameCategory.get(1).getCategory()).isEqualTo(Product.ProductCategory.PROFILE);
+        assertThat(productsFromSameCategory.get(1).getCategory()).isEqualTo(Product.ProductCategory.PRICE_BY_WEIGHT);
         assertThat(productsFromSameCategory.contains(products.get(3))).isFalse();
     }
 
     @Test
     public void getAllProductsFromSameCategoryReturnsTrueForAccessoryCategory() {
         List<Product> productsFromSameCategory = (List<Product>) productService
-                .getAllProductsFromSameCategory(Product.ProductCategory.ACCESSORY);
+                .getAllProductsFromSameCategory(Product.ProductCategory.PRICE_BY_QUANTITY);
         List<Product> products = (List<Product>) productService.getAllProducts();
 
         assertThat(productsFromSameCategory.size() == 2).isTrue();
         assertThat(productsFromSameCategory.contains(products.get(1))).isTrue();
-        assertThat(productsFromSameCategory.get(0).getCategory()).isEqualTo(Product.ProductCategory.ACCESSORY);
+        assertThat(productsFromSameCategory.get(0).getCategory()).isEqualTo(Product.ProductCategory.PRICE_BY_QUANTITY);
         assertThat(productsFromSameCategory.contains(products.get(3))).isTrue();
-        assertThat(productsFromSameCategory.get(1).getCategory()).isEqualTo(Product.ProductCategory.ACCESSORY);
+        assertThat(productsFromSameCategory.get(1).getCategory()).isEqualTo(Product.ProductCategory.PRICE_BY_QUANTITY);
         assertThat(productsFromSameCategory.contains(products.get(0))).isFalse();
     }
 
@@ -132,22 +132,22 @@ class ProductServiceTest extends AbstractTransactionalJUnit4SpringContextTests {
 
     @Test
     public void getTotalWeightOfCategoryReturnsTrueWeightForProfile() {
-        assertThat(productService.getTotalWeightOfCategory(Product.ProductCategory.PROFILE)).isEqualTo(2600.8);
+        assertThat(productService.getTotalWeightOfCategory(Product.ProductCategory.PRICE_BY_WEIGHT)).isEqualTo(2600.8);
     }
 
     @Test
     public void getTotalWeightOfCategoryReturnsTrueWeightForAccessory() {
-        assertThat(productService.getTotalWeightOfCategory(Product.ProductCategory.ACCESSORY)).isEqualTo(221.2);
+        assertThat(productService.getTotalWeightOfCategory(Product.ProductCategory.PRICE_BY_QUANTITY)).isEqualTo(221.2);
     }
 
     @Test
     public void getTotalPriceOfCategoryReturnsTruePriceForProfile() {
-        assertThat(productService.getTotalPriceOfCategory(Product.ProductCategory.PROFILE)).isEqualTo(111532);
+        assertThat(productService.getTotalPriceOfCategory(Product.ProductCategory.PRICE_BY_WEIGHT)).isEqualTo(111532);
     }
 
     @Test
     public void getTotalPriceOfCategoryReturnsTruePriceForAccessory() {
-        assertThat(productService.getTotalPriceOfCategory(Product.ProductCategory.ACCESSORY)).isEqualTo(1450);
+        assertThat(productService.getTotalPriceOfCategory(Product.ProductCategory.PRICE_BY_QUANTITY)).isEqualTo(1450);
     }
 
     @Test

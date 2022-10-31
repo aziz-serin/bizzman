@@ -87,7 +87,7 @@ public class TestDataLoader {
         Supplier supplier1 = new Supplier();
         Supplier supplier2 = new Supplier();
 
-        product1.setCategory(Product.ProductCategory.PROFILE);
+        product1.setCategory(Product.ProductCategory.PRICE_BY_WEIGHT);
         product1.setArrivalDate(LocalDate.of(2022, 10, 9));
         product1.setQuantity(5);
         product1.setStockWeight(100.8);
@@ -96,7 +96,7 @@ public class TestDataLoader {
         supplier1.setName("Alu");
         product1.setSupplier(supplier1);
 
-        product2.setCategory(Product.ProductCategory.ACCESSORY);
+        product2.setCategory(Product.ProductCategory.PRICE_BY_QUANTITY);
         product2.setArrivalDate(LocalDate.of(2022, 10, 17));
         product2.setQuantity(100);
         product2.setStockWeight(21.2);
@@ -105,14 +105,14 @@ public class TestDataLoader {
         supplier2.setName("Acc");
         product2.setSupplier(supplier2);
 
-        product3.setCategory(Product.ProductCategory.PROFILE);
+        product3.setCategory(Product.ProductCategory.PRICE_BY_WEIGHT);
         product3.setArrivalDate(LocalDate.of(2022, 10, 5));
         product3.setQuantity(25);
         product3.setStockWeight(2500);
         product3.setUnitPrice(43);
         product3.setSupplier(supplier1);
 
-        product4.setCategory(Product.ProductCategory.ACCESSORY);
+        product4.setCategory(Product.ProductCategory.PRICE_BY_QUANTITY);
         product4.setArrivalDate(LocalDate.of(2022, 10, 12));
         product4.setQuantity(10);
         product4.setStockWeight(200);

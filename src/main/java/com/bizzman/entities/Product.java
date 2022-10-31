@@ -10,8 +10,8 @@ import java.time.LocalDate;
 public class Product {
 
     public enum ProductCategory{
-        PROFILE,
-        ACCESSORY
+        PRICE_BY_WEIGHT,
+        PRICE_BY_QUANTITY
     }
 
     @Id

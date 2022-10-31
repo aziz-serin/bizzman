@@ -113,7 +113,7 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public double getProductTotalPrice(Product product) {
-        if(product.getCategory().equals(Product.ProductCategory.PROFILE)) {
+        if(product.getCategory().equals(Product.ProductCategory.PRICE_BY_WEIGHT)) {
             return product.getUnitPrice() * product.getStockWeight();
         } else {
             return product.getUnitPrice() * product.getQuantity();
@@ -145,7 +145,7 @@ public class ProductServiceImpl implements ProductService {
                 .collect(Collectors.toList());
         double sum = 0;
         for (Product product : categoryProducts) {
-            if (product.getCategory().equals(Product.ProductCategory.PROFILE)) {
+            if (product.getCategory().equals(Product.ProductCategory.PRICE_BY_WEIGHT)) {
                 sum += product.getStockWeight() * product.getUnitPrice();
             } else {
                 sum += product.getQuantity() * product.getUnitPrice();
@@ -159,7 +159,7 @@ public class ProductServiceImpl implements ProductService {
         List<Product> productList = (List<Product>) productRepository.findAll();
         double sum = 0;
         for (Product product : productList) {
-            if (product.getCategory().equals(Product.ProductCategory.PROFILE)) {
+            if (product.getCategory().equals(Product.ProductCategory.PRICE_BY_WEIGHT)) {
                 sum += product.getStockWeight() * product.getUnitPrice();
             } else {
                 sum += product.getQuantity() * product.getUnitPrice();
