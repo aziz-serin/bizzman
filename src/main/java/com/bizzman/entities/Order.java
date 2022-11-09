@@ -7,7 +7,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 @Entity
-@Table(name = "order")
+@Table(name = "bizzOrder")
 public class Order {
 
     public enum Type{

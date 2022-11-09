@@ -25,19 +25,19 @@ class OrderServiceImplTest extends AbstractTransactionalJUnit4SpringContextTests
     OrderService orderService;
 
     @Test
-    void getOrderPrice() {
+    void getOrderPriceReturnsOrderPrice() {
     }
 
     @Test
-    void getAllOrdersSortedByArrivalDate() {
+    void getAllOrdersSortedByArrivalDateSortsOrders() {
     }
 
     @Test
-    void getAllOrdersForBusinessRelationship() {
+    void getAllOrdersForBusinessRelationshipReturnsOrdersForBusines() {
     }
 
     @Test
-    void getAllOrdersWithSameType() {
+    void getAllOrdersWithSameTypeReturnsOrdersWithSameType() {
     }
 }
 

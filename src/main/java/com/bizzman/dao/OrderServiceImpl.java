@@ -95,4 +95,9 @@ public class OrderServiceImpl implements OrderService {
                 .filter(r -> r.getType().equals(type))
                 .collect(Collectors.toList());
     }
+    /*
+    * TODO: Add methods:
+    *  getAllOrdersSameTypeSortedByPrice
+    *  getAllOrdersSameTypeSortedByArrivalDate
+    * */
 }

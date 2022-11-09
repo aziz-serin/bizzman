@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import com.bizzman.dao.services.OrderService;
 import com.bizzman.dao.services.ProductService;
 import com.bizzman.dao.services.BusinessRelationshipService;
 import com.bizzman.entities.*;
@@ -30,30 +31,43 @@ import com.bizzman.dao.services.EmployeeService;
 @Configuration
 @Profile("test")
 public class TestDataLoader {
+
     private final static Logger log = LoggerFactory.getLogger(TestDataLoader.class);
     @Autowired
     EmployeeService employeeService;
-
     @Autowired
     ProductService productService;
-
     @Autowired
     BusinessRelationshipService businessRelationshipService;
+    @Autowired
+    OrderService orderService;
 
-    Product product1;
-    Product product2;
-    Product product3;
-    Product product4;
-    BusinessRelationship businessRelationship1;
-    BusinessRelationship businessRelationship2;
+
+    private Product product1;
+    private Product product2;
+    private Product product3;
+    private Product product4;
+    private BusinessRelationship businessRelationship1;
+    private BusinessRelationship businessRelationship2;
+    private Employee employee1;
+    private PersonalDetails personalDetails1;
+    private EmergencyContactDetails emergencyContactDetail1;
+    private Employee employee2;
+    private PersonalDetails personalDetails2;
+    private EmergencyContactDetails emergencyContactDetail2;
+
+    private Order order1;
+    private Order order2;
+    private Order order3;
+    private Order order4;
 
     private List<Employee> loadEmployee() {
-        Employee employee1 = new Employee();
-        PersonalDetails personalDetails1 = new PersonalDetails();
-        EmergencyContactDetails emergencyContactDetail1 = new EmergencyContactDetails();
-        Employee employee2 = new Employee();
-        PersonalDetails personalDetails2 = new PersonalDetails();
-        EmergencyContactDetails emergencyContactDetail2 = new EmergencyContactDetails();
+        employee1 = new Employee();
+        personalDetails1 = new PersonalDetails();
+        emergencyContactDetail1 = new EmergencyContactDetails();
+        employee2 = new Employee();
+        personalDetails2 = new PersonalDetails();
+        emergencyContactDetail2 = new EmergencyContactDetails();
 
         employee1.setName("Aziz");
         employee1.setJoiningDate( LocalDate.of(2021, 10, 9));
@@ -141,13 +155,46 @@ public class TestDataLoader {
         return List.of(businessRelationship1, businessRelationship2);
     }
 
+    private List<Order> loadOrders(){
+        order1 = new Order();
+        order2 = new Order();
+        order3 = new Order();
+        order4 = new Order();
+
+        order1.setType(Order.Type.INCOMING);
+        order1.setProducts(List.of(product1, product2));
+        order1.setPlacingDate(LocalDate.of(2022, 10, 17));
+        order1.setArrivalDate(LocalDate.of(2022, 10, 22));
+        order1.setBusinessRelationship(businessRelationship1);
+
+        order2.setType(Order.Type.INCOMING);
+        order2.setProducts(List.of(product1, product3));
+        order2.setPlacingDate(LocalDate.of(2022, 9, 17));
+        order2.setArrivalDate(LocalDate.of(2022, 9, 22));
+        order2.setBusinessRelationship(businessRelationship1);
+
+        order3.setType(Order.Type.OUTGOING);
+        order3.setProducts(List.of(product2, product4));
+        order3.setPlacingDate(LocalDate.of(2022, 11, 17));
+        order3.setArrivalDate(LocalDate.of(2022, 11, 22));
+        order3.setBusinessRelationship(businessRelationship2);
+
+        order4.setType(Order.Type.OUTGOING);
+        order4.setProducts(List.of(product3, product4));
+        order4.setPlacingDate(LocalDate.of(2022, 12, 17));
+        order4.setArrivalDate(LocalDate.of(2022, 12, 22));
+        order4.setBusinessRelationship(businessRelationship2);
+
+        return List.of(order1, order2, order3, order4);
+    }
+
     @Bean
     CommandLineRunner initDatabase(){
 
         List<Employee> employees = loadEmployee();
         List<BusinessRelationship> businessRelationships = loadBusinessRelationship();
         List<Product> products = loadProduct();
-
+        List<Order> orders = loadOrders();
 
         return args -> {
             if (employeeService.count() > 0) {
@@ -169,6 +216,13 @@ public class TestDataLoader {
             } else {
                 for (Product product : products) {
                     log.info("Loading data: " + productService.save(product));
+                }
+            }
+            if (orderService.count() > 0) {
+                log.info("Database already populated with orders. Skipping product initialization.");
+            } else {
+                for (Order order : orders) {
+                    log.info("Loading data: " + orderService.save(order));
                 }
             }
         };
