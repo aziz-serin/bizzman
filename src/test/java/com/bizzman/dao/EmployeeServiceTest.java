@@ -27,6 +27,8 @@ import com.bizzman.BizzmanApplication;
 import com.bizzman.dao.services.EmployeeService;
 import com.bizzman.entities.Employee;
 
+// These tests will need modification if the TestDataLoader class's product initialisation order or values are modified.
+
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(classes = BizzmanApplication.class)
 @DirtiesContext

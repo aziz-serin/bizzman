@@ -18,7 +18,7 @@ import org.springframework.test.context.junit4.AbstractTransactionalJUnit4Spring
 import java.time.LocalDate;
 import java.util.List;
 
-// These tests will need modification if the TestDataLoader class's product initialisation is modified.
+// These tests will need modification if the TestDataLoader class's product initialisation order or values are modified.
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(classes = BizzmanApplication.class)
