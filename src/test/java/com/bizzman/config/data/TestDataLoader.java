@@ -38,11 +38,16 @@ public class TestDataLoader {
     ProductService productService;
 
     @Autowired
-    BusinessRelationshipService supplierService;
+    BusinessRelationshipService businessRelationshipService;
 
-    @Bean
-    CommandLineRunner initDatabase(){
+    Product product1;
+    Product product2;
+    Product product3;
+    Product product4;
+    BusinessRelationship businessRelationship1;
+    BusinessRelationship businessRelationship2;
 
+    private List<Employee> loadEmployee() {
         Employee employee1 = new Employee();
         PersonalDetails personalDetails1 = new PersonalDetails();
         EmergencyContactDetails emergencyContactDetail1 = new EmergencyContactDetails();
@@ -80,21 +85,21 @@ public class TestDataLoader {
         emergencyContactDetail1.setPhoneNumber("89028139012");
         employee2.setEmergencyContactDetails(new ArrayList<>(List.of(emergencyContactDetail2)));
 
-        Product product1 = new Product();
-        Product product2 = new Product();
-        Product product3 = new Product();
-        Product product4 = new Product();
-        BusinessRelationship businessRelationship1 = new BusinessRelationship();
-        BusinessRelationship businessRelationship2 = new BusinessRelationship();
+        return List.of(employee1, employee2);
+    }
+
+    private List<Product> loadProduct() {
+        product1 = new Product();
+        product2 = new Product();
+        product3 = new Product();
+        product4 = new Product();
+
 
         product1.setCategory(Product.ProductCategory.PRICE_BY_WEIGHT);
         product1.setArrivalDate(LocalDate.of(2022, 10, 9));
         product1.setQuantity(5);
         product1.setStockWeight(100.8);
         product1.setUnitPrice(40);
-        businessRelationship1.setContacts(Map.of("Ahmed", "738219321", "Melissa", "39382948490"));
-        businessRelationship1.setName("Alu");
-        businessRelationship1.setType(BusinessRelationship.Type.SUPPLIER);
         product1.setSupplier(businessRelationship1);
 
         product2.setCategory(Product.ProductCategory.PRICE_BY_QUANTITY);
@@ -102,10 +107,6 @@ public class TestDataLoader {
         product2.setQuantity(100);
         product2.setStockWeight(21.2);
         product2.setUnitPrice(5);
-        businessRelationship2.setContacts(Map.of("Jen", "738439321", "Ben", "39382948490"));
-        businessRelationship2.setType(BusinessRelationship.Type.SUPPLIER);
-        businessRelationship2.setName("Acc");
-
         product2.setSupplier(businessRelationship2);
 
         product3.setCategory(Product.ProductCategory.PRICE_BY_WEIGHT);
@@ -122,27 +123,53 @@ public class TestDataLoader {
         product4.setUnitPrice(95);
         product4.setSupplier(businessRelationship2);
 
+        return List.of(product1, product2, product3, product4);
+    }
+
+    private List<BusinessRelationship> loadBusinessRelationship() {
+        businessRelationship1 = new BusinessRelationship();
+        businessRelationship2 = new BusinessRelationship();
+
+        businessRelationship1.setContacts(Map.of("Ahmed", "738219321", "Melissa", "39382948490"));
+        businessRelationship1.setName("Alu");
+        businessRelationship1.setType(BusinessRelationship.Type.SUPPLIER);
+
+        businessRelationship2.setContacts(Map.of("Jen", "738439321", "Ben", "39382948490"));
+        businessRelationship2.setType(BusinessRelationship.Type.SUPPLIER);
+        businessRelationship2.setName("Acc");
+
+        return List.of(businessRelationship1, businessRelationship2);
+    }
+
+    @Bean
+    CommandLineRunner initDatabase(){
+
+        List<Employee> employees = loadEmployee();
+        List<BusinessRelationship> businessRelationships = loadBusinessRelationship();
+        List<Product> products = loadProduct();
+
 
         return args -> {
             if (employeeService.count() > 0) {
                 log.info("Database already populated with employees. Skipping employee initialization.");
             } else {
-                log.info("Loading data: " + employeeService.save(employee1));
-                log.info("Loading data: " + employeeService.save(employee2));
+                for (Employee employee : employees) {
+                    log.info("Loading data: " + employeeService.save(employee));
+                }
             }
-            if (supplierService.count() > 0) {
+            if (businessRelationshipService.count() > 0) {
                 log.info("Database already populated with suppliers. Skipping product initialization.");
             } else {
-                log.info("Loading data: " + supplierService.save(businessRelationship1));
-                log.info("Loading data: " + supplierService.save(businessRelationship2));
+                for (BusinessRelationship businessRelationship : businessRelationships) {
+                    log.info("Loading data: " + businessRelationshipService.save(businessRelationship));
+                }
             }
             if (productService.count() > 0) {
                 log.info("Database already populated with products. Skipping product initialization.");
             } else {
-                log.info("Loading data: " + productService.save(product1));
-                log.info("Loading data: " + productService.save(product2));
-                log.info("Loading data: " + productService.save(product3));
-                log.info("Loading data: " + productService.save(product4));
+                for (Product product : products) {
+                    log.info("Loading data: " + productService.save(product));
+                }
             }
         };
     }
