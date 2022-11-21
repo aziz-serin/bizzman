@@ -32,6 +32,10 @@ public class Employee {
     @NotNull
     private String name;
 
+    @Column(name = "workEmail")
+    @NotNull
+    private String workEmail;
+
     @Column(name = "ni")
     private String nationalInsurance;
 
@@ -93,6 +97,16 @@ public class Employee {
     public void setEmergencyContactDetails(List<EmergencyContactDetails> emergencyContactDetails) {
         this.emergencyContactDetails = emergencyContactDetails;
     }
+
     public String getName() { return this.name; }
+
     public void setName(String name) { this.name = name; }
+
+    public String getWorkEmail() {
+        return workEmail;
+    }
+
+    public void setWorkEmail(String workEmail) {
+        this.workEmail = workEmail;
+    }
 }

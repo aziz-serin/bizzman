@@ -74,10 +74,12 @@ public class TestDataLoader {
         employee1.setSalary(33600);
         employee1.setNationalInsurance("This is NI");
         employee1.setOther_expenses(1000);
+        employee1.setWorkEmail("aziz@bizzman.com");
         personalDetails1.setAddress("this street");
         personalDetails1.setBirthDate( LocalDate.of(2002, 3, 2));
         personalDetails1.setPhoneNumber("84302819489201");
         personalDetails1.setPassportNumber("84930289408239");
+        personalDetails1.setPersonalEmail("aziz@mail.com");
         employee1.setPersonalDetails(personalDetails1);
         emergencyContactDetail1.setName("Maria");
         emergencyContactDetail1.setRelationship(EmergencyContactDetails.Relationship.PARTNER);
@@ -89,10 +91,12 @@ public class TestDataLoader {
         employee2.setSalary(45600);
         employee2.setNationalInsurance("This is NI");
         employee2.setOther_expenses(3000);
+        employee2.setWorkEmail("b@bizzman.com");
         personalDetails2.setAddress("this street");
         personalDetails2.setBirthDate( LocalDate.of(1992, 10, 9));
         personalDetails2.setPhoneNumber("84302819489501");
         personalDetails2.setPassportNumber("84930289408239");
+        personalDetails1.setPersonalEmail("b@mail.com");
         employee2.setPersonalDetails(personalDetails2);
         emergencyContactDetail2.setName("Maria");
         emergencyContactDetail2.setRelationship(EmergencyContactDetails.Relationship.PARTNER);

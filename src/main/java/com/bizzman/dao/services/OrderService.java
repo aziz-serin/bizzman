@@ -29,4 +29,8 @@ public interface OrderService {
 
     Iterable<Order> getAllOrdersWithSameType(Order.Type type);
 
+    Iterable<Order> getAllOrdersSameTypeSortedByPrice(Order.Type type, boolean isAscending);
+
+    Iterable<Order> getAllOrdersSameTypeSortedByArrivalDate(Order.Type type, boolean isAscending);
+
 }

@@ -46,6 +46,9 @@ public class PersonalDetails {
     @NotNull
     private long age;
 
+    @Column(name = "personalEmail")
+    private String personalEmail;
+
     @Column(name = "birthDate")
     @NotNull
     @DateTimeFormat
@@ -83,6 +86,14 @@ public class PersonalDetails {
 
     private void setAge(long age) {
         this.age = age;
+    }
+
+    public String getPersonalEmail() {
+        return personalEmail;
+    }
+
+    public void setPersonalEmail(String personalEmail) {
+        this.personalEmail = personalEmail;
     }
 
     public LocalDate getBirthDate() {

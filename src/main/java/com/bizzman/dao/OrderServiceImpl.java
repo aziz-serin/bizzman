@@ -9,9 +9,7 @@ import com.bizzman.entities.Product;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Comparator;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -95,9 +93,30 @@ public class OrderServiceImpl implements OrderService {
                 .filter(r -> r.getType().equals(type))
                 .collect(Collectors.toList());
     }
-    /*
-    * TODO: Add methods:
-    *  getAllOrdersSameTypeSortedByPrice
-    *  getAllOrdersSameTypeSortedByArrivalDate
-    * */
+
+    @Override
+    public Iterable<Order> getAllOrdersSameTypeSortedByPrice(Order.Type type, boolean isAscending) {
+        List<Order> orders = (List<Order>) getAllOrders();
+        List<Order> filteredOrders = orders.stream()
+                .filter(o -> o.getType().equals(type))
+                .sorted((o1, o2) -> (int) (getOrderPrice(o1.getId()) - getOrderPrice(o2.getId())))
+                .collect(Collectors.toList());
+        if (!isAscending) {
+            Collections.reverse(filteredOrders);
+        }
+        return filteredOrders;
+    }
+
+    @Override
+    public Iterable<Order> getAllOrdersSameTypeSortedByArrivalDate(Order.Type type, boolean isAscending) {
+        List<Order> orders = (List<Order>) getAllOrders();
+        List<Order> filteredOrders = orders.stream()
+                .filter(o -> o.getType().equals(type))
+                .sorted(Comparator.comparing(Order::getArrivalDate))
+                .collect(Collectors.toList());
+        if (!isAscending) {
+            Collections.reverse(filteredOrders);
+        }
+        return filteredOrders;
+    }
 }

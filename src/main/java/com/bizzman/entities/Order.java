@@ -38,6 +38,7 @@ public class Order {
     @Column(name = "placingDate")
     LocalDate placingDate;
 
+    @NotNull
     @Column(name = "arrivalDate")
     LocalDate arrivalDate;
 
