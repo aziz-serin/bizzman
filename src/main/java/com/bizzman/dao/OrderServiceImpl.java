@@ -57,7 +57,7 @@ public class OrderServiceImpl implements OrderService {
         List<Product> products = order.getProducts();
         double sum = 0;
         for (Product product : products) {
-            sum += productService.getProductTotalPrice(product);
+            sum += productService.getProductTotalSellingPrice(product);
         }
         return sum;
     }

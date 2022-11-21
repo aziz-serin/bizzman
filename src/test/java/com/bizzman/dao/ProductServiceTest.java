@@ -110,19 +110,35 @@ class ProductServiceTest extends AbstractTransactionalJUnit4SpringContextTests {
     }
 
     @Test
-    public void getProductTotalPriceReturnsTruePriceForProfile() {
+    public void getProductSellingriceReturnsTruePriceForWeight() {
         List<Product> products = (List<Product>) productService.getAllProducts();
-        double totalPrice = products.get(0).getUnitPrice() * products.get(0).getStockWeight();
+        double totalPrice = products.get(0).getSellingUnitPrice() * products.get(0).getStockWeight();
 
-        assertThat(totalPrice).isEqualTo(productService.getProductTotalPrice(products.get(0)));
+        assertThat(totalPrice).isEqualTo(productService.getProductTotalSellingPrice(products.get(0)));
     }
 
     @Test
-    public void getProductTotalPriceReturnsTruePriceForAccessory() {
+    public void getProductSellingPriceReturnsTruePriceForQuantity() {
         List<Product> products = (List<Product>) productService.getAllProducts();
-        double totalPrice = products.get(1).getUnitPrice() * products.get(1).getQuantity();
+        double totalPrice = products.get(1).getSellingUnitPrice() * products.get(1).getQuantity();
 
-        assertThat(totalPrice).isEqualTo(productService.getProductTotalPrice(products.get(1)));
+        assertThat(totalPrice).isEqualTo(productService.getProductTotalSellingPrice(products.get(1)));
+    }
+
+    @Test
+    public void getProductEntryriceReturnsTruePriceForWeight() {
+        List<Product> products = (List<Product>) productService.getAllProducts();
+        double totalPrice = products.get(0).getEntryUnitPrice() * products.get(0).getStockWeight();
+
+        assertThat(totalPrice).isEqualTo(productService.getProductTotalEntryPrice(products.get(0)));
+    }
+
+    @Test
+    public void getProductEntryPriceReturnsTruePriceForQuantity() {
+        List<Product> products = (List<Product>) productService.getAllProducts();
+        double totalPrice = products.get(1).getEntryUnitPrice() * products.get(1).getQuantity();
+
+        assertThat(totalPrice).isEqualTo(productService.getProductTotalEntryPrice(products.get(1)));
     }
 
     @Test
@@ -151,7 +167,19 @@ class ProductServiceTest extends AbstractTransactionalJUnit4SpringContextTests {
     }
 
     @Test
-    public void getTotalPrice() {
-        assertThat(productService.getTotalPrice()).isEqualTo(112982.0);
+    public void getExpectedProfitFromProductReturnsTrueAmount() {
+        List<Product> products = (List<Product>) productService.getAllProducts();
+        assertThat(productService.getExpectedProfitFromProduct(products.get(0))).isEqualTo(1008.0);
     }
+
+    @Test
+    public void getTotalPriceForSellingReturnsTrueAmount() {
+        assertThat(productService.getTotalPrice(true)).isEqualTo(112982.0);
+    }
+
+    @Test
+    public void getTotalPriceForEntryReturnsTrueAmount() {
+        assertThat(productService.getTotalPrice(false)).isEqualTo(78924);
+    }
+
 }

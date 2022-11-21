@@ -37,11 +37,15 @@ public interface ProductService {
 
     Iterable<Product> getProductListSortedByWeight(boolean isAscending);
 
-    double getProductTotalPrice(Product product);
+    double getProductTotalSellingPrice(Product product);
 
-    double getTotalPrice();
+    double getProductTotalEntryPrice(Product product);
+
+    double getTotalPrice(boolean isSelling);
 
     double getTotalWeight();
+
+    double getExpectedProfitFromProduct(Product product);
 
     double getTotalWeightOfCategory(Product.ProductCategory category);
 

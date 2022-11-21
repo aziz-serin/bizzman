@@ -75,6 +75,7 @@ class OrderServiceImplTest extends AbstractTransactionalJUnit4SpringContextTests
         assertThat(orders.get(1).getType()).isEqualTo(Order.Type.INCOMING);
     }
 
+    @Test
     public void getAllOrdersSameTypeSortedByPriceReturnsTrueAscendingOrder() {
         List<Order> orders = (List<Order>) orderService.getAllOrders();
         List<Order> ordersSorted = (List<Order>) orderService.getAllOrdersSameTypeSortedByPrice(Order.Type.INCOMING, true);
@@ -82,6 +83,7 @@ class OrderServiceImplTest extends AbstractTransactionalJUnit4SpringContextTests
         assertThat(ordersSorted.get(0)).isEqualTo(orders.get(1));
     }
 
+    @Test
     public void getAllOrdersSameTypeSortedByPriceReturnsTrueDescendingOrder() {
         List<Order> orders = (List<Order>) orderService.getAllOrders();
         List<Order> ordersSorted = (List<Order>) orderService.getAllOrdersSameTypeSortedByPrice(Order.Type.INCOMING, true);
@@ -89,13 +91,14 @@ class OrderServiceImplTest extends AbstractTransactionalJUnit4SpringContextTests
         assertThat(ordersSorted.get(0)).isEqualTo(orders.get(0));
     }
 
-    @org.junit.Test
+    @Test
     public void getAllOrdersSameTypeSortedByArrivalDateReturnsTrueAscendingOrder() {
         List<Order> orders = (List<Order>) orderService.getAllOrders();
         List<Order> ordersSorted = (List<Order>) orderService.getAllOrdersSameTypeSortedByArrivalDate(Order.Type.OUTGOING, false);
 
         assertThat(ordersSorted.get(0)).isEqualTo(orders.get(1));
     }
+    @Test
     public void getAllOrdersSameTypeSortedByArrivalDateReturnsTrueDescendingOrder() {
         List<Order> orders = (List<Order>) orderService.getAllOrders();
         List<Order> ordersSorted = (List<Order>) orderService.getAllOrdersSameTypeSortedByArrivalDate(Order.Type.OUTGOING, false);

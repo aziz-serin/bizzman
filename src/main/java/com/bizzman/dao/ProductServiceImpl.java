@@ -112,11 +112,20 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public double getProductTotalPrice(Product product) {
+    public double getProductTotalSellingPrice(Product product) {
         if(product.getCategory().equals(Product.ProductCategory.PRICE_BY_WEIGHT)) {
-            return product.getUnitPrice() * product.getStockWeight();
+            return product.getSellingUnitPrice() * product.getStockWeight();
         } else {
-            return product.getUnitPrice() * product.getQuantity();
+            return product.getSellingUnitPrice() * product.getQuantity();
+        }
+    }
+
+    @Override
+    public double getProductTotalEntryPrice(Product product) {
+        if(product.getCategory().equals(Product.ProductCategory.PRICE_BY_WEIGHT)) {
+            return product.getEntryUnitPrice() * product.getStockWeight();
+        } else {
+            return product.getEntryUnitPrice() * product.getQuantity();
         }
     }
 
@@ -126,6 +135,11 @@ public class ProductServiceImpl implements ProductService {
         return productList.stream()
                 .map(Product::getStockWeight)
                 .reduce(0.0, Double::sum);
+    }
+
+    @Override
+    public double getExpectedProfitFromProduct(Product product) {
+        return getProductTotalSellingPrice(product) - getProductTotalEntryPrice(product);
     }
 
     @Override
@@ -146,23 +160,30 @@ public class ProductServiceImpl implements ProductService {
         double sum = 0;
         for (Product product : categoryProducts) {
             if (product.getCategory().equals(Product.ProductCategory.PRICE_BY_WEIGHT)) {
-                sum += product.getStockWeight() * product.getUnitPrice();
+                sum += product.getStockWeight() * product.getSellingUnitPrice();
             } else {
-                sum += product.getQuantity() * product.getUnitPrice();
+                sum += product.getQuantity() * product.getSellingUnitPrice();
             }
         }
         return sum;
     }
 
     @Override
-    public double getTotalPrice(){
+    public double getTotalPrice(boolean isSelling){
         List<Product> productList = (List<Product>) productRepository.findAll();
         double sum = 0;
         for (Product product : productList) {
-            if (product.getCategory().equals(Product.ProductCategory.PRICE_BY_WEIGHT)) {
-                sum += product.getStockWeight() * product.getUnitPrice();
-            } else {
-                sum += product.getQuantity() * product.getUnitPrice();
+            if (product.getCategory().equals(Product.ProductCategory.PRICE_BY_WEIGHT) && isSelling) {
+                sum += product.getStockWeight() * product.getSellingUnitPrice();
+            }
+            else if (product.getCategory().equals(Product.ProductCategory.PRICE_BY_WEIGHT) && !isSelling) {
+                sum += product.getStockWeight() * product.getEntryUnitPrice();
+            }
+            else if (product.getCategory().equals(Product.ProductCategory.PRICE_BY_QUANTITY) && isSelling) {
+                sum += product.getQuantity() * product.getSellingUnitPrice();
+            }
+            else if (product.getCategory().equals(Product.ProductCategory.PRICE_BY_QUANTITY) && !isSelling) {
+                sum += product.getQuantity() * product.getEntryUnitPrice();
             }
         }
         return sum;

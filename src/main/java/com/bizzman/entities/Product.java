@@ -29,8 +29,11 @@ public class Product {
     private BusinessRelationship businessRelationship;
 
     @NotNull
-    @Column(name = "unitPrice")
-    private long unitPrice;
+    @Column(name = "entryUnitPrice")
+    private double sellingUnitPrice;
+
+    @Column(name = "sellingUnitPrice")
+    private double entryUnitPrice;
 
     @NotNull
     @Column(name = "weight")
@@ -72,12 +75,20 @@ public class Product {
         this.businessRelationship = businessRelationship;
     }
 
-    public long getUnitPrice() {
-        return unitPrice;
+    public double getSellingUnitPrice() {
+        return sellingUnitPrice;
     }
 
-    public void setUnitPrice(long unitPrice) {
-        this.unitPrice = unitPrice;
+    public void setSellingUnitPrice(double unitPrice) {
+        this.sellingUnitPrice = unitPrice;
+    }
+
+    public double getEntryUnitPrice() {
+        return entryUnitPrice;
+    }
+
+    public void setEntryUnitPrice(double unitPrice) {
+        this.entryUnitPrice = unitPrice;
     }
 
     public double getStockWeight() {
