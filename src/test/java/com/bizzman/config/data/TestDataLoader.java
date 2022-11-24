@@ -1,11 +1,3 @@
-/*
- * Copyright 2022 ForgeRock AS. All Rights Reserved
- *
- * Use of this code requires a commercial software license with ForgeRock AS.
- * or with one of its affiliates. All use shall be exclusively subject
- * to such license between the licensee and ForgeRock AS.
- */
-
 package com.bizzman.config.data;
 
 import java.time.LocalDate;
@@ -13,9 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import com.bizzman.dao.services.OrderService;
-import com.bizzman.dao.services.ProductService;
-import com.bizzman.dao.services.BusinessRelationshipService;
+import com.bizzman.dao.services.*;
 import com.bizzman.entities.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,8 +15,6 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
-
-import com.bizzman.dao.services.EmployeeService;
 
 @Configuration
 @Profile("test")
@@ -42,6 +30,8 @@ public class TestDataLoader {
     @Autowired
     OrderService orderService;
 
+    @Autowired
+    ExpenseService expenseService;
 
     private Product product1;
     private Product product2;
@@ -60,6 +50,11 @@ public class TestDataLoader {
     private Order order2;
     private Order order3;
     private Order order4;
+
+    private Expense expense1;
+    private Expense expense2;
+    private Expense expense3;
+    private Expense expense4;
 
     private List<Employee> loadEmployee() {
         employee1 = new Employee();
@@ -196,6 +191,34 @@ public class TestDataLoader {
         return List.of(order1, order2, order3, order4);
     }
 
+    private List<Expense> loadExpenses() {
+        expense1 = new Expense();
+        expense1.setType(Expense.Type.EMPLOYEE_EXPENSE);
+        expense1.setExpenseDate(LocalDate.of(2022, 8, 17));
+        expense1.setEmployee(employee1);
+        expense1.setAmount(employee1.getSalary() + employee1.getOther_expenses());
+
+        expense2 = new Expense();
+        expense2.setType(Expense.Type.ORDER);
+        expense2.setOrder(order1);
+        expense2.setExpenseDate(order1.getArrivalDate());
+        expense3.setBusinessRelationship(order1.getBusinessRelationship());
+        expense2.setAmount(orderService.getOrderPrice(order1.getId()));
+
+        expense3 = new Expense();
+        expense3.setType(Expense.Type.BUSINESS);
+        expense3.setBusinessRelationship(businessRelationship2);
+        expense3.setExpenseDate(LocalDate.of(2021, 7, 18));
+        expense3.setAmount(54_000.90);
+
+        expense4 = new Expense();
+        expense4.setType(Expense.Type.OTHER);
+        expense4.setExpenseDate(LocalDate.of(2022, 9, 3));
+        expense4.setAmount(90_750.0);
+
+        return List.of(expense1, expense2, expense3, expense4);
+    }
+
     @Bean
     CommandLineRunner initDatabase(){
 
@@ -203,6 +226,7 @@ public class TestDataLoader {
         List<BusinessRelationship> businessRelationships = loadBusinessRelationship();
         List<Product> products = loadProduct();
         List<Order> orders = loadOrders();
+        List<Expense> expenses = loadExpenses();
 
         return args -> {
             if (employeeService.count() > 0) {
@@ -231,6 +255,13 @@ public class TestDataLoader {
             } else {
                 for (Order order : orders) {
                     log.info("Loading data: " + orderService.save(order));
+                }
+            }
+            if (expenseService.count() > 0) {
+                log.info("Database already populated with expenses. Skipping product initialization.");
+            } else {
+                for (Expense expense : expenses) {
+                    log.info("Loading data: " + expenseService.save(expense));
                 }
             }
         };

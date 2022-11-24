@@ -1,11 +1,3 @@
-/*
- * Copyright 2022 ForgeRock AS. All Rights Reserved
- *
- * Use of this code requires a commercial software license with ForgeRock AS.
- * or with one of its affiliates. All use shall be exclusively subject
- * to such license between the licensee and ForgeRock AS.
- */
-
 package com.bizzman.dao;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -38,8 +30,6 @@ public class EmployeeServiceTest extends AbstractTransactionalJUnit4SpringContex
     // Test any custom method in employeeService
     @Autowired
     private EmployeeService employeeService;
-
-    // Test only custom methods here, the other ones don't need to be tested, e.g. deleteById, save
 
     @Test
     public void getEmployeeEmergencyDetailsReturnsEmergencyContact() {
