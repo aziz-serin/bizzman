@@ -19,7 +19,7 @@ public interface OrderService {
 
     Optional<Order> findById(Long id);
 
-    Double getOrderPrice(Long id);
+    Double getOrderPrice(Order order);
 
     Iterable<Order> getAllOrders();
 

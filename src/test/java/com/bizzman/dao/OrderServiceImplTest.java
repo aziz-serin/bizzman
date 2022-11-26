@@ -35,14 +35,14 @@ class OrderServiceImplTest extends AbstractTransactionalJUnit4SpringContextTests
     // Test only custom methods here, the other ones don't need to be tested, e.g. deleteById, save
 
     @Test
-    void getOrderPriceReturnsOrderPrice() {
+    public void getOrderPriceReturnsOrderPrice() {
         List<Order> orders = (List<Order>) orderService.getAllOrders();
 
-        assertThat(orderService.getOrderPrice(orders.get(0).getId())).isEqualTo(4532.0);
+        assertThat(orderService.getOrderPrice(orders.get(0))).isEqualTo(4532.0);
     }
 
     @Test
-    void getAllOrdersSortedByArrivalDateSortsOrdersInAscendingOrder() {
+    public void getAllOrdersSortedByArrivalDateSortsOrdersInAscendingOrder() {
         List<Order> orders = (List<Order>) orderService.getAllOrders();
         List<Order> ordersSorted = (List<Order>) orderService.getAllOrdersSortedByArrivalDate(true);
 
@@ -50,7 +50,7 @@ class OrderServiceImplTest extends AbstractTransactionalJUnit4SpringContextTests
     }
 
     @Test
-    void getAllOrdersSortedByArrivalDateSortsOrdersInDescendingOrder() {
+    public void getAllOrdersSortedByArrivalDateSortsOrdersInDescendingOrder() {
         List<Order> orders = (List<Order>) orderService.getAllOrders();
         List<Order> ordersSorted = (List<Order>) orderService.getAllOrdersSortedByArrivalDate(false);
 
@@ -58,7 +58,7 @@ class OrderServiceImplTest extends AbstractTransactionalJUnit4SpringContextTests
     }
 
     @Test
-    void getAllOrdersForBusinessRelationshipReturnsOrdersForBusiness() {
+    public void getAllOrdersForBusinessRelationshipReturnsOrdersForBusiness() {
         List<BusinessRelationship> businessRelationshipList = (List<BusinessRelationship>) businessRelationshipService.getAllSuppliers();
         List<Order> orders = (List<Order>) orderService.getAllOrdersForBusinessRelationship(businessRelationshipList.get(0));
 
@@ -68,7 +68,7 @@ class OrderServiceImplTest extends AbstractTransactionalJUnit4SpringContextTests
     }
 
     @Test
-    void getAllOrdersWithSameTypeReturnsOrdersWithSameType() {
+    public void getAllOrdersWithSameTypeReturnsOrdersWithSameType() {
         List<Order> orders = (List<Order>) orderService.getAllOrdersWithSameType(Order.Type.INCOMING);
 
         assertThat(orders.get(0).getType()).isEqualTo(Order.Type.INCOMING);
@@ -80,29 +80,29 @@ class OrderServiceImplTest extends AbstractTransactionalJUnit4SpringContextTests
         List<Order> orders = (List<Order>) orderService.getAllOrders();
         List<Order> ordersSorted = (List<Order>) orderService.getAllOrdersSameTypeSortedByPrice(Order.Type.INCOMING, true);
 
-        assertThat(ordersSorted.get(0)).isEqualTo(orders.get(1));
+        assertThat(ordersSorted.get(0)).isEqualTo(orders.get(0));
     }
 
     @Test
     public void getAllOrdersSameTypeSortedByPriceReturnsTrueDescendingOrder() {
         List<Order> orders = (List<Order>) orderService.getAllOrders();
-        List<Order> ordersSorted = (List<Order>) orderService.getAllOrdersSameTypeSortedByPrice(Order.Type.INCOMING, true);
+        List<Order> ordersSorted = (List<Order>) orderService.getAllOrdersSameTypeSortedByPrice(Order.Type.INCOMING, false);
 
-        assertThat(ordersSorted.get(0)).isEqualTo(orders.get(0));
+        assertThat(ordersSorted.get(0)).isEqualTo(orders.get(1));
     }
 
     @Test
     public void getAllOrdersSameTypeSortedByArrivalDateReturnsTrueAscendingOrder() {
         List<Order> orders = (List<Order>) orderService.getAllOrders();
-        List<Order> ordersSorted = (List<Order>) orderService.getAllOrdersSameTypeSortedByArrivalDate(Order.Type.OUTGOING, false);
+        List<Order> ordersSorted = (List<Order>) orderService.getAllOrdersSameTypeSortedByArrivalDate(Order.Type.OUTGOING, true);
 
-        assertThat(ordersSorted.get(0)).isEqualTo(orders.get(1));
+        assertThat(ordersSorted.get(0)).isEqualTo(orders.get(2));
     }
     @Test
     public void getAllOrdersSameTypeSortedByArrivalDateReturnsTrueDescendingOrder() {
         List<Order> orders = (List<Order>) orderService.getAllOrders();
         List<Order> ordersSorted = (List<Order>) orderService.getAllOrdersSameTypeSortedByArrivalDate(Order.Type.OUTGOING, false);
 
-        assertThat(ordersSorted.get(0)).isEqualTo(orders.get(0));
+        assertThat(ordersSorted.get(0)).isEqualTo(orders.get(3));
     }
 }

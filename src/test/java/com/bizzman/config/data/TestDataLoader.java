@@ -202,8 +202,8 @@ public class TestDataLoader {
         expense2.setType(Expense.Type.ORDER);
         expense2.setOrder(order1);
         expense2.setExpenseDate(order1.getArrivalDate());
-        expense3.setBusinessRelationship(order1.getBusinessRelationship());
-        expense2.setAmount(orderService.getOrderPrice(order1.getId()));
+        expense2.setBusinessRelationship(order1.getBusinessRelationship());
+        expense2.setAmount(orderService.getOrderPrice(order1));
 
         expense3 = new Expense();
         expense3.setType(Expense.Type.BUSINESS);

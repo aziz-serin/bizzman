@@ -22,7 +22,7 @@ public class Expense {
     private Long id;
 
     @NotNull
-    @Column(name = "amount")
+    @Column(name = "expenseAmount")
     private Double amount;
 
     @ManyToOne
@@ -30,9 +30,11 @@ public class Expense {
     private Employee employee;
 
     @OneToOne
+    @JoinColumn(name = "expenseOrder")
     private Order order;
 
     @NotNull
+    @Column(name = "expenseType")
     private Type type;
 
     @NotNull

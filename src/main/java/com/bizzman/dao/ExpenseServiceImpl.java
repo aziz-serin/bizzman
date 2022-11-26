@@ -6,15 +6,14 @@ import com.bizzman.entities.BusinessRelationship;
 import com.bizzman.entities.Employee;
 import com.bizzman.entities.Expense;
 import com.bizzman.entities.Order;
+import com.bizzman.exceptions.CustomNPException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.management.AttributeNotFoundException;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
+
+import static com.bizzman.exceptions.ExceptionMessages.*;
 
 @Service
 public class ExpenseServiceImpl implements ExpenseService {
@@ -24,12 +23,6 @@ public class ExpenseServiceImpl implements ExpenseService {
 
     // ALWAYS RESET PRICE BEFORE USING THE ATTRIBUTE
     private double price;
-
-    private static final String BUSINESS_NOT_FOUND_EXCEPTION_MESSAGE = "Business Relationship does not exist for this expense!";
-
-    private static final String EMPLOYEE_NOT_FOUND_EXCEPTION_MESSAGE = "Employee does not exist for this expense!";
-
-    private static final String ORDER_NOT_FOUND_EXCEPTION_MESSAGE = "Order does not exist for this expense!";
 
     private void resetPrice(){
         this.price = 0;
@@ -70,28 +63,53 @@ public class ExpenseServiceImpl implements ExpenseService {
         return expenseRepository.findAll();
     }
 
-    @Override
-    public Iterable<Expense> getAllExpensesOfAnEmployee(Employee employee) throws Exception{
+    private <T> void throwExceptionIfNecessary(T object) throws CustomNPException{
         List<Expense> expenses = (List<Expense>) getAllExpenses();
-        List<Expense> filteredExpenses =  expenses.stream()
-                .filter(e -> e.getEmployee().equals(employee))
-                .collect(Collectors.toList());
-        if (filteredExpenses.size() == 0) {
-            throw new AttributeNotFoundException(EMPLOYEE_NOT_FOUND_EXCEPTION_MESSAGE);
+
+        if (object.getClass().equals(Employee.class)) {
+            List<Expense> filtered = expenses.stream()
+                    .filter(e -> e.getEmployee() != null)
+                    .collect(Collectors.toList());
+            if (filtered.size() == 0) {
+                throw new CustomNPException(EMPLOYEE_NOT_FOUND_EXCEPTION_MESSAGE, new NullPointerException().getCause());
+            }
+        } else if (object.getClass().equals(Order.class)) {
+            List<Expense> filtered = expenses.stream()
+                    .filter(e -> e.getOrder() != null)
+                    .collect(Collectors.toList());
+            if (filtered.size() == 0) {
+                throw new CustomNPException(ORDER_NOT_FOUND_EXCEPTION_MESSAGE, new NullPointerException().getCause());
+            }
+        } else if (object.getClass().equals(BusinessRelationship.class)) {
+            List<Expense> filtered = expenses.stream()
+                    .filter(e -> e.getBusinessRelationship() != null)
+                    .collect(Collectors.toList());
+            if (filtered.size() == 0) {
+                throw new CustomNPException(BUSINESS_NOT_FOUND_EXCEPTION_MESSAGE, new NullPointerException().getCause());
+            }
         }
-        return filteredExpenses;
     }
 
     @Override
-    public Iterable<Expense> getAllExpensesOrder(Order order) throws Exception {
+    public Iterable<Expense> getAllExpensesOfAnEmployee(Employee employee) throws CustomNPException {
+        //throwExceptionIfNecessary(employee);
+
         List<Expense> expenses = (List<Expense>) getAllExpenses();
-        List<Expense> filteredExpenses =  expenses.stream()
-                .filter(e -> e.getOrder().equals(order))
+        return expenses.stream()
+                .filter(e -> e.getType().equals(Expense.Type.EMPLOYEE_EXPENSE))
+                .filter(e -> Objects.equals(e.getEmployee().getId(), employee.getId()))
                 .collect(Collectors.toList());
-        if (filteredExpenses.size() == 0) {
-            throw new AttributeNotFoundException(ORDER_NOT_FOUND_EXCEPTION_MESSAGE);
-        }
-        return filteredExpenses;
+
+    }
+
+    @Override
+    public Iterable<Expense> getAllExpensesOrder(Order order) throws CustomNPException {
+        throwExceptionIfNecessary(order);
+        List<Expense> expenses = (List<Expense>) getAllExpenses();
+        return expenses.stream()
+                .filter(e -> e.getType().equals(Expense.Type.ORDER))
+                .filter(e -> Objects.equals(e.getOrder().getId(), order.getId()))
+                .collect(Collectors.toList());
     }
 
     @Override
@@ -107,16 +125,14 @@ public class ExpenseServiceImpl implements ExpenseService {
     }
 
     @Override
-    public Iterable<Expense> getAllExpensesOfABusinessRelationship(BusinessRelationship businessRelationship) throws Exception{
+    public Iterable<Expense> getAllExpensesOfABusinessRelationship(BusinessRelationship businessRelationship) throws CustomNPException{
+        throwExceptionIfNecessary(businessRelationship);
+
         List<Expense> expenses = (List<Expense>) getAllExpenses();
-        List<Expense> filteredExpenses = expenses.stream()
-                .filter(e -> e.getBusinessRelationship() != null)
-                .filter(e -> e.getBusinessRelationship().equals(businessRelationship))
+        return expenses.stream()
+                .filter(e -> e.getType().equals(Expense.Type.BUSINESS))
+                .filter(e -> Objects.equals(e.getBusinessRelationship().getId(), businessRelationship.getId()))
                 .collect(Collectors.toList());
-        if (expenses.size() == 0) {
-            throw new AttributeNotFoundException(BUSINESS_NOT_FOUND_EXCEPTION_MESSAGE);
-        }
-        return filteredExpenses;
     }
 
     @Override
@@ -128,14 +144,14 @@ public class ExpenseServiceImpl implements ExpenseService {
     }
 
     @Override
-    public double getTotalExpenseCostOfAnEmployee(Employee employee) throws Exception{
+    public double getTotalExpenseCostOfAnEmployee(Employee employee) throws CustomNPException{
+        throwExceptionIfNecessary(employee);
+
         List<Expense> expenses = (List<Expense>) getAllExpenses();
         List<Expense> employeeExpense = expenses.stream()
-                .filter(e -> e.getEmployee().equals(employee))
+                .filter(e -> e.getType().equals(Expense.Type.EMPLOYEE_EXPENSE))
+                .filter(e -> Objects.equals(e.getEmployee().getId(), employee.getId()))
                 .collect(Collectors.toList());
-        if (employeeExpense.size() == 0) {
-            throw new AttributeNotFoundException(EMPLOYEE_NOT_FOUND_EXCEPTION_MESSAGE);
-        }
         resetPrice();
         employeeExpense.forEach(e -> price += e.getAmount());
         return price;
@@ -143,29 +159,29 @@ public class ExpenseServiceImpl implements ExpenseService {
     }
 
     @Override
-    public double getTotalExpenseCostOfABusinessRelationship(BusinessRelationship businessRelationship) throws Exception{
+    public double getTotalExpenseCostOfABusinessRelationship(BusinessRelationship businessRelationship) throws CustomNPException{
+        throwExceptionIfNecessary(businessRelationship);
+
         List<Expense> expenses = (List<Expense>) getAllExpenses();
         List<Expense> businessRelationshipExpenses = expenses.stream()
-                .filter(e -> e.getBusinessRelationship().equals(businessRelationship))
+                .filter(e -> e.getType().equals(Expense.Type.BUSINESS))
+                .filter(e -> Objects.equals(e.getBusinessRelationship().getId(), businessRelationship.getId()))
                 .collect(Collectors.toList());
-        if (businessRelationshipExpenses.size() == 0){
-            throw new AttributeNotFoundException(BUSINESS_NOT_FOUND_EXCEPTION_MESSAGE);
-        }
         resetPrice();
         businessRelationshipExpenses.forEach(e -> price += e.getAmount());
         return price;
     }
 
     @Override
-    public Iterable<Expense> getExpensesWithSameBusinessRelationshipSortedByPrice(BusinessRelationship businessRelationship, boolean isAscending) throws Exception{
+    public Iterable<Expense> getExpensesWithSameBusinessRelationshipSortedByPrice(BusinessRelationship businessRelationship, boolean isAscending) throws CustomNPException{
+        throwExceptionIfNecessary(businessRelationship);
+
         List<Expense> expenses = (List<Expense>) getAllExpenses();
         List<Expense> sorted = expenses.stream()
-                .filter(e -> e.getBusinessRelationship().equals(businessRelationship))
+                .filter(e -> e.getType().equals(Expense.Type.BUSINESS))
+                .filter(e -> Objects.equals(e.getBusinessRelationship().getId(), businessRelationship.getId()))
                 .sorted(Comparator.comparing(Expense::getAmount))
                 .collect(Collectors.toList());
-        if (sorted.size() == 0){
-            throw new AttributeNotFoundException(BUSINESS_NOT_FOUND_EXCEPTION_MESSAGE);
-        }
         if (!isAscending) {
             Collections.reverse(sorted);
         }

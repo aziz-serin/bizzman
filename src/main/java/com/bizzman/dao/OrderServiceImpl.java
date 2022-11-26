@@ -52,8 +52,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public Double getOrderPrice(Long id) {
-        Order order = findById(id).orElseThrow();
+    public Double getOrderPrice(Order order) {
         List<Product> products = order.getProducts();
         double sum = 0;
         for (Product product : products) {
@@ -99,7 +98,7 @@ public class OrderServiceImpl implements OrderService {
         List<Order> orders = (List<Order>) getAllOrders();
         List<Order> filteredOrders = orders.stream()
                 .filter(o -> o.getType().equals(type))
-                .sorted((o1, o2) -> (int) (getOrderPrice(o1.getId()) - getOrderPrice(o2.getId())))
+                .sorted((o1, o2) -> (int) (getOrderPrice(o1) - getOrderPrice(o2)))
                 .collect(Collectors.toList());
         if (!isAscending) {
             Collections.reverse(filteredOrders);

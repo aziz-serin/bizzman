@@ -23,22 +23,22 @@ public interface ExpenseService {
 
     Iterable<Expense> getAllExpenses();
 
-    Iterable<Expense> getAllExpensesOfAnEmployee(Employee employee) throws Exception;
+    Iterable<Expense> getAllExpensesOfAnEmployee(Employee employee) throws RuntimeException;
 
     // no need for methods to calculate expenses with orders, because this can be done using OrderService.java
-    Iterable<Expense> getAllExpensesOrder(Order order) throws Exception;
+    Iterable<Expense> getAllExpensesOrder(Order order) throws RuntimeException;
 
     Iterable<Expense> getAllExpensesSortedByDate(boolean isAscending);
 
-    Iterable<Expense> getAllExpensesOfABusinessRelationship(BusinessRelationship businessRelationship) throws Exception;
+    Iterable<Expense> getAllExpensesOfABusinessRelationship(BusinessRelationship businessRelationship) throws RuntimeException;
 
     Iterable<Expense> getAllExpensesWithSameType(Expense.Type type);
 
-    double getTotalExpenseCostOfAnEmployee(Employee employee) throws Exception;
+    double getTotalExpenseCostOfAnEmployee(Employee employee) throws RuntimeException;
 
-    double getTotalExpenseCostOfABusinessRelationship(BusinessRelationship businessRelationship) throws Exception;
+    double getTotalExpenseCostOfABusinessRelationship(BusinessRelationship businessRelationship) throws RuntimeException;
 
-    Iterable<Expense> getExpensesWithSameBusinessRelationshipSortedByPrice(BusinessRelationship businessRelationship, boolean isAscending) throws Exception;
+    Iterable<Expense> getExpensesWithSameBusinessRelationshipSortedByPrice(BusinessRelationship businessRelationship, boolean isAscending) throws RuntimeException;
 
     double getTotalExpenseCostWithSameType(Expense.Type type);
 

@@ -109,4 +109,12 @@ public class Employee {
     public void setWorkEmail(String workEmail) {
         this.workEmail = workEmail;
     }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
 }
