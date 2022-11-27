@@ -1,16 +1,17 @@
-<!DOCTYPE html>
-<html lang="en"
-      xmlns:th="http://www.thymeleaf.org"
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
->
-
+      layout:decorate="~{layouts/default}">
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-    <p th:text="${employee.name}"></p>
+    <title>Home</title>
 </head>
 <body>
-
+    <h1>Home</h1>
+    <div layout:fragment="content">
+        <br>
+        <h1> About <th:block th:text="${businessInformation.getBusinessName()}">t</th:block></h1>
+        <p th:text="${businessInformation.getBusinessDescription()}"></p>
+    </div>
 </body>
 </html>

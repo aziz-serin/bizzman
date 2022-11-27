@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+  <title layout:title-pattern="$LAYOUT_TITLE: $CONTENT_TITLE">Bizzman</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <link rel="stylesheet" href="/webjars/bootstrap/css/bootstrap.min.css" />
+  <link rel="stylesheet" href="/webjars/font-awesome/css/all.min.css" />
+</head>
+
+<!-- Navigation -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark static-top">
+  <div class="container">
+    <a class="navbar-brand" href="/">Bizzman</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive"
+            aria-controls="navbarResponsive"
+            aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarResponsive">
+      <ul class="navbar-nav ml-auto">
+        <li class="nav-item">
+          <a class="nav-link" href="/home">Home</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/orders">Orders</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/products">Products</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/businessRelationships">Business Relationships</a>
+        </li>
+        <li class="nav-item">
+          <div sec:authorize="hasAnyRole('ADMINISTRATOR')">
+            <a class="nav-link" href="/employees">Employees</a>
+          </div>
+        </li>
+        <li class="nav-item">
+          <div sec:authorize="hasAnyRole('ADMINISTRATOR')">
+            <a class="nav-link" href="/expenses">Expenses</a>
+          </div>
+        </li>
+        <li class="nav-item">
+          <div class="container">
+            <div sec:authorize="!isAuthenticated()">
+              <a class="nav-link" th:href="@{/sign-in}">
+                <i class="fas fa-sign-in-alt" aria-hidden="true"></i> Sign in
+              </a>
+            </div>
+            <div sec:authorize="isAuthenticated()">
+              <form th:action="@{/sign-out}" method="post">
+                <button type="submit" class="btn btn-link"><i class="fas fa-sign-out-alt" aria-hidden="true"></i> Sign out</button>
+              </form>
+            </div>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<!-- Navigation end -->
+<div class="container mt-lg-5">
+  <div class="alert alert-success alert-dismissible" role="alert" th:if="${ok_message}">
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+      <i class="fas fa-times" aria-hidden="true"></i>
+    </button>
+
+    <span th:text="${ok_message}">Success!</span>
+  </div>
+
+  <body>
+
+  <div layout:fragment="content">
+    Main page body goes here...
+  </div>
+
+  </body>
+</div>
+  <footer class="bg-light text-center text-lg-start fixed-bottom">
+    <!-- Copyright -->
+    <div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.2);">
+      © 2022 Copyright:
+      <a class="text-dark" href="https://github.com/aziz-serin/bizzman">Bizzman GitHub page</a>
+    </div>
+    <!-- Copyright -->
+  </footer>
+  <script type="text/javascript" src="/webjars/jquery/jquery.min.js"></script>
+  <script type="text/javascript" src="/webjars/popper.js/umd/popper.min.js"></script>
+  <script type="text/javascript" src="/webjars/bootstrap/js/bootstrap.min.js"></script>
+</html>

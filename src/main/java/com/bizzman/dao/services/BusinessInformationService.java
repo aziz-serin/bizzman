@@ -9,7 +9,7 @@ public interface BusinessInformationService {
 
     void deleteById(Long id);
 
-    Optional<BusinessInformation> findById(Long id);
+    Optional<BusinessInformation> getBusinessInformation();
 
     long count();
 }

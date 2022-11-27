@@ -7,6 +7,7 @@ import com.bizzman.exceptions.ExceptionMessages;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -29,8 +30,9 @@ public class BusinessInformationServiceImpl implements BusinessInformationServic
     }
 
     @Override
-    public Optional<BusinessInformation> findById(Long id) {
-        return businessInformationRepository.findById(id);
+    public Optional<BusinessInformation> getBusinessInformation(){
+        List<BusinessInformation> businessInformation = (List<BusinessInformation>) businessInformationRepository.findAll();
+        return Optional.ofNullable(businessInformation.get(0));
     }
 
     @Override

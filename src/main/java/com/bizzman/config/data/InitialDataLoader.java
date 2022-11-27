@@ -30,16 +30,19 @@ public class InitialDataLoader {
     BusinessRelationshipService businessRelationshipService;
     @Autowired
     OrderService orderService;
-
     @Autowired
     ExpenseService expenseService;
+    @Autowired
+    BusinessInformationService businessInformationService;
 
     private Product product1;
     private Product product2;
     private Product product3;
     private Product product4;
+
     private BusinessRelationship businessRelationship1;
     private BusinessRelationship businessRelationship2;
+
     private Employee employee1;
     private PersonalDetails personalDetails1;
     private EmergencyContactDetails emergencyContactDetail1;
@@ -56,6 +59,8 @@ public class InitialDataLoader {
     private Expense expense2;
     private Expense expense3;
     private Expense expense4;
+
+    private BusinessInformation businessInformation;
 
     private List<Employee> loadEmployee() {
         employee1 = new Employee();
@@ -229,6 +234,11 @@ public class InitialDataLoader {
         List<Order> orders = loadOrders();
         List<Expense> expenses = loadExpenses();
 
+        businessInformation = new BusinessInformation();
+        businessInformation.setBusinessName("Bizzman");
+        businessInformation.setBusinessDescription("This project has been designed as a free and open-source alternative to existing small business services.");
+        businessInformation.setEstablismentDate(LocalDate.of(2022, 10, 5));
+
         return args -> {
             if (employeeService.count() > 0) {
                 log.info("Database already populated with employees. Skipping employee initialization.");
@@ -238,7 +248,7 @@ public class InitialDataLoader {
                 }
             }
             if (businessRelationshipService.count() > 0) {
-                log.info("Database already populated with suppliers. Skipping product initialization.");
+                log.info("Database already populated with businessRelationships. Skipping businessRelationships initialization.");
             } else {
                 for (BusinessRelationship businessRelationship : businessRelationships) {
                     log.info("Loading data: " + businessRelationshipService.save(businessRelationship));
@@ -252,18 +262,23 @@ public class InitialDataLoader {
                 }
             }
             if (orderService.count() > 0) {
-                log.info("Database already populated with orders. Skipping product initialization.");
+                log.info("Database already populated with orders. Skipping order initialization.");
             } else {
                 for (Order order : orders) {
                     log.info("Loading data: " + orderService.save(order));
                 }
             }
             if (expenseService.count() > 0) {
-                log.info("Database already populated with expenses. Skipping product initialization.");
+                log.info("Database already populated with expenses. Skipping expense initialization.");
             } else {
                 for (Expense expense : expenses) {
                     log.info("Loading data: " + expenseService.save(expense));
                 }
+            }
+            if (businessInformationService.count() > 0) {
+                log.info("Database already populated with business information. Skipping business information initialization.");
+            } else {
+                log.info("Loading data: " + businessInformationService.save(businessInformation));
             }
         };
     }
