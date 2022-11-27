@@ -1,9 +1,12 @@
 package com.bizzman.config.data;
 
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
 
 
 import com.bizzman.dao.services.*;
@@ -225,6 +228,22 @@ public class InitialDataLoader {
         return List.of(expense1, expense2, expense3, expense4);
     }
 
+    private String loadBusinessDescription() {
+        String rootPath = System.getProperty("user.dir");
+        String appConfigPath = rootPath + "/src/main/java/com/bizzman/config/data/bizzdescription.properties";
+
+        Properties appProps = new Properties();
+        String description;
+        try {
+            appProps.load(new FileInputStream(appConfigPath));
+            description = appProps.getProperty("description");
+        } catch (IOException e) {
+            log.error("Could not read the bizzdescription.properties file. Loading a default text for BusinessDescription");
+            description = "Default";
+        }
+        return  description;
+    }
+
     @Bean
     CommandLineRunner initDatabase(){
 
@@ -236,7 +255,7 @@ public class InitialDataLoader {
 
         businessInformation = new BusinessInformation();
         businessInformation.setBusinessName("Bizzman");
-        businessInformation.setBusinessDescription("This project has been designed as a free and open-source alternative to existing small business services.");
+        businessInformation.setBusinessDescription(loadBusinessDescription());
         businessInformation.setEstablismentDate(LocalDate.of(2022, 10, 5));
 
         return args -> {

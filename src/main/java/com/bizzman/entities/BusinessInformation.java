@@ -18,7 +18,7 @@ public class BusinessInformation {
 
     @NotEmpty(message = "Business information cannot be empty!")
     @Size(max = 1000, message = "Description should not have more than 1000 characters!")
-    @Column(name = "businessDescription")
+    @Column(name = "businessDescription", columnDefinition = "TEXT", length = 1000)
     private String businessDescription;
 
     @NotEmpty(message = "Business name cannot be empty")
