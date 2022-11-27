@@ -18,7 +18,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 
 @Configuration
-@Profile("test")
+@Profile("default")
 public class InitialDataLoader {
 
     private final static Logger log = LoggerFactory.getLogger(InitialDataLoader.class);
