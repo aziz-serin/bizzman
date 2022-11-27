@@ -1,9 +1,6 @@
 package com.bizzman.entities;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -11,6 +8,7 @@ import java.time.LocalDate;
 
 
 @Entity
+@Table(name = "businessInformation")
 public class BusinessInformation {
 
     @Id
@@ -20,11 +18,12 @@ public class BusinessInformation {
 
     @NotEmpty(message = "Business information cannot be empty!")
     @Size(max = 1000, message = "Description should not have more than 1000 characters!")
-    @Column(name = "Business Description")
+    @Column(name = "businessDescription")
     private String businessDescription;
 
     @NotEmpty(message = "Business name cannot be empty")
     @Size(max = 300, message = "Business Name cannot be empty")
+    @Column(name = "businessName")
     private String businessName;
 
     @NotNull

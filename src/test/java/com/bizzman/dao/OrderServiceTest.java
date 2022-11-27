@@ -24,7 +24,7 @@ import java.util.List;
 @SpringBootTest(classes = BizzmanApplication.class)
 @DirtiesContext
 @ActiveProfiles("test")
-class OrderServiceImplTest extends AbstractTransactionalJUnit4SpringContextTests {
+class OrderServiceTest extends AbstractTransactionalJUnit4SpringContextTests {
 
     @Autowired
     OrderService orderService;

@@ -6,13 +6,13 @@ import java.util.Optional;
 
 public interface BusinessRelationshipService {
 
-    BusinessRelationship save(BusinessRelationship product);
+    BusinessRelationship save(BusinessRelationship relationship);
 
     void deleteById(Long id);
 
     void deleteAll();
 
-    void deleteAll(Iterable<BusinessRelationship> products);
+    void deleteAll(Iterable<BusinessRelationship> relationships);
 
     Iterable<BusinessRelationship> getAllSuppliers();
 
