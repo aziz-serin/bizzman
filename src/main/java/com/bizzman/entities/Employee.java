@@ -4,6 +4,9 @@ import java.time.LocalDate;
 import java.util.List;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Positive;
+import javax.validation.constraints.Size;
 
 import org.springframework.format.annotation.*;
 
@@ -29,11 +32,12 @@ public class Employee {
     private List<EmergencyContactDetails> emergencyContactDetails;
 
     @Column(name = "name")
-    @NotNull
+    @Size(max = 100, message = "Name cannot have more than 100 characters")
+    @NotEmpty(message = "Name cannot be empty!")
     private String name;
 
     @Column(name = "workEmail")
-    @NotNull
+    @NotEmpty(message = "Email cannot be empty!")
     private String workEmail;
 
     @Column(name = "ni")
@@ -45,9 +49,12 @@ public class Employee {
     private LocalDate joiningDate;
 
     @Column(name = "salary")
+    @NotNull
+    @Positive(message = "Salary must be positive")
     private double salary;
 
     @Column(name = "other_expenses")
+    @Positive(message = "Other expenses must be positive")
     private double other_expenses;
 
     public PersonalDetails getPersonalDetails() {

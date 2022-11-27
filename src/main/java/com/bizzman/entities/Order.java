@@ -3,6 +3,8 @@ package com.bizzman.entities;
 import com.sun.istack.NotNull;
 
 import javax.persistence.*;
+import javax.validation.constraints.Future;
+import javax.validation.constraints.Past;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -36,10 +38,12 @@ public class Order {
 
     @NotNull
     @Column(name = "placingDate")
+    @Past(message = "Placing date cannot be in the future")
     LocalDate placingDate;
 
     @NotNull
     @Column(name = "arrivalDate")
+    @Future(message = "Arrival date cannot be in the past!")
     LocalDate arrivalDate;
 
     public Long getId() {

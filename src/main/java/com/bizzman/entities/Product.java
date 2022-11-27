@@ -3,6 +3,8 @@ package com.bizzman.entities;
 import com.sun.istack.NotNull;
 
 import javax.persistence.*;
+import javax.validation.constraints.Positive;
+import javax.validation.constraints.Size;
 import java.time.LocalDate;
 
 @Entity
@@ -30,13 +32,17 @@ public class Product {
 
     @NotNull
     @Column(name = "entryUnitPrice")
+    @Positive(message = "Selling unit price cannot be negative!")
     private double sellingUnitPrice;
 
+    @NotNull
     @Column(name = "sellingUnitPrice")
+    @Positive(message = "Entry unit price cannot be negative!")
     private double entryUnitPrice;
 
     @NotNull
     @Column(name = "weight")
+    @Positive(message = "Stock weight cannot be negative")
     private double stockWeight;
 
     @NotNull
@@ -45,9 +51,11 @@ public class Product {
 
     // As the name suggests, this attribute DOES NOT save the image, saves the path of the image in the filesystem
     @Column(name = "imagePath")
+    @Size(max = 150, message = "File path cannot be longer than 150 characters")
     private String imagePath;
 
     @NotNull
+    @Positive(message = "Quantity cannot be negative!")
     @Column(name = "quantity")
     private long quantity;
 

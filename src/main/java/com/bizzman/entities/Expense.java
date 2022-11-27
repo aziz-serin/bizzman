@@ -3,6 +3,8 @@ package com.bizzman.entities;
 import com.sun.istack.NotNull;
 
 import javax.persistence.*;
+import javax.validation.constraints.Past;
+import javax.validation.constraints.Positive;
 import java.time.LocalDate;
 
 @Entity
@@ -23,6 +25,7 @@ public class Expense {
 
     @NotNull
     @Column(name = "expenseAmount")
+    @Positive(message = "Amount cannot be negative")
     private Double amount;
 
     @ManyToOne

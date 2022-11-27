@@ -3,12 +3,11 @@ package com.bizzman.config.data;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 
-import com.bizzman.dao.services.EmployeeService;
-import com.bizzman.entities.EmergencyContactDetails;
-import com.bizzman.entities.Employee;
-import com.bizzman.entities.PersonalDetails;
+import com.bizzman.dao.services.*;
+import com.bizzman.entities.*;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,32 +18,64 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 
 @Configuration
-@Profile("default")
+@Profile("test")
 public class InitialDataLoader {
 
     private final static Logger log = LoggerFactory.getLogger(InitialDataLoader.class);
+    @Autowired
+    EmployeeService employeeService;
+    @Autowired
+    ProductService productService;
+    @Autowired
+    BusinessRelationshipService businessRelationshipService;
+    @Autowired
+    OrderService orderService;
 
     @Autowired
-    private EmployeeService employeeService;
+    ExpenseService expenseService;
 
-    @Bean
-    CommandLineRunner initDatabase(){
-        Employee employee1 = new Employee();
-        PersonalDetails personalDetails1 = new PersonalDetails();
-        EmergencyContactDetails emergencyContactDetail1 = new EmergencyContactDetails();
-        Employee employee2 = new Employee();
-        PersonalDetails personalDetails2 = new PersonalDetails();
-        EmergencyContactDetails emergencyContactDetail2 = new EmergencyContactDetails();
+    private Product product1;
+    private Product product2;
+    private Product product3;
+    private Product product4;
+    private BusinessRelationship businessRelationship1;
+    private BusinessRelationship businessRelationship2;
+    private Employee employee1;
+    private PersonalDetails personalDetails1;
+    private EmergencyContactDetails emergencyContactDetail1;
+    private Employee employee2;
+    private PersonalDetails personalDetails2;
+    private EmergencyContactDetails emergencyContactDetail2;
+
+    private Order order1;
+    private Order order2;
+    private Order order3;
+    private Order order4;
+
+    private Expense expense1;
+    private Expense expense2;
+    private Expense expense3;
+    private Expense expense4;
+
+    private List<Employee> loadEmployee() {
+        employee1 = new Employee();
+        personalDetails1 = new PersonalDetails();
+        emergencyContactDetail1 = new EmergencyContactDetails();
+        employee2 = new Employee();
+        personalDetails2 = new PersonalDetails();
+        emergencyContactDetail2 = new EmergencyContactDetails();
 
         employee1.setName("Aziz");
         employee1.setJoiningDate( LocalDate.of(2021, 10, 9));
         employee1.setSalary(33600);
         employee1.setNationalInsurance("This is NI");
         employee1.setOther_expenses(1000);
+        employee1.setWorkEmail("aziz@bizzman.com");
         personalDetails1.setAddress("this street");
         personalDetails1.setBirthDate( LocalDate.of(2002, 3, 2));
         personalDetails1.setPhoneNumber("84302819489201");
         personalDetails1.setPassportNumber("84930289408239");
+        personalDetails1.setPersonalEmail("aziz@mail.com");
         employee1.setPersonalDetails(personalDetails1);
         emergencyContactDetail1.setName("Maria");
         emergencyContactDetail1.setRelationship(EmergencyContactDetails.Relationship.PARTNER);
@@ -56,22 +87,183 @@ public class InitialDataLoader {
         employee2.setSalary(45600);
         employee2.setNationalInsurance("This is NI");
         employee2.setOther_expenses(3000);
+        employee2.setWorkEmail("b@bizzman.com");
         personalDetails2.setAddress("this street");
         personalDetails2.setBirthDate( LocalDate.of(1992, 10, 9));
         personalDetails2.setPhoneNumber("84302819489501");
         personalDetails2.setPassportNumber("84930289408239");
+        personalDetails1.setPersonalEmail("b@mail.com");
         employee2.setPersonalDetails(personalDetails2);
         emergencyContactDetail2.setName("Maria");
         emergencyContactDetail2.setRelationship(EmergencyContactDetails.Relationship.PARTNER);
         emergencyContactDetail1.setPhoneNumber("89028139012");
         employee2.setEmergencyContactDetails(new ArrayList<>(List.of(emergencyContactDetail2)));
 
+        return List.of(employee1, employee2);
+    }
+
+    private List<Product> loadProduct() {
+        product1 = new Product();
+        product2 = new Product();
+        product3 = new Product();
+        product4 = new Product();
+
+
+        product1.setCategory(Product.ProductCategory.PRICE_BY_WEIGHT);
+        product1.setArrivalDate(LocalDate.of(2022, 10, 9));
+        product1.setQuantity(5);
+        product1.setStockWeight(100.8);
+        product1.setEntryUnitPrice(30);
+        product1.setSellingUnitPrice(40);
+        product1.setSupplier(businessRelationship1);
+
+        product2.setCategory(Product.ProductCategory.PRICE_BY_QUANTITY);
+        product2.setArrivalDate(LocalDate.of(2022, 10, 17));
+        product2.setQuantity(100);
+        product2.setStockWeight(21.2);
+        product2.setEntryUnitPrice(3.5);
+        product2.setSellingUnitPrice(5);
+        product2.setSupplier(businessRelationship2);
+
+        product3.setCategory(Product.ProductCategory.PRICE_BY_WEIGHT);
+        product3.setArrivalDate(LocalDate.of(2022, 10, 5));
+        product3.setQuantity(25);
+        product3.setStockWeight(2500);
+        product3.setEntryUnitPrice(30);
+        product3.setSellingUnitPrice(43);
+        product3.setSupplier(businessRelationship1);
+
+        product4.setCategory(Product.ProductCategory.PRICE_BY_QUANTITY);
+        product4.setArrivalDate(LocalDate.of(2022, 10, 12));
+        product4.setQuantity(10);
+        product4.setStockWeight(200);
+        product4.setEntryUnitPrice(55);
+        product4.setSellingUnitPrice(95);
+        product4.setSupplier(businessRelationship2);
+
+        return List.of(product1, product2, product3, product4);
+    }
+
+    private List<BusinessRelationship> loadBusinessRelationship() {
+        businessRelationship1 = new BusinessRelationship();
+        businessRelationship2 = new BusinessRelationship();
+
+        businessRelationship1.setContacts(Map.of("Ahmed", "738219321", "Melissa", "39382948490"));
+        businessRelationship1.setName("Alu");
+        businessRelationship1.setType(BusinessRelationship.Type.SUPPLIER);
+
+        businessRelationship2.setContacts(Map.of("Jen", "738439321", "Ben", "39382948490"));
+        businessRelationship2.setType(BusinessRelationship.Type.SUPPLIER);
+        businessRelationship2.setName("Acc");
+
+        return List.of(businessRelationship1, businessRelationship2);
+    }
+
+    private List<Order> loadOrders(){
+        order1 = new Order();
+        order2 = new Order();
+        order3 = new Order();
+        order4 = new Order();
+
+        order1.setType(Order.Type.INCOMING);
+        order1.setProducts(List.of(product1, product2));
+        order1.setPlacingDate(LocalDate.of(2022, 10, 17));
+        order1.setArrivalDate(LocalDate.of(2022, 10, 22));
+        order1.setBusinessRelationship(businessRelationship1);
+
+        order2.setType(Order.Type.INCOMING);
+        order2.setProducts(List.of(product1, product3));
+        order2.setPlacingDate(LocalDate.of(2022, 9, 17));
+        order2.setArrivalDate(LocalDate.of(2022, 9, 22));
+        order2.setBusinessRelationship(businessRelationship1);
+
+        order3.setType(Order.Type.OUTGOING);
+        order3.setProducts(List.of(product2, product4));
+        order3.setPlacingDate(LocalDate.of(2022, 11, 17));
+        order3.setArrivalDate(LocalDate.of(2022, 11, 22));
+        order3.setBusinessRelationship(businessRelationship2);
+
+        order4.setType(Order.Type.OUTGOING);
+        order4.setProducts(List.of(product3, product4));
+        order4.setPlacingDate(LocalDate.of(2022, 12, 17));
+        order4.setArrivalDate(LocalDate.of(2022, 12, 22));
+        order4.setBusinessRelationship(businessRelationship2);
+
+        return List.of(order1, order2, order3, order4);
+    }
+
+    private List<Expense> loadExpenses() {
+        expense1 = new Expense();
+        expense1.setType(Expense.Type.EMPLOYEE_EXPENSE);
+        expense1.setExpenseDate(LocalDate.of(2022, 8, 17));
+        expense1.setEmployee(employee1);
+        expense1.setAmount(employee1.getSalary() + employee1.getOther_expenses());
+
+        expense2 = new Expense();
+        expense2.setType(Expense.Type.ORDER);
+        expense2.setOrder(order1);
+        expense2.setExpenseDate(order1.getArrivalDate());
+        expense2.setBusinessRelationship(order1.getBusinessRelationship());
+        expense2.setAmount(orderService.getOrderPrice(order1));
+
+        expense3 = new Expense();
+        expense3.setType(Expense.Type.BUSINESS);
+        expense3.setBusinessRelationship(businessRelationship2);
+        expense3.setExpenseDate(LocalDate.of(2021, 7, 18));
+        expense3.setAmount(54_000.90);
+
+        expense4 = new Expense();
+        expense4.setType(Expense.Type.OTHER);
+        expense4.setExpenseDate(LocalDate.of(2022, 9, 3));
+        expense4.setAmount(90_750.0);
+
+        return List.of(expense1, expense2, expense3, expense4);
+    }
+
+    @Bean
+    CommandLineRunner initDatabase(){
+
+        List<Employee> employees = loadEmployee();
+        List<BusinessRelationship> businessRelationships = loadBusinessRelationship();
+        List<Product> products = loadProduct();
+        List<Order> orders = loadOrders();
+        List<Expense> expenses = loadExpenses();
+
         return args -> {
             if (employeeService.count() > 0) {
                 log.info("Database already populated with employees. Skipping employee initialization.");
             } else {
-                log.info("Loading data: " +employeeService.save(employee1));
-                log.info("Loading data: " + employeeService.save(employee2));
+                for (Employee employee : employees) {
+                    log.info("Loading data: " + employeeService.save(employee));
+                }
+            }
+            if (businessRelationshipService.count() > 0) {
+                log.info("Database already populated with suppliers. Skipping product initialization.");
+            } else {
+                for (BusinessRelationship businessRelationship : businessRelationships) {
+                    log.info("Loading data: " + businessRelationshipService.save(businessRelationship));
+                }
+            }
+            if (productService.count() > 0) {
+                log.info("Database already populated with products. Skipping product initialization.");
+            } else {
+                for (Product product : products) {
+                    log.info("Loading data: " + productService.save(product));
+                }
+            }
+            if (orderService.count() > 0) {
+                log.info("Database already populated with orders. Skipping product initialization.");
+            } else {
+                for (Order order : orders) {
+                    log.info("Loading data: " + orderService.save(order));
+                }
+            }
+            if (expenseService.count() > 0) {
+                log.info("Database already populated with expenses. Skipping product initialization.");
+            } else {
+                for (Expense expense : expenses) {
+                    log.info("Loading data: " + expenseService.save(expense));
+                }
             }
         };
     }

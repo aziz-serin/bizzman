@@ -16,6 +16,8 @@ import javax.persistence.Id;
 import javax.persistence.MapsId;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Size;
 
 import com.sun.istack.NotNull;
 
@@ -37,13 +39,17 @@ public class EmergencyContactDetails {
     private long id;
 
     @Column(name = "phoneNumber")
-    @NotNull
+    @NotEmpty
+    @Size(max = 11, min = 10, message = "Phone number must have a valid length!")
     private String phoneNumber;
 
+    @NotNull
     @Column(name = "relationship")
     private Relationship relationship;
 
     @Column(name = "emName")
+    @NotEmpty(message = "Name cannot be empty")
+    @Size(max = 100, message = "Name cannot have more than 100 characters")
     @NotNull
     private String name;
 

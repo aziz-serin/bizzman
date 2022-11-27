@@ -3,6 +3,7 @@ package com.bizzman.entities;
 import com.sun.istack.NotNull;
 
 import javax.persistence.*;
+import javax.validation.constraints.Size;
 import java.util.Map;
 
 @Entity
@@ -25,6 +26,7 @@ public class BusinessRelationship {
 
     @NotNull
     @Column(name = "name")
+    @Size(max = 256, message = "Name should be less than 256 chars!")
     private String name;
 
     //Should be in the form of name, phone number

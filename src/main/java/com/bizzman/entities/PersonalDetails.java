@@ -18,6 +18,7 @@ import javax.persistence.MapsId;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Id;
+import javax.validation.constraints.*;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -33,25 +34,33 @@ public class PersonalDetails {
     private long id;
 
     @Column(name = "passportNumber")
-    @NotNull
+    @NotEmpty
+    @Size(max = 44, min = 11, message = "Passport number must have a valid length between 11 and 44!")
     private String passportNumber;
 
+    @NotEmpty
+    @Size(max = 11, min = 10, message = "Phone number must have a valid length!")
     @Column(name = "phoneNumber")
     private String phoneNumber;
 
     @Column(name = "address")
+    @Size(max=200, message = "address cannot be longer than 200 characters!")
     private String address;
 
     @Column(name = "age")
+    @Positive(message = "Age cannot be a negative number!")
+    @Max(150) // If you have an employee older than 150, feel free to change it
     @NotNull
-    private long age;
+    private int age;
 
     @Column(name = "personalEmail")
+    @NotEmpty(message = "Email cannot be empty!")
     private String personalEmail;
 
     @Column(name = "birthDate")
     @NotNull
     @DateTimeFormat
+    @Past(message = "Birth Date cannot be in the future!")
     private LocalDate birthDate;
 
     public PersonalDetails() {}
@@ -80,11 +89,11 @@ public class PersonalDetails {
         this.phoneNumber = phoneNumber;
     }
 
-    public long getAge() {
+    public int getAge() {
         return age;
     }
 
-    private void setAge(long age) {
+    private void setAge(int age) {
         this.age = age;
     }
 
@@ -101,7 +110,7 @@ public class PersonalDetails {
     }
 
     public void setBirthDate(LocalDate birthDate) {
-        this.age = ChronoUnit.YEARS.between(LocalDate.now(), birthDate);
+        this.age = (int) ChronoUnit.YEARS.between(LocalDate.now(), birthDate);
         this.birthDate = birthDate;
     }
 }
