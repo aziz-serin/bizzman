@@ -77,7 +77,7 @@ public class InitialDataLoader {
         employee1.setJoiningDate( LocalDate.of(2021, 10, 9));
         employee1.setSalary(33600);
         employee1.setNationalInsurance("This is NI");
-        employee1.setOther_expenses(1000);
+        employee1.setOtherExpenses(1000);
         employee1.setWorkEmail("aziz@bizzman.com");
         personalDetails1.setAddress("this street");
         personalDetails1.setBirthDate( LocalDate.of(2002, 3, 2));
@@ -94,7 +94,7 @@ public class InitialDataLoader {
         employee2.setJoiningDate( LocalDate.of(2019, 10, 9));
         employee2.setSalary(45600);
         employee2.setNationalInsurance("This is NI");
-        employee2.setOther_expenses(3000);
+        employee2.setOtherExpenses(3000);
         employee2.setWorkEmail("b@bizzman.com");
         personalDetails2.setAddress("this street");
         personalDetails2.setBirthDate( LocalDate.of(1992, 10, 9));
@@ -205,7 +205,7 @@ public class InitialDataLoader {
         expense1.setType(Expense.Type.EMPLOYEE_EXPENSE);
         expense1.setExpenseDate(LocalDate.of(2022, 8, 17));
         expense1.setEmployee(employee1);
-        expense1.setAmount(employee1.getSalary() + employee1.getOther_expenses());
+        expense1.setAmount(employee1.getSalary() + employee1.getOtherExpenses());
 
         expense2 = new Expense();
         expense2.setType(Expense.Type.ORDER);

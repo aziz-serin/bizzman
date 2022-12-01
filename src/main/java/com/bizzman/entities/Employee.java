@@ -55,7 +55,7 @@ public class Employee {
 
     @Column(name = "other_expenses")
     @Positive(message = "Other expenses must be positive")
-    private double other_expenses;
+    private double otherExpenses;
 
     public PersonalDetails getPersonalDetails() {
         return personalDetails;
@@ -89,12 +89,12 @@ public class Employee {
         this.salary = salary;
     }
 
-    public double getOther_expenses() {
-        return other_expenses;
+    public double getOtherExpenses() {
+        return otherExpenses;
     }
 
-    public void setOther_expenses(long other_expenses) {
-        this.other_expenses = other_expenses;
+    public void setOtherExpenses(long other_expenses) {
+        this.otherExpenses = other_expenses;
     }
 
     public List<EmergencyContactDetails> getEmergencyContactDetails() {
