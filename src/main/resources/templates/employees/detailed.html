@@ -20,16 +20,8 @@
         <label th:text="${employee.getName()}"></label>
     </div>
     <div class="form-group">
-        <h5>Salary</h5>
-        <label th:text="${employee.getSalary()}"></label>
-    </div>
-    <div class="form-group">
         <h5>Joining Date</h5>
         <label th:text="${employee.getJoiningDate()}"></label>
-    </div>
-    <div class="form-group">
-        <h5>Salary</h5>
-        <label th:text="${employee.getSalary()}"></label>
     </div>
     <div class="form-group">
         <h5>Work Email</h5>
@@ -40,8 +32,22 @@
         <label th:text="${employee.getNationalInsurance()}"></label>
     </div>
     <div class="form-group">
+        <h5>Salary</h5>
+        <label th:text="${employee.getSalary()}"></label>
+    </div>
+    <div class="form-group">
         <h5>Other Expenses</h5>
         <label th:text="${employee.getOtherExpenses()}"></label>
+    </div>
+
+    <div sec:authorize="hasAnyRole('ADMINISTRATOR')">
+        <form th:action="@{/employees/editEmployees/{id}(id=${employee.id})}" th:method="get">
+            <button type="submit" class="btn btn-primary btn-sm"><i class="fas fa-pen" aria-hidden="true"></i> Edit</button>
+        </form>
+        <br>
+        <form th:action="${(#mvc.url('EC#deleteEmployeeDetails').arg(0, employee.id)).build()}" th:method="delete">
+            <button type="submit" class="btn btn-danger btn-sm"><i class="fas fa-circle-trash"></i>Delete</button>
+        </form>
     </div>
 
     <br>
@@ -62,10 +68,6 @@
     <div class="form-group">
         <h5>Phone Number</h5>
         <label th:text="${employee.getPersonalDetails().getPhoneNumber()}"></label>
-    </div>
-    <div class="form-group">
-        <h5>Address</h5>
-        <label th:text="${employee.getPersonalDetails().getAddress()}"></label>
     </div>
     <div class="form-group">
         <h5>Passport Number</h5>

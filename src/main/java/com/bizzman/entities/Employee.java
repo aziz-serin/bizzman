@@ -8,6 +8,7 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Positive;
 import javax.validation.constraints.Size;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import org.springframework.format.annotation.*;
 
 import com.sun.istack.NotNull;
@@ -21,39 +22,48 @@ public class Employee {
     @GeneratedValue
     private long id;
 
+    @JsonFormat(shape = JsonFormat.Shape.STRING)
     @NotNull
     @OneToOne(cascade = {CascadeType.ALL})
     @JoinColumn(name = "personalDetails")
     private PersonalDetails personalDetails;
 
+    @JsonFormat(shape = JsonFormat.Shape.STRING)
     @NotNull
     @OneToMany(cascade = {CascadeType.ALL})
-    @JoinColumn(name = "emergencyContact")
+    @JoinColumn(name = "emergencyContactDetails")
     private List<EmergencyContactDetails> emergencyContactDetails;
 
+    @JsonFormat(shape = JsonFormat.Shape.STRING)
     @Column(name = "name")
     @Size(max = 100, message = "Name cannot have more than 100 characters")
     @NotEmpty(message = "Name cannot be empty!")
     private String name;
 
+    @JsonFormat(shape = JsonFormat.Shape.STRING)
     @Column(name = "workEmail")
     @NotEmpty(message = "Email cannot be empty!")
     private String workEmail;
 
-    @Column(name = "ni")
+    @JsonFormat(shape = JsonFormat.Shape.STRING)
+    @Column(name = "nationalInsurance")
     private String nationalInsurance;
 
+    @JsonFormat(shape = JsonFormat.Shape.STRING)
     @Column(name = "joiningDate")
-    @DateTimeFormat
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     @NotNull
     private LocalDate joiningDate;
 
+    @JsonFormat(shape = JsonFormat.Shape.STRING)
     @Column(name = "salary")
     @NotNull
     @Positive(message = "Salary must be positive")
     private double salary;
 
-    @Column(name = "other_expenses")
+    @JsonFormat(shape = JsonFormat.Shape.STRING)
+    @Column(name = "otherExpenses")
+    @NotNull
     @Positive(message = "Other expenses must be positive")
     private double otherExpenses;
 
