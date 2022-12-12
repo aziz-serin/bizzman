@@ -19,10 +19,11 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.sun.istack.NotNull;
 
 @Entity
-@Table(name = "emergencycontact")
+@Table(name = "emergencyContact")
 public class EmergencyContactDetails {
 
     public enum Relationship{
@@ -38,15 +39,23 @@ public class EmergencyContactDetails {
     @Column(name = "id")
     private long id;
 
+    @JsonFormat(shape = JsonFormat.Shape.STRING)
+    @NotNull
+    @OneToOne
+    private Employee employee;
+
+    @JsonFormat(shape = JsonFormat.Shape.STRING)
     @Column(name = "phoneNumber")
     @NotEmpty
     @Size(max = 11, min = 10, message = "Phone number must have a valid length!")
     private String phoneNumber;
 
+    @JsonFormat(shape = JsonFormat.Shape.STRING)
     @NotNull
     @Column(name = "relationship")
     private Relationship relationship;
 
+    @JsonFormat(shape = JsonFormat.Shape.STRING)
     @Column(name = "emName")
     @NotEmpty(message = "Name cannot be empty")
     @Size(max = 100, message = "Name cannot have more than 100 characters")
@@ -54,6 +63,14 @@ public class EmergencyContactDetails {
     private String name;
 
     public EmergencyContactDetails() {}
+
+    public Employee getEmployee() {
+        return employee;
+    }
+
+    public void setEmployee(Employee employee) {
+        this.employee = employee;
+    }
 
     public String getName() {
         return name;
