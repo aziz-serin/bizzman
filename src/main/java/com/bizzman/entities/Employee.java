@@ -28,7 +28,6 @@ public class Employee {
     private PersonalDetails personalDetails;
 
     @JsonFormat(shape = JsonFormat.Shape.STRING)
-    @NotNull
     @OneToMany(cascade = {CascadeType.ALL})
     @JoinColumn(name = "emergencyContactDetails")
     private List<EmergencyContactDetails> emergencyContactDetails;

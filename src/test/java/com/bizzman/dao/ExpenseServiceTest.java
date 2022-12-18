@@ -9,7 +9,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import com.bizzman.BizzmanApplication;
 import com.bizzman.dao.services.ExpenseService;
 import com.bizzman.entities.Expense;
-import com.bizzman.exceptions.CustomNPException;
+import com.bizzman.exceptions.custom.CustomNPException;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

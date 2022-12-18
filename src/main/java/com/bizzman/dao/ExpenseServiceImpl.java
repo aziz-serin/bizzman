@@ -6,7 +6,7 @@ import com.bizzman.entities.BusinessRelationship;
 import com.bizzman.entities.Employee;
 import com.bizzman.entities.Expense;
 import com.bizzman.entities.Order;
-import com.bizzman.exceptions.CustomNPException;
+import com.bizzman.exceptions.custom.CustomNPException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
