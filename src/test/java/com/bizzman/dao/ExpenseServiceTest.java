@@ -9,7 +9,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import com.bizzman.BizzmanApplication;
 import com.bizzman.dao.services.ExpenseService;
 import com.bizzman.entities.Expense;
-import com.bizzman.exceptions.custom.CustomNPException;
+import com.bizzman.exceptions.custom.InvalidExpenseException;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -49,7 +49,7 @@ public class ExpenseServiceTest {
             assertThat(employeeExpense.get(0).getId()).isEqualTo(expenses.get(0).getId());
             assertThat(employeeExpense.get(0).getType()).isEqualTo(Expense.Type.EMPLOYEE_EXPENSE);
         } catch (Exception e) {
-            assertThat(e.getClass()).isEqualTo(CustomNPException.class);
+            assertThat(e.getClass()).isEqualTo(InvalidExpenseException.class);
             assertThat(e.getMessage()).isEqualTo(EMPLOYEE_NOT_FOUND_EXCEPTION_MESSAGE);
         }
     }
@@ -74,7 +74,7 @@ public class ExpenseServiceTest {
             assertThat(businessExpense.get(0).getId()).isEqualTo(expenses.get(2).getId());
             assertThat(businessExpense.get(0).getType()).isEqualTo(Expense.Type.BUSINESS);
         } catch (Exception e) {
-            assertThat(e.getClass()).isEqualTo(CustomNPException.class);
+            assertThat(e.getClass()).isEqualTo(InvalidExpenseException.class);
             assertThat(e.getMessage()).isEqualTo(BUSINESS_NOT_FOUND_EXCEPTION_MESSAGE);
         }
     }

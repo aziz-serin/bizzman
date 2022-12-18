@@ -6,7 +6,7 @@ import com.bizzman.entities.BusinessRelationship;
 import com.bizzman.entities.Employee;
 import com.bizzman.entities.Expense;
 import com.bizzman.entities.Order;
-import com.bizzman.exceptions.custom.CustomNPException;
+import com.bizzman.exceptions.custom.InvalidExpenseException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -63,7 +63,7 @@ public class ExpenseServiceImpl implements ExpenseService {
         return expenseRepository.findAll();
     }
 
-    private <T> void throwExceptionIfNecessary(T object) throws CustomNPException{
+    private <T> void throwExceptionIfNecessary(T object) throws InvalidExpenseException {
         List<Expense> expenses = (List<Expense>) getAllExpenses();
 
         if (object.getClass().equals(Employee.class)) {
@@ -71,27 +71,27 @@ public class ExpenseServiceImpl implements ExpenseService {
                     .filter(e -> e.getEmployee() != null)
                     .collect(Collectors.toList());
             if (filtered.size() == 0) {
-                throw new CustomNPException(EMPLOYEE_NOT_FOUND_EXCEPTION_MESSAGE, new NullPointerException().getCause());
+                throw new InvalidExpenseException(EMPLOYEE_NOT_FOUND_EXCEPTION_MESSAGE, new NullPointerException().getCause());
             }
         } else if (object.getClass().equals(Order.class)) {
             List<Expense> filtered = expenses.stream()
                     .filter(e -> e.getOrder() != null)
                     .collect(Collectors.toList());
             if (filtered.size() == 0) {
-                throw new CustomNPException(ORDER_NOT_FOUND_EXCEPTION_MESSAGE, new NullPointerException().getCause());
+                throw new InvalidExpenseException(ORDER_NOT_FOUND_EXCEPTION_MESSAGE, new NullPointerException().getCause());
             }
         } else if (object.getClass().equals(BusinessRelationship.class)) {
             List<Expense> filtered = expenses.stream()
                     .filter(e -> e.getBusinessRelationship() != null)
                     .collect(Collectors.toList());
             if (filtered.size() == 0) {
-                throw new CustomNPException(BUSINESS_NOT_FOUND_EXCEPTION_MESSAGE, new NullPointerException().getCause());
+                throw new InvalidExpenseException(BUSINESS_NOT_FOUND_EXCEPTION_MESSAGE, new NullPointerException().getCause());
             }
         }
     }
 
     @Override
-    public Iterable<Expense> getAllExpensesOfAnEmployee(Employee employee) throws CustomNPException {
+    public Iterable<Expense> getAllExpensesOfAnEmployee(Employee employee) throws InvalidExpenseException {
         //throwExceptionIfNecessary(employee);
 
         List<Expense> expenses = (List<Expense>) getAllExpenses();
@@ -103,7 +103,7 @@ public class ExpenseServiceImpl implements ExpenseService {
     }
 
     @Override
-    public Iterable<Expense> getAllExpensesOrder(Order order) throws CustomNPException {
+    public Iterable<Expense> getAllExpensesOrder(Order order) throws InvalidExpenseException {
         throwExceptionIfNecessary(order);
         List<Expense> expenses = (List<Expense>) getAllExpenses();
         return expenses.stream()
@@ -125,7 +125,7 @@ public class ExpenseServiceImpl implements ExpenseService {
     }
 
     @Override
-    public Iterable<Expense> getAllExpensesOfABusinessRelationship(BusinessRelationship businessRelationship) throws CustomNPException{
+    public Iterable<Expense> getAllExpensesOfABusinessRelationship(BusinessRelationship businessRelationship) throws InvalidExpenseException {
         throwExceptionIfNecessary(businessRelationship);
 
         List<Expense> expenses = (List<Expense>) getAllExpenses();
@@ -144,7 +144,7 @@ public class ExpenseServiceImpl implements ExpenseService {
     }
 
     @Override
-    public double getTotalExpenseCostOfAnEmployee(Employee employee) throws CustomNPException{
+    public double getTotalExpenseCostOfAnEmployee(Employee employee) throws InvalidExpenseException {
         throwExceptionIfNecessary(employee);
 
         List<Expense> expenses = (List<Expense>) getAllExpenses();
@@ -159,7 +159,7 @@ public class ExpenseServiceImpl implements ExpenseService {
     }
 
     @Override
-    public double getTotalExpenseCostOfABusinessRelationship(BusinessRelationship businessRelationship) throws CustomNPException{
+    public double getTotalExpenseCostOfABusinessRelationship(BusinessRelationship businessRelationship) throws InvalidExpenseException {
         throwExceptionIfNecessary(businessRelationship);
 
         List<Expense> expenses = (List<Expense>) getAllExpenses();
@@ -173,7 +173,7 @@ public class ExpenseServiceImpl implements ExpenseService {
     }
 
     @Override
-    public Iterable<Expense> getExpensesWithSameBusinessRelationshipSortedByPrice(BusinessRelationship businessRelationship, boolean isAscending) throws CustomNPException{
+    public Iterable<Expense> getExpensesWithSameBusinessRelationshipSortedByPrice(BusinessRelationship businessRelationship, boolean isAscending) throws InvalidExpenseException {
         throwExceptionIfNecessary(businessRelationship);
 
         List<Expense> expenses = (List<Expense>) getAllExpenses();
