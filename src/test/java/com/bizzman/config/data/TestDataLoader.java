@@ -42,10 +42,10 @@ public class TestDataLoader {
     private BusinessRelationship businessRelationship2;
     private Employee employee1;
     private PersonalDetails personalDetails1;
-    private EmergencyContactDetails emergencyContactDetail1;
+    private EmergencyContact emergencyContactDetail1;
     private Employee employee2;
     private PersonalDetails personalDetails2;
-    private EmergencyContactDetails emergencyContactDetail2;
+    private EmergencyContact emergencyContactDetail2;
 
     private Order order1;
     private Order order2;
@@ -61,10 +61,10 @@ public class TestDataLoader {
     private List<Employee> loadEmployee() {
         employee1 = new Employee();
         personalDetails1 = new PersonalDetails();
-        emergencyContactDetail1 = new EmergencyContactDetails();
+        emergencyContactDetail1 = new EmergencyContact();
         employee2 = new Employee();
         personalDetails2 = new PersonalDetails();
-        emergencyContactDetail2 = new EmergencyContactDetails();
+        emergencyContactDetail2 = new EmergencyContact();
 
         employee1.setName("Aziz");
         employee1.setJoiningDate( LocalDate.of(2021, 10, 9));
@@ -80,7 +80,7 @@ public class TestDataLoader {
         personalDetails1.setEmployee(employee1);
         employee1.setPersonalDetails(personalDetails1);
         emergencyContactDetail1.setName("Maria");
-        emergencyContactDetail1.setRelationship(EmergencyContactDetails.Relationship.PARTNER);
+        emergencyContactDetail1.setRelationship(EmergencyContact.Relationship.PARTNER);
         emergencyContactDetail1.setPhoneNumber("89028139012");
         emergencyContactDetail1.setEmployee(employee1);
         employee1.setEmergencyContactDetails(new ArrayList<>(List.of(emergencyContactDetail1)));
@@ -99,7 +99,7 @@ public class TestDataLoader {
         personalDetails2.setEmployee(employee2);
         employee2.setPersonalDetails(personalDetails2);
         emergencyContactDetail2.setName("Maria");
-        emergencyContactDetail2.setRelationship(EmergencyContactDetails.Relationship.PARTNER);
+        emergencyContactDetail2.setRelationship(EmergencyContact.Relationship.PARTNER);
         emergencyContactDetail2.setPhoneNumber("89028139012");
         emergencyContactDetail2.setEmployee(employee2);
         employee2.setEmergencyContactDetails(new ArrayList<>(List.of(emergencyContactDetail2)));

@@ -1,6 +1,6 @@
 package com.bizzman.dao.services;
 
-import com.bizzman.entities.EmergencyContactDetails;
+import com.bizzman.entities.EmergencyContact;
 import com.bizzman.entities.Employee;
 import com.bizzman.entities.PersonalDetails;
 
@@ -19,7 +19,7 @@ public interface EmployeeService {
 
     PersonalDetails getEmployeePersonalDetails(Employee employee);
 
-    Iterable<EmergencyContactDetails> getEmployeeEmergencyContactDetails(Employee employee);
+    Iterable<EmergencyContact> getEmployeeEmergencyContactDetails(Employee employee);
 
     Iterable<Employee> getAllEmployeeSortedBySalaryAscending();
     Iterable<Employee> getAllEmployeeSortedBySalaryDescending();

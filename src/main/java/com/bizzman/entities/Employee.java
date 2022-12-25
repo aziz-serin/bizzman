@@ -30,7 +30,7 @@ public class Employee {
     @JsonFormat(shape = JsonFormat.Shape.STRING)
     @OneToMany(cascade = {CascadeType.ALL})
     @JoinColumn(name = "emergencyContactDetails")
-    private List<EmergencyContactDetails> emergencyContactDetails;
+    private List<EmergencyContact> emergencyContactDetails;
 
     @JsonFormat(shape = JsonFormat.Shape.STRING)
     @Column(name = "name")
@@ -105,11 +105,11 @@ public class Employee {
         this.otherExpenses = other_expenses;
     }
 
-    public List<EmergencyContactDetails> getEmergencyContactDetails() {
+    public List<EmergencyContact> getEmergencyContactDetails() {
         return emergencyContactDetails;
     }
 
-    public void setEmergencyContactDetails(List<EmergencyContactDetails> emergencyContactDetails) {
+    public void setEmergencyContactDetails(List<EmergencyContact> emergencyContactDetails) {
         this.emergencyContactDetails = emergencyContactDetails;
     }
 

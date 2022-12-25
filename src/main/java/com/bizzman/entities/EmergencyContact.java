@@ -11,9 +11,7 @@ package com.bizzman.entities;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.MapsId;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotEmpty;
@@ -24,7 +22,7 @@ import com.sun.istack.NotNull;
 
 @Entity
 @Table(name = "emergencyContact")
-public class EmergencyContactDetails {
+public class EmergencyContact {
 
     public enum Relationship{
         FRIEND,
@@ -62,7 +60,9 @@ public class EmergencyContactDetails {
     @NotNull
     private String name;
 
-    public EmergencyContactDetails() {}
+    public long getId() {
+        return id;
+    }
 
     public Employee getEmployee() {
         return employee;

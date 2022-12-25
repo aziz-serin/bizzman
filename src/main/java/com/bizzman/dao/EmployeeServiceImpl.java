@@ -2,7 +2,7 @@ package com.bizzman.dao;
 
 import com.bizzman.dao.repos.EmployeeRepository;
 import com.bizzman.dao.services.EmployeeService;
-import com.bizzman.entities.EmergencyContactDetails;
+import com.bizzman.entities.EmergencyContact;
 import com.bizzman.entities.Employee;
 import com.bizzman.entities.PersonalDetails;
 
@@ -55,7 +55,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
-    public List<EmergencyContactDetails> getEmployeeEmergencyContactDetails(Employee employee) {
+    public List<EmergencyContact> getEmployeeEmergencyContactDetails(Employee employee) {
         return employee.getEmergencyContactDetails();
     }
 

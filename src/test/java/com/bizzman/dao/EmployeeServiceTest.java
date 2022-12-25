@@ -4,7 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.List;
 
-import com.bizzman.entities.EmergencyContactDetails;
+import com.bizzman.entities.EmergencyContact;
 import com.bizzman.entities.PersonalDetails;
 import org.junit.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -35,7 +35,7 @@ public class EmployeeServiceTest extends AbstractTransactionalJUnit4SpringContex
     public void getEmployeeEmergencyDetailsReturnsEmergencyContact() {
         Employee employee = ((List<Employee>) employeeService.findAllEmployees()).get(0);
         assertThat(employeeService.getEmployeeEmergencyContactDetails(employee)).isInstanceOf(List.class);
-        assertThat(((List<EmergencyContactDetails>) employeeService.getEmployeeEmergencyContactDetails(employee)).get(0))
+        assertThat(((List<EmergencyContact>) employeeService.getEmployeeEmergencyContactDetails(employee)).get(0))
                 .isEqualTo(employee.getEmergencyContactDetails().get(0));
     }
 

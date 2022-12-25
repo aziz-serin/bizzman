@@ -69,7 +69,9 @@ public class PersonalDetails {
     @Past(message = "Birth Date cannot be in the future!")
     private LocalDate birthDate;
 
-    public PersonalDetails() {}
+    public long getId() {
+        return id;
+    }
 
     public String getPassportNumber() {
         return passportNumber;
