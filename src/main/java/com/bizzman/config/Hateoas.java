@@ -15,7 +15,7 @@ public class Hateoas implements RepositoryRestConfigurer {
 
     @Override
     public void configureRepositoryRestConfiguration(RepositoryRestConfiguration config, CorsRegistry cors) {
-        config.setBasePath("/rest");
+        config.setBasePath("/api");
         log.info("Set REST API base path to '/rest'");
 
         config.setLinkRelationProvider(new EvoInflectorLinkRelationProvider());
