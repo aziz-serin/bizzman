@@ -6,7 +6,7 @@
  * to such license between the licensee and ForgeRock AS.
  */
 
-package com.bizzman.entities;
+package com.bizzman.entities.employee;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 
@@ -14,6 +14,7 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.*;
 
+import com.bizzman.entities.employee.Employee;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import org.springframework.format.annotation.DateTimeFormat;
 

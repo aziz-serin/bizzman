@@ -6,7 +6,7 @@
  * to such license between the licensee and ForgeRock AS.
  */
 
-package com.bizzman.entities;
+package com.bizzman.entities.employee;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -17,6 +17,7 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
 
+import com.bizzman.entities.employee.Employee;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.sun.istack.NotNull;
 

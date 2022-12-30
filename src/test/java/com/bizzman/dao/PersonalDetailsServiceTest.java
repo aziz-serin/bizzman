@@ -1,10 +1,10 @@
 package com.bizzman.dao;
 
 import com.bizzman.BizzmanApplication;
-import com.bizzman.dao.services.EmployeeService;
-import com.bizzman.dao.services.PersonalDetailsService;
-import com.bizzman.entities.Employee;
-import com.bizzman.entities.PersonalDetails;
+import com.bizzman.dao.services.employee.EmployeeService;
+import com.bizzman.dao.services.employee.PersonalDetailsService;
+import com.bizzman.entities.employee.Employee;
+import com.bizzman.entities.employee.PersonalDetails;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;

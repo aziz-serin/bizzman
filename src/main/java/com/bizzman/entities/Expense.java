@@ -1,9 +1,9 @@
 package com.bizzman.entities;
 
+import com.bizzman.entities.employee.Employee;
 import com.sun.istack.NotNull;
 
 import javax.persistence.*;
-import javax.validation.constraints.Past;
 import javax.validation.constraints.Positive;
 import java.time.LocalDate;
 

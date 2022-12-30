@@ -4,8 +4,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.List;
 
-import com.bizzman.entities.EmergencyContact;
-import com.bizzman.entities.PersonalDetails;
+import com.bizzman.entities.employee.EmergencyContact;
+import com.bizzman.entities.employee.PersonalDetails;
 import org.junit.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,8 +16,8 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.context.junit4.AbstractTransactionalJUnit4SpringContextTests;
 
 import com.bizzman.BizzmanApplication;
-import com.bizzman.dao.services.EmployeeService;
-import com.bizzman.entities.Employee;
+import com.bizzman.dao.services.employee.EmployeeService;
+import com.bizzman.entities.employee.Employee;
 
 // These tests will need modification if the TestDataLoader class's product initialisation order or values are modified.
 

@@ -1,7 +1,7 @@
-package com.bizzman.dao.services;
+package com.bizzman.dao.services.employee;
 
-import com.bizzman.entities.Employee;
-import com.bizzman.entities.PersonalDetails;
+import com.bizzman.entities.employee.Employee;
+import com.bizzman.entities.employee.PersonalDetails;
 
 import java.util.Optional;
 

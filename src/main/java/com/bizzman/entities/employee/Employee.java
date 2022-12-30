@@ -1,4 +1,4 @@
-package com.bizzman.entities;
+package com.bizzman.entities.employee;
 
 import java.time.LocalDate;
 import java.util.List;

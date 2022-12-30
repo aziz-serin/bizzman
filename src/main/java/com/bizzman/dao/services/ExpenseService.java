@@ -1,7 +1,7 @@
 package com.bizzman.dao.services;
 
 import com.bizzman.entities.BusinessRelationship;
-import com.bizzman.entities.Employee;
+import com.bizzman.entities.employee.Employee;
 import com.bizzman.entities.Expense;
 import com.bizzman.entities.Order;
 

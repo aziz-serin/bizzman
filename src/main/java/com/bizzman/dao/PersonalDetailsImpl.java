@@ -1,9 +1,9 @@
 package com.bizzman.dao;
 
-import com.bizzman.dao.repos.PersonalDetailsRepository;
-import com.bizzman.dao.services.PersonalDetailsService;
-import com.bizzman.entities.Employee;
-import com.bizzman.entities.PersonalDetails;
+import com.bizzman.dao.repos.employee.PersonalDetailsRepository;
+import com.bizzman.dao.services.employee.PersonalDetailsService;
+import com.bizzman.entities.employee.Employee;
+import com.bizzman.entities.employee.PersonalDetails;
 import com.bizzman.exceptions.custom.PersonalDetailsNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

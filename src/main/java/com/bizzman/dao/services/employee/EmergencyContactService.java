@@ -1,7 +1,7 @@
-package com.bizzman.dao.services;
+package com.bizzman.dao.services.employee;
 
-import com.bizzman.entities.EmergencyContact;
-import com.bizzman.entities.Employee;
+import com.bizzman.entities.employee.EmergencyContact;
+import com.bizzman.entities.employee.Employee;
 
 public interface EmergencyContactService {
     EmergencyContact save(EmergencyContact emergencyContact);

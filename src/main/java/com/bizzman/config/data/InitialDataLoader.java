@@ -10,8 +10,12 @@ import java.util.Properties;
 
 
 import com.bizzman.dao.services.*;
+import com.bizzman.dao.services.employee.EmployeeService;
 import com.bizzman.entities.*;
 
+import com.bizzman.entities.employee.EmergencyContact;
+import com.bizzman.entities.employee.Employee;
+import com.bizzman.entities.employee.PersonalDetails;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -3,7 +3,7 @@ package com.bizzman.dao;
 import com.bizzman.dao.repos.ExpenseRepository;
 import com.bizzman.dao.services.ExpenseService;
 import com.bizzman.entities.BusinessRelationship;
-import com.bizzman.entities.Employee;
+import com.bizzman.entities.employee.Employee;
 import com.bizzman.entities.Expense;
 import com.bizzman.entities.Order;
 import com.bizzman.exceptions.custom.InvalidExpenseException;

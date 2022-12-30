@@ -1,10 +1,10 @@
 package com.bizzman.dao;
 
-import com.bizzman.dao.repos.EmployeeRepository;
-import com.bizzman.dao.services.EmployeeService;
-import com.bizzman.entities.EmergencyContact;
-import com.bizzman.entities.Employee;
-import com.bizzman.entities.PersonalDetails;
+import com.bizzman.dao.repos.employee.EmployeeRepository;
+import com.bizzman.dao.services.employee.EmployeeService;
+import com.bizzman.entities.employee.EmergencyContact;
+import com.bizzman.entities.employee.Employee;
+import com.bizzman.entities.employee.PersonalDetails;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
