@@ -5,7 +5,7 @@ import com.bizzman.BizzmanApplication;
 import com.bizzman.dao.services.BusinessInformationService;
 import com.bizzman.entities.BusinessInformation;
 import com.bizzman.exceptions.ExceptionMessages;
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;

@@ -5,7 +5,7 @@ import com.bizzman.dao.services.employee.EmergencyContactService;
 import com.bizzman.dao.services.employee.EmployeeService;
 import com.bizzman.entities.employee.EmergencyContact;
 import com.bizzman.entities.employee.Employee;
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;

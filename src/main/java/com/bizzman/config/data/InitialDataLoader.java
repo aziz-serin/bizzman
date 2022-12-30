@@ -1,6 +1,7 @@
 package com.bizzman.config.data;
 
 import java.io.FileInputStream;
+import java.io.FileReader;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -9,6 +10,7 @@ import java.util.Map;
 import java.util.Properties;
 
 
+import com.bizzman.dao.UserService;
 import com.bizzman.dao.services.*;
 import com.bizzman.dao.services.employee.EmployeeService;
 import com.bizzman.entities.*;
@@ -16,6 +18,11 @@ import com.bizzman.entities.*;
 import com.bizzman.entities.employee.EmergencyContact;
 import com.bizzman.entities.employee.Employee;
 import com.bizzman.entities.employee.PersonalDetails;
+import com.bizzman.security.data.Role;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,6 +48,8 @@ public class InitialDataLoader {
     ExpenseService expenseService;
     @Autowired
     BusinessInformationService businessInformationService;
+    @Autowired
+    UserService userService;
 
     private Product product1;
     private Product product2;
@@ -252,6 +261,44 @@ public class InitialDataLoader {
         return  description;
     }
 
+    private void loadUsers(){
+        String rootPath = System.getProperty("user.dir");
+        String path = rootPath + "/src/main/java/com/bizzman/config/data/resources/users.json";
+
+        JSONParser jsonParser = new JSONParser();
+        JSONArray users;
+
+        try {
+
+            FileReader reader = new FileReader(path);
+            Object obj = jsonParser.parse(reader);
+
+            users = (JSONArray) obj;
+            System.out.println(users);
+            users.forEach( usr -> createUsers( (JSONObject) usr ) );
+
+        } catch (ParseException | IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void createUsers(JSONObject user){
+        // Make sure to have all these fields in the json file
+        JSONObject userObject = (JSONObject) user.get("user");
+
+        String username = (String) userObject.get("username");
+        String password = (String) userObject.get("password");
+        String role = (String) userObject.get("role");
+
+        Role newRole = new Role();
+        if (role.equals(Role.ADMIN)) {
+            newRole.setRole(Role.ADMIN);
+        } else {
+            newRole.setRole(Role.USER);
+        }
+        userService.create(username, password, password, newRole);
+    }
+
     @Bean
     CommandLineRunner initDatabase(){
 
@@ -306,6 +353,11 @@ public class InitialDataLoader {
                 log.info("Database already populated with business information. Skipping business information initialization.");
             } else {
                 log.info("Loading data: " + businessInformationService.save(businessInformation));
+            }
+            if (userService.count() > 0) {
+                log.info("Database already populated with users. Skipping user initialisation.");
+            } else {
+                loadUsers();
             }
         };
     }

@@ -1,19 +1,30 @@
 package com.bizzman.config.data;
 
+import java.io.FileInputStream;
+import java.io.FileReader;
+import java.io.IOException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
 
+
+import com.bizzman.dao.UserService;
 import com.bizzman.dao.services.*;
 import com.bizzman.dao.services.employee.EmployeeService;
 import com.bizzman.entities.*;
+
 import com.bizzman.entities.employee.EmergencyContact;
 import com.bizzman.entities.employee.Employee;
 import com.bizzman.entities.employee.PersonalDetails;
+import com.bizzman.security.data.Role;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
@@ -37,13 +48,17 @@ public class TestDataLoader {
     ExpenseService expenseService;
     @Autowired
     BusinessInformationService businessInformationService;
+    @Autowired
+    UserService userService;
 
     private Product product1;
     private Product product2;
     private Product product3;
     private Product product4;
+
     private BusinessRelationship businessRelationship1;
     private BusinessRelationship businessRelationship2;
+
     private Employee employee1;
     private PersonalDetails personalDetails1;
     private EmergencyContact emergencyContactDetail1;
@@ -60,6 +75,7 @@ public class TestDataLoader {
     private Expense expense2;
     private Expense expense3;
     private Expense expense4;
+
     private BusinessInformation businessInformation;
 
     private List<Employee> loadEmployee() {
@@ -229,6 +245,60 @@ public class TestDataLoader {
         return List.of(expense1, expense2, expense3, expense4);
     }
 
+    private String loadBusinessDescription() {
+        String rootPath = System.getProperty("user.dir");
+        String appConfigPath = rootPath + "/src/main/java/com/bizzman/config/data/bizzdescription.properties";
+
+        Properties appProps = new Properties();
+        String description;
+        try {
+            appProps.load(new FileInputStream(appConfigPath));
+            description = appProps.getProperty("description");
+        } catch (IOException e) {
+            log.error("Could not read the bizzdescription.properties file. Loading a default text for BusinessDescription");
+            description = "Default";
+        }
+        return  description;
+    }
+
+    private void loadUsers(){
+        String rootPath = System.getProperty("user.dir");
+        String path = rootPath + "/src/main/java/com/bizzman/config/data/resources/users.json";
+
+        JSONParser jsonParser = new JSONParser();
+        JSONArray users;
+
+        try {
+
+            FileReader reader = new FileReader(path);
+            Object obj = jsonParser.parse(reader);
+
+            users = (JSONArray) obj;
+            System.out.println(users);
+            users.forEach( usr -> createUsers( (JSONObject) usr ) );
+
+        } catch (ParseException | IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void createUsers(JSONObject user){
+        // Make sure to have all these fields in the json file
+        JSONObject userObject = (JSONObject) user.get("user");
+
+        String username = (String) userObject.get("username");
+        String password = (String) userObject.get("password");
+        String role = (String) userObject.get("role");
+
+        Role newRole = new Role();
+        if (role.equals(Role.ADMIN)) {
+            newRole.setRole(Role.ADMIN);
+        } else {
+            newRole.setRole(Role.USER);
+        }
+        userService.create(username, password, password, newRole);
+    }
+
     @Bean
     CommandLineRunner initDatabase(){
 
@@ -240,7 +310,7 @@ public class TestDataLoader {
 
         businessInformation = new BusinessInformation();
         businessInformation.setBusinessName("Bizzman");
-        businessInformation.setBusinessDescription("This project has been designed as a free and open-source alternative to existing small business services.");
+        businessInformation.setBusinessDescription(loadBusinessDescription());
         businessInformation.setEstablismentDate(LocalDate.of(2022, 10, 5));
 
         return args -> {
@@ -283,6 +353,11 @@ public class TestDataLoader {
                 log.info("Database already populated with business information. Skipping business information initialization.");
             } else {
                 log.info("Loading data: " + businessInformationService.save(businessInformation));
+            }
+            if (userService.count() > 0) {
+                log.info("Database already populated with users. Skipping user initialisation.");
+            } else {
+                loadUsers();
             }
         };
     }
