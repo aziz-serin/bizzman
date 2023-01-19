@@ -1,6 +1,5 @@
 package com.bizzman.config.data;
 
-import java.io.FileInputStream;
 import java.io.FileReader;
 import java.io.IOException;
 import java.time.LocalDate;
@@ -19,6 +18,7 @@ import com.bizzman.entities.employee.EmergencyContact;
 import com.bizzman.entities.employee.Employee;
 import com.bizzman.entities.employee.PersonalDetails;
 import com.bizzman.security.data.Role;
+import com.bizzman.util.PropertiesManager;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -34,7 +34,7 @@ import org.springframework.context.annotation.Profile;
 @Configuration
 @Profile("default")
 public class InitialDataLoader {
-
+    private final static String DESCRIPTION_FILE = "bizzdescription.properties";
     private final static Logger log = LoggerFactory.getLogger(InitialDataLoader.class);
     @Autowired
     EmployeeService employeeService;
@@ -246,19 +246,8 @@ public class InitialDataLoader {
     }
 
     private String loadBusinessDescription() {
-        String rootPath = System.getProperty("user.dir");
-        String appConfigPath = rootPath + "/src/main/java/com/bizzman/config/data/bizzdescription.properties";
-
-        Properties appProps = new Properties();
-        String description;
-        try {
-            appProps.load(new FileInputStream(appConfigPath));
-            description = appProps.getProperty("description");
-        } catch (IOException e) {
-            log.error("Could not read the bizzdescription.properties file. Loading a default text for BusinessDescription");
-            description = "Default";
-        }
-        return  description;
+        Properties properties = PropertiesManager.readProperties(this.getClass(), DESCRIPTION_FILE);
+        return properties.getProperty("description");
     }
 
     private void loadUsers(){
