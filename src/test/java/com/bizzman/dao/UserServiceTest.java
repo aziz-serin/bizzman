@@ -1,11 +1,13 @@
 package com.bizzman.dao;
 
 import com.bizzman.BizzmanApplication;
-import com.bizzman.entities.User;
+import com.bizzman.entities.user.User;
+import com.bizzman.entities.user.UserDetailsImpl;
 import org.junit.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
@@ -37,7 +39,7 @@ public class UserServiceTest extends AbstractTransactionalJUnit4SpringContextTes
 
     @Test
     public void loadByUserNameSucceedsTest() {
-        User user = userService.loadUserByUsername("admin");
+        UserDetails user = userService.loadUserByUsername("admin");
 
         assertThat(user.getUsername()).isEqualTo("admin");
     }
@@ -45,33 +47,5 @@ public class UserServiceTest extends AbstractTransactionalJUnit4SpringContextTes
     @Test
     public void usernameExistsTest() {
         assertThat(userService.usernameExists("admin")).isTrue();
-    }
-
-    @Test
-    public void updatePasswordSucceedsTest() {
-        User user = userService.loadUserByUsername("admin");
-        String password = user.getPassword();
-        userService.updatePassword(user.getUsername(), "newPassword", "newPassword");
-        User updatedUser = userService.loadUserByUsername("admin");
-
-        assertThat(password).isNotEqualTo(updatedUser.getPassword());
-    }
-
-    @Test
-    public void updatePasswordThrowsExceptionGivenPasswordsDontMatch() {
-        User user = userService.loadUserByUsername("admin");
-        Exception exception = assertThrows(ValidationException.class, () -> {
-            userService.updatePassword(user.getUsername(), "newPassword", "newPass");
-        });
-
-        assertThat(exception).isInstanceOf(ValidationException.class);
-    }
-
-
-    @Test
-    public void userExistsByIdTest() {
-        User user = userService.loadUserByUsername("admin");
-
-        assertThat(userService.userExistsById(user.getId())).isTrue();
     }
 }

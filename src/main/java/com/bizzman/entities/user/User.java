@@ -1,20 +1,16 @@
-package com.bizzman.entities;
+package com.bizzman.entities.user;
 
-import com.bizzman.security.data.Role;
 import com.fasterxml.jackson.annotation.JsonFormat;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
-import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
 @Entity
 @Table(name = "users")
-public class User implements UserDetails {
+public class User {
     @Id
     @Column(name = "id")
     @GeneratedValue
@@ -31,17 +27,21 @@ public class User implements UserDetails {
     @Size(min = 8, max = 40, message = "Password length should be between 8 and 40 characters")
     private String password;
 
-    private boolean enabled = true;
+    @JsonFormat(shape = JsonFormat.Shape.STRING)
+    @ManyToMany(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER)
+    @JoinTable(	name = "user_roles",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id"))
+    private Set<Role> roles = new HashSet<>();
 
-    @ElementCollection
-    @Column(name = "authorities")
-    private Set<Role> authorities = new HashSet<>();
+    public User() {
+    }
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -61,32 +61,13 @@ public class User implements UserDetails {
         this.password = password;
     }
 
-    @Override
-    public boolean isAccountNonExpired() {
-        return enabled;
+    public Set<Role> getRoles() {
+        return roles;
     }
 
-    @Override
-    public boolean isAccountNonLocked() {
-        return enabled;
+    public void setRoles(Set<Role> roles) {
+        this.roles = roles;
     }
 
-    @Override
-    public boolean isCredentialsNonExpired() {
-        return enabled;
-    }
 
-    @Override
-    public boolean isEnabled() {
-        return enabled;
-    }
-
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        return authorities;
-    }
-
-    public void addAuthority(Role role) {
-        authorities.add(role);
-    }
 }

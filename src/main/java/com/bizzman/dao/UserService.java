@@ -1,8 +1,9 @@
 package com.bizzman.dao;
 
 import com.bizzman.dao.repos.UserRepository;
-import com.bizzman.entities.User;
-import com.bizzman.security.data.Role;
+import com.bizzman.entities.user.Role;
+import com.bizzman.entities.user.User;
+import com.bizzman.entities.user.UserDetailsImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -12,8 +13,7 @@ import org.springframework.stereotype.Service;
 
 import javax.validation.ValidationException;
 
-import java.util.List;
-import java.util.stream.Collectors;
+import java.util.Set;
 
 import static java.lang.String.format;
 
@@ -23,12 +23,14 @@ public class UserService implements UserDetailsService {
     private UserRepository userRepository;
 
     @Override
-    public User loadUserByUsername(String username) throws UsernameNotFoundException {
-        return userRepository
+    public UserDetailsImpl loadUserByUsername(String username) throws UsernameNotFoundException {
+        User user =  userRepository
                 .findByUsername(username)
                 .orElseThrow(
                         () -> new UsernameNotFoundException(
                                         format("User with username - %s, not found", username)));
+
+        return UserDetailsImpl.build(user);
     }
 
     public User create(String username, String password, String rePassword, Role role) {
@@ -42,7 +44,7 @@ public class UserService implements UserDetailsService {
         User user = new User();
         user.setUsername(username);
         user.setPassword(encoder.encode(password));
-        user.addAuthority(role);
+        user.setRoles(Set.of(role));
         return userRepository.save(user);
     }
 
@@ -50,26 +52,8 @@ public class UserService implements UserDetailsService {
         return userRepository.findByUsername(username).isPresent();
     }
 
-    public void updatePassword(String username, String newPassword, String reNewPassword) {
-        if (!newPassword.equals(reNewPassword)) {
-            throw new ValidationException("Passwords do not match!");
-        }
-
-        User user = loadUserByUsername(username);
-        PasswordEncoder encoder = new BCryptPasswordEncoder();
-        user.setPassword(encoder.encode(newPassword));
-        userRepository.deleteById(user.getId());
-        Role role = (Role) user.getAuthorities().stream().collect(Collectors.toList()).get(0);
-        User newUser = create(user.getUsername(), newPassword, reNewPassword, role);
-        userRepository.save(newUser);
-    }
-
     public void delete(Long id) {
         userRepository.deleteById(id);
-    }
-
-    public boolean userExistsById(Long id) {
-        return userRepository.findById(id).isPresent();
     }
 
     public long count() {

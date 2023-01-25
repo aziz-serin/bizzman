@@ -1,6 +1,6 @@
 package com.bizzman.dao.repos;
 
-import com.bizzman.entities.User;
+import com.bizzman.entities.user.User;
 import org.springframework.data.repository.CrudRepository;
 
 import java.util.Optional;

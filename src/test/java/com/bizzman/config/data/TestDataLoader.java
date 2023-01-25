@@ -1,6 +1,5 @@
 package com.bizzman.config.data;
 
-import java.io.FileInputStream;
 import java.io.FileReader;
 import java.io.IOException;
 import java.time.LocalDate;
@@ -18,7 +17,8 @@ import com.bizzman.entities.*;
 import com.bizzman.entities.employee.EmergencyContact;
 import com.bizzman.entities.employee.Employee;
 import com.bizzman.entities.employee.PersonalDetails;
-import com.bizzman.security.data.Role;
+import com.bizzman.entities.user.ERole;
+import com.bizzman.entities.user.Role;
 import com.bizzman.util.PropertiesManager;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -280,11 +280,11 @@ public class TestDataLoader {
         String password = (String) userObject.get("password");
         String role = (String) userObject.get("role");
 
-        Role newRole = new Role();
-        if (role.equals(Role.ADMIN)) {
-            newRole.setRole(Role.ADMIN);
+        Role newRole;
+        if (role.equals(ERole.ROLE_ADMIN.toString())) {
+            newRole = new Role(ERole.ROLE_ADMIN);
         } else {
-            newRole.setRole(Role.USER);
+            newRole = new Role(ERole.ROLE_USER);
         }
         userService.create(username, password, password, newRole);
     }
