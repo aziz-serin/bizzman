@@ -33,12 +33,9 @@ public class UserService implements UserDetailsService {
         return UserDetailsImpl.build(user);
     }
 
-    public User create(String username, String password, String rePassword, Role role) {
+    public User create(String username, String password, Role role) throws ValidationException{
         if (usernameExists(username)) {
             throw new ValidationException("Username exists!");
-        }
-        if (!password.equals(rePassword)) {
-            throw new ValidationException("Passwords do not match!");
         }
         PasswordEncoder encoder = new BCryptPasswordEncoder();
         User user = new User();

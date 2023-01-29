@@ -286,7 +286,7 @@ public class TestDataLoader {
         } else {
             newRole = new Role(ERole.ROLE_USER);
         }
-        userService.create(username, password, password, newRole);
+        userService.create(username, password, newRole);
     }
 
     @Bean

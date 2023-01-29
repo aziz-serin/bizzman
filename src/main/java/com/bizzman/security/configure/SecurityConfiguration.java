@@ -3,7 +3,6 @@ package com.bizzman.security.configure;
 import com.bizzman.dao.UserService;
 import com.bizzman.security.filters.AuthTokenFilter;
 import com.bizzman.security.jwt.JwtValidator;
-import com.bizzman.util.AuthEntryPointJwt;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
