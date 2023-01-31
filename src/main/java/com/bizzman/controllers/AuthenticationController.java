@@ -1,6 +1,5 @@
 package com.bizzman.controllers;
 
-import com.bizzman.dto.UserRegistrationForm;
 import com.bizzman.dao.UserService;
 import com.bizzman.entities.user.ERole;
 import com.bizzman.entities.user.Role;
@@ -66,8 +65,16 @@ public class AuthenticationController {
 
     @PostMapping("/register")
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<?> register(@ModelAttribute @NotNull UserRegistrationForm registrationForm) {
-        String role = registrationForm.getRole().toLowerCase();
+    public ResponseEntity<?> register(@RequestBody @NotNull Map<?,?> body) {
+        String role = (String) body.get("role");
+        String username = (String) body.get("username");
+        String password = (String) body.get("password");
+
+        if (role == null || username == null || password == null) {
+            logger.error("Could not parse the request body!");
+            return ResponseEntity.badRequest().body("Could not parse the request body!");
+        }
+
         Role user_role;
         switch (role) {
             case "admin":
@@ -80,7 +87,7 @@ public class AuthenticationController {
                 return ResponseEntity.badRequest().body("Failed to create the user!");
         }
         try {
-            User user = userService.create(registrationForm.getUsername(), registrationForm.getPassword(), user_role);
+            User user = userService.create(username, password, user_role);
             return ResponseEntity.ok("User created with id " + user.getId());
         } catch (ValidationException e) {
             return ResponseEntity.badRequest().body("Failed to create the user!");

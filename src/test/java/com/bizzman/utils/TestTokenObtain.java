@@ -24,7 +24,7 @@ public class TestTokenObtain {
 
     public static String obtainTokenForEmployee(WebTestClient client) {
         client.post().uri("/rest/authentication/authenticate")
-                .header("username", "employee1")
+                .header("username", "employee")
                 .header("password", "employee")
                 .accept(MediaType.APPLICATION_JSON)
                 .exchange()

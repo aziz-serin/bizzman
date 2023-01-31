@@ -8,14 +8,7 @@
   },
   {
     "user": {
-      "username": "employee1",
-      "password": "employee",
-      "role": "USER"
-    }
-  },
-  {
-    "user": {
-      "username": "employee2",
+      "username": "employee",
       "password": "employee",
       "role": "USER"
     }
