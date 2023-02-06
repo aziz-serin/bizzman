@@ -53,12 +53,12 @@ public class JwtValidator {
         return true;
     }
 
-    private boolean containsRequiredClaims(JWTClaimsSet claimsSet) {
+    public boolean containsRequiredClaims(JWTClaimsSet claimsSet) {
         return !StringUtils.isEmpty(claimsSet.getSubject()) && !StringUtils.isEmpty(claimsSet.getIssuer())
                 && (claimsSet.getExpirationTime() != null);
     }
 
-    private boolean isSignatureValid(SignedJWT jwt) {
+    public boolean isSignatureValid(SignedJWT jwt) {
         try {
             JWSVerifier verifier = new MACVerifier(properties.getProperty(JwtProperties.SECRET.getName()));
             return jwt.verify(verifier);
@@ -67,7 +67,7 @@ public class JwtValidator {
         }
     }
 
-    private boolean isIssuerValid(String issuer) {
+    public boolean isIssuerValid(String issuer) {
         String issuerProperties = properties.getProperty(JwtProperties.ISSUER.getName());
         if (StringUtils.isEmpty(issuerProperties)) {
             return false;
@@ -76,9 +76,8 @@ public class JwtValidator {
         }
     }
 
-    private boolean isExpValid(Date exp) {
-        long expiryTime = (Long.parseLong(properties.getProperty(JwtProperties.EXP_TIME.getName())) * 60)
-                + exp.toInstant().getEpochSecond();
+    public boolean isExpValid(Date exp) {
+        long expiryTime = exp.toInstant().getEpochSecond();
         long currentTime = Instant.now().getEpochSecond();
         return expiryTime > currentTime;
     }
