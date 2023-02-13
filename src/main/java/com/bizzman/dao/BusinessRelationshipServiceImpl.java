@@ -35,7 +35,7 @@ public class BusinessRelationshipServiceImpl implements BusinessRelationshipServ
     }
 
     @Override
-    public Iterable<BusinessRelationship> getAllSuppliers() {
+    public Iterable<BusinessRelationship> getAllRelationships() {
         return businessRelationshipRepository.findAll();
     }
 

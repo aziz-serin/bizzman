@@ -14,7 +14,7 @@ public interface BusinessRelationshipService {
 
     void deleteAll(Iterable<BusinessRelationship> relationships);
 
-    Iterable<BusinessRelationship> getAllSuppliers();
+    Iterable<BusinessRelationship> getAllRelationships();
 
     Optional<BusinessRelationship> findById(Long id);
 

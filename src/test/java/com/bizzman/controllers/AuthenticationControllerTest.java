@@ -16,6 +16,8 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.reactive.server.WebTestClient;
 import org.springframework.web.reactive.function.BodyInserters;
 
+import java.util.Map;
+
 import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
 
 @ExtendWith(SpringExtension.class)
@@ -98,11 +100,10 @@ public class AuthenticationControllerTest {
     @Test
     public void shouldRegisterFailGivenUserExists() {
         String token = TestTokenObtain.obtainTokenForAdmin(client);
-        String json = "{\n" +
-                "\"username\":\"employee\",\n" +
-                "\"password\":\"password\",\n" +
-                "\"role\":\"user\"\n" +
-                "}";
+        Map<String, String> json = Map.of(
+                "username", "employee",
+                "password", "password",
+                "role", "user");
         client.post().uri("/rest/authentication/register")
                 .header("Authorization", "Bearer " + token)
                 .contentType(MediaType.APPLICATION_JSON)
@@ -113,12 +114,11 @@ public class AuthenticationControllerTest {
     }
 
     @Test
-    public void shouldRegisterFailGivenBodyMisingInformation() {
+    public void shouldRegisterFailGivenBodyMissingInformation() {
         String token = TestTokenObtain.obtainTokenForAdmin(client);
-        String json = "{\n" +
-                "\"username\":\"employee\",\n" +
-                "\"password\":\"password\"\n" +
-                "}";
+        Map<String, String> json = Map.of(
+                "username", "employee2",
+                "password", "password");
         client.post().uri("/rest/authentication/register")
                 .header("Authorization", "Bearer " + token)
                 .contentType(MediaType.APPLICATION_JSON)
@@ -131,11 +131,10 @@ public class AuthenticationControllerTest {
     @Test
     public void shouldRegisterFailGivenRoleDoesNotExist() {
         String token = TestTokenObtain.obtainTokenForAdmin(client);
-        String json = "{\n" +
-                "\"username\":\"employee\",\n" +
-                "\"password\":\"password\",\n" +
-                "\"role\":\"role\"\n" +
-                "}";
+        Map<String, String> json = Map.of(
+                "username", "employee2",
+                "password", "password",
+                "role", "role");
         client.post().uri("/rest/authentication/register")
                 .header("Authorization", "Bearer " + token)
                 .contentType(MediaType.APPLICATION_JSON)
@@ -148,11 +147,11 @@ public class AuthenticationControllerTest {
     @Test
     public void shouldRegisterSucceed() {
         String token = TestTokenObtain.obtainTokenForAdmin(client);
-        String json = "{\n" +
-                "\"username\":\"employee2\",\n" +
-                "\"password\":\"password\",\n" +
-                "\"role\":\"user\"\n" +
-                "}";
+        Map<String, String> json = Map.of(
+                "username", "employee2",
+                "password", "password",
+                "role", "user");
+
         client.post().uri("/rest/authentication/register")
                 .header("Authorization", "Bearer " + token)
                 .contentType(MediaType.APPLICATION_JSON)
