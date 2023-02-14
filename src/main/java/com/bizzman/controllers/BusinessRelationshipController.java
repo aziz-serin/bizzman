@@ -6,6 +6,7 @@ import com.bizzman.exceptions.custom.EntityConstructionException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.hateoas.MediaTypes;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -51,6 +52,9 @@ public class BusinessRelationshipController {
             Map<String, String> contacts = (Map<String, String>) body.get("contacts");
             String type = (String) body.get("type");
             BusinessRelationship.Type bizzType;
+            if (type == null || name == null) {
+                throw new EntityConstructionException("Could not construct entity BusinessRelationship");
+            }
             switch (type) {
                 case "customer":
                     bizzType = BusinessRelationship.Type.CUSTOMER;
@@ -60,9 +64,6 @@ public class BusinessRelationshipController {
                     break;
                 default:
                     throw new EntityConstructionException("Could not construct entity BusinessRelationship");
-            }
-            if (name == null) {
-                throw new EntityConstructionException("Could not construct entity BusinessRelationship");
             }
             BusinessRelationship businessRelationship = new BusinessRelationship();
             businessRelationship.setName(name);
@@ -82,7 +83,7 @@ public class BusinessRelationshipController {
         try {
             businessRelationshipService.deleteById(id);
             return ResponseEntity.ok().body("Deleted the requested resource");
-        } catch (RuntimeException e) {
+        } catch (EmptyResultDataAccessException e) {
             logger.error("BusinessRelationship with id {} does not exist", id);
             return ResponseEntity.status(404).body("Could not delete the required resource");
         }
