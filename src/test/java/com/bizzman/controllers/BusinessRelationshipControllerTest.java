@@ -87,11 +87,12 @@ public class BusinessRelationshipControllerTest {
     @Test
     public void shouldDeleteAllFailGivenOrdersAreLinked() {
         String token = TestTokenObtain.obtainTokenForAdmin(client);
+        long count = businessRelationshipService.count();
         client.delete().uri("/rest/businessRelationship/deleteAll")
                 .header("Authorization", "Bearer " + token)
                 .exchange()
                 .expectStatus().is5xxServerError();
-        assertThat(businessRelationshipService.count()).isEqualTo(2);
+        assertThat(businessRelationshipService.count()).isEqualTo(count);
     }
 
     @Test
@@ -99,22 +100,23 @@ public class BusinessRelationshipControllerTest {
         String token = TestTokenObtain.obtainTokenForAdmin(client);
         List<BusinessRelationship> relationships = (List<BusinessRelationship>) businessRelationshipService.getAllRelationships();
         long id = relationships.get(0).getId();
+        long count = businessRelationshipService.count();
         client.delete().uri("/rest/businessRelationship/delete/" + id)
                 .header("Authorization", "Bearer " + token)
                 .exchange()
                 .expectStatus().is5xxServerError();
-        assertThat(businessRelationshipService.count()).isEqualTo(2);
+        assertThat(businessRelationshipService.count()).isEqualTo(count);
     }
 
     @Test
     public void shouldDeleteFailGivenRelationshipNotFound() {
         String token = TestTokenObtain.obtainTokenForAdmin(client);
-
+        long count = businessRelationshipService.count();
         client.delete().uri("/rest/businessRelationship/delete/" + 99999999)
                 .header("Authorization", "Bearer " + token)
                 .exchange()
                 .expectStatus().is4xxClientError();
-        assertThat(businessRelationshipService.count()).isEqualTo(2);
+        assertThat(businessRelationshipService.count()).isEqualTo(count);
     }
 
     @Test
@@ -228,7 +230,6 @@ public class BusinessRelationshipControllerTest {
                 .accept(MediaType.APPLICATION_JSON)
                 .exchange()
                 .expectStatus().isOk();
-
         assertThat(count + 1).isEqualTo(businessRelationshipService.count());
     }
 
