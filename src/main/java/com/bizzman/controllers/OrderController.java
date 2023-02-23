@@ -4,6 +4,7 @@ import static com.bizzman.exceptions.ExceptionMessages.BAD_REQUEST_BODY;
 import static com.bizzman.exceptions.ExceptionMessages.REQUESTED_ENTITY_NOT_FOUND;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeParseException;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -196,8 +197,11 @@ public class OrderController {
                 throw new EntityConstructionException("Given businessRelationship does not exist");
             }
 
-            List<Long> productIds = (List<Long>) body.get("products");
-            List<Product> products = getProductsFromIds(productIds);
+            List<Integer> productIdsInt = (List<Integer>) body.get("products");
+            List<Long> productIdsLong =
+                    productIdsInt.stream().map(Integer::longValue).collect(Collectors.toList());
+
+            List<Product> products = getProductsFromIds(productIdsLong);
 
             LocalDate arrival = LocalDate.parse((String) body.get("arrivalTime"));
             LocalDate placing = LocalDate.parse((String) body.get("placingDate"));
@@ -212,13 +216,14 @@ public class OrderController {
             Order saved = orderService.save(order);
             return ResponseEntity.ok().body("Created order with id " + saved.getId());
 
-        } catch (ClassCastException | EntityConstructionException | NumberFormatException | NullPointerException e) {
+        } catch (ClassCastException | EntityConstructionException | NumberFormatException | NullPointerException |
+                 DateTimeParseException e) {
             logger.error("Required fields are missing/malformed");
             return ResponseEntity.unprocessableEntity().body(BAD_REQUEST_BODY);
         }
     }
 
-    private List<Product> getProductsFromIds(List<Long> ids) throws EntityConstructionException {
+    private List<Product> getProductsFromIds(List<Long> ids) {
         List<Product> products = ids.stream()
                 .map(id -> productService.getProductById(id))
                 .map(product -> product.orElse(null))

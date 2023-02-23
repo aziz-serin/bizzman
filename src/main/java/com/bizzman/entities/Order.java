@@ -27,12 +27,12 @@ public class Order {
     Type type;
 
     @NotNull
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "businessRelationship")
     BusinessRelationship businessRelationship;
 
     @NotNull
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinColumn(name = "products")
     List<Product> products;
 
