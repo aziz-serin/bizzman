@@ -1,5 +1,8 @@
 package com.bizzman.controllers;
 
+import static com.bizzman.exceptions.ExceptionMessages.BAD_REQUEST_BODY;
+import static com.bizzman.exceptions.ExceptionMessages.REQUESTED_ENTITY_NOT_FOUND;
+
 import com.bizzman.dao.services.BusinessRelationshipService;
 import com.bizzman.entities.BusinessRelationship;
 import com.bizzman.exceptions.custom.EntityConstructionException;
@@ -39,7 +42,7 @@ public class BusinessRelationshipController {
         Optional<BusinessRelationship> businessRelationship = businessRelationshipService.findById(id);
         if (businessRelationship.isEmpty()) {
             logger.info("Business Relationship {} is not found", id);
-            return ResponseEntity.status(404).body("Could not find the request resource!");
+            return ResponseEntity.status(404).body(REQUESTED_ENTITY_NOT_FOUND);
         }
         return ResponseEntity.ok().body(businessRelationship.get());
     }
@@ -73,7 +76,7 @@ public class BusinessRelationshipController {
             return ResponseEntity.ok().body("Created Business Relationship with id " + created.getId());
         } catch (ClassCastException | EntityConstructionException e) {
             logger.error("Required fields are missing/malformed");
-            return ResponseEntity.unprocessableEntity().body("Required fields are missing/malformed");
+            return ResponseEntity.unprocessableEntity().body(BAD_REQUEST_BODY);
         }
     }
 
@@ -85,7 +88,7 @@ public class BusinessRelationshipController {
             return ResponseEntity.ok().body("Deleted the requested resource");
         } catch (EmptyResultDataAccessException e) {
             logger.error("BusinessRelationship with id {} does not exist", id);
-            return ResponseEntity.status(404).body("Could not delete the required resource");
+            return ResponseEntity.status(404).body(REQUESTED_ENTITY_NOT_FOUND);
         }
     }
 
