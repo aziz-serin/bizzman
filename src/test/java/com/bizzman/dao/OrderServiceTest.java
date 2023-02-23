@@ -60,7 +60,8 @@ class OrderServiceTest extends AbstractTransactionalJUnit4SpringContextTests {
     @Test
     public void getAllOrdersForBusinessRelationshipReturnsOrdersForBusiness() {
         List<BusinessRelationship> businessRelationshipList = (List<BusinessRelationship>) businessRelationshipService.getAllRelationships();
-        List<Order> orders = (List<Order>) orderService.getAllOrdersForBusinessRelationship(businessRelationshipList.get(0));
+        List<Order> orders =
+                (List<Order>) orderService.getAllOrdersForBusinessRelationship(businessRelationshipList.get(0).getId());
 
         assertThat(orders.get(0).getBusinessRelationship()).isEqualTo(orders.get(1).getBusinessRelationship());
         assertThat(orders.get(0).getBusinessRelationship()).isNotEqualTo(businessRelationshipList.get(1));

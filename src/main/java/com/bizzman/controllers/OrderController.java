@@ -67,7 +67,7 @@ public class OrderController {
         return ResponseEntity.ok().body(order.get());
     }
 
-    @GetMapping("/getAllWithSameType")
+    @PostMapping("/getAllWithSameType")
     @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
     public ResponseEntity<?> getAllOrdersWithSameType(@RequestBody @NotNull Map<String,?> body) {
         Optional<Order.Type> orderType = getOrderType(body);
@@ -94,13 +94,13 @@ public class OrderController {
         );
     }
 
-    @GetMapping("/getAllSortedByArrival")
+    @PostMapping("/getAllSortedByArrival")
     @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
     public ResponseEntity<?> getAllSortedByArrival(@RequestBody @NotNull Map<String,?> body) {
         boolean isAscending;
         try {
             isAscending = (Boolean) body.get("isAscending");
-        } catch (ClassCastException e) {
+        } catch (ClassCastException | NullPointerException e) {
             logger.error("Could not cast the given request body to boolean!");
             return ResponseEntity.badRequest().body(BAD_REQUEST_BODY);
         }
@@ -116,11 +116,11 @@ public class OrderController {
             logger.debug("Requested businessRelationship {} does not exist", id);
             return ResponseEntity.status(404).body(REQUESTED_ENTITY_NOT_FOUND);
         }
-        List<Order> orders = (List<Order>) orderService.getAllOrdersForBusinessRelationship(businessRelationship.get());
+        List<Order> orders = (List<Order>) orderService.getAllOrdersForBusinessRelationship(id);
         return ResponseEntity.ok().body(orders);
     }
 
-    @GetMapping("/getAllWithTypeSortedByArrival")
+    @PostMapping("/getAllWithTypeSortedByArrival")
     @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
     public ResponseEntity<?> getAllWithTypeSortedByArrival(@RequestBody @NotNull Map<String,?> body) {
         Optional<Order.Type> orderType = getOrderType(body);
@@ -131,7 +131,7 @@ public class OrderController {
         boolean isAscending;
         try {
             isAscending = (Boolean) body.get("isAscending");
-        } catch (ClassCastException e) {
+        } catch (ClassCastException | NullPointerException e) {
             logger.error("Could not cast the given request body to boolean!");
             return ResponseEntity.badRequest().body(BAD_REQUEST_BODY);
         }
@@ -140,7 +140,7 @@ public class OrderController {
         return ResponseEntity.ok().body(orders);
     }
 
-    @GetMapping("/getAllWithTypeSortedByPrice")
+    @PostMapping("/getAllWithTypeSortedByPrice")
     @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
     public ResponseEntity<?> getAllWithTypeSortedByPrice(@RequestBody @NotNull Map<String,?> body) {
         Optional<Order.Type> orderType = getOrderType(body);
@@ -151,7 +151,7 @@ public class OrderController {
         boolean isAscending;
         try {
             isAscending = (Boolean) body.get("isAscending");
-        } catch (ClassCastException e) {
+        } catch (ClassCastException | NullPointerException e) {
             logger.error("Could not cast the given request body to boolean!");
             return ResponseEntity.badRequest().body(BAD_REQUEST_BODY);
         }
@@ -212,7 +212,7 @@ public class OrderController {
             Order saved = orderService.save(order);
             return ResponseEntity.ok().body("Created order with id " + saved.getId());
 
-        } catch (ClassCastException | EntityConstructionException | NumberFormatException e) {
+        } catch (ClassCastException | EntityConstructionException | NumberFormatException | NullPointerException e) {
             logger.error("Required fields are missing/malformed");
             return ResponseEntity.unprocessableEntity().body(BAD_REQUEST_BODY);
         }

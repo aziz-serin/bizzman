@@ -1,6 +1,5 @@
 package com.bizzman.dao.services;
 
-import com.bizzman.entities.BusinessRelationship;
 import com.bizzman.entities.Order;
 
 import java.util.Optional;
@@ -25,7 +24,7 @@ public interface OrderService {
 
     Iterable<Order> getAllOrdersSortedByArrivalDate(boolean isAscending);
 
-    Iterable<Order> getAllOrdersForBusinessRelationship(BusinessRelationship businessRelationship);
+    Iterable<Order> getAllOrdersForBusinessRelationship(long businessRelationshipId);
 
     Iterable<Order> getAllOrdersWithSameType(Order.Type type);
 

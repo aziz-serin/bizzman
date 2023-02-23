@@ -3,7 +3,6 @@ package com.bizzman.dao;
 import com.bizzman.dao.repos.OrderRepository;
 import com.bizzman.dao.services.OrderService;
 import com.bizzman.dao.services.ProductService;
-import com.bizzman.entities.BusinessRelationship;
 import com.bizzman.entities.Order;
 import com.bizzman.entities.Product;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -78,10 +77,10 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public Iterable<Order> getAllOrdersForBusinessRelationship(BusinessRelationship businessRelationship) {
+    public Iterable<Order> getAllOrdersForBusinessRelationship(long businessRelationshipId) {
         List<Order> orders = (List<Order>) getAllOrders();
         return orders.stream()
-                .filter(r -> r.getBusinessRelationship().equals(businessRelationship))
+                .filter(r -> r.getBusinessRelationship().getId() == businessRelationshipId)
                 .collect(Collectors.toList());
     }
 
