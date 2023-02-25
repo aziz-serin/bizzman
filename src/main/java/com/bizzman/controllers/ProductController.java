@@ -58,7 +58,7 @@ public class ProductController {
     @GetMapping("/getTotalWeight")
     @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
     public ResponseEntity<?> getTotalWeight() {
-        return ResponseEntity.ok().body(Map.of("price", productService.getTotalWeight()));
+        return ResponseEntity.ok().body(Map.of("weight", productService.getTotalWeight()));
     }
 
     @GetMapping("/getRecentEntryDate")
@@ -67,7 +67,7 @@ public class ProductController {
         return ResponseEntity.ok().body(Map.of("date", productService.getMostRecentDateOfItemEntry().toString()));
     }
 
-    @GetMapping("/getOldeestEntryDate")
+    @GetMapping("/getOldestEntryDate")
     @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
     public ResponseEntity<?> getOldestEntryDate() {
         return ResponseEntity.ok().body(Map.of("date", productService.getOldestDateOfItemEntry().toString()));
@@ -179,7 +179,7 @@ public class ProductController {
         try {
             Optional<Product.ProductCategory> productCategory = getProductCategory(body);
             if (productCategory.isPresent()) {
-                return ResponseEntity.ok().body(Map.of("price", productService
+                return ResponseEntity.ok().body(Map.of("weight", productService
                         .getTotalWeightOfCategory(productCategory.get())));
             } else {
                 throw new EntityConstructionException("Could not construct entity");
@@ -197,9 +197,9 @@ public class ProductController {
         return ResponseEntity.ok().body(Map.of("price", productService.getTotalPrice(selling)));
     }
 
-    @GetMapping("/getTotalWeightSorted")
+    @GetMapping("/getAllSortedByWeight")
     @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
-    public ResponseEntity<?> getTotalWeightSorted(@RequestParam(required = false, name = "isAscending") String isAscending) {
+    public ResponseEntity<?> getSortedByWeight(@RequestParam(required = false, name = "isAscending") String isAscending) {
         boolean isAsc = Boolean.parseBoolean(isAscending);
         List<Product> products = (List<Product>) productService.getProductListSortedByWeight(isAsc);
         return ResponseEntity.ok().body(products);
