@@ -259,7 +259,8 @@ public class ProductController {
             return ResponseEntity.ok().body("Created product with id " + saved.getId());
 
         }
-        catch (EntityConstructionException | ClassCastException | NumberFormatException | DateTimeParseException e) {
+        catch (EntityConstructionException | ClassCastException | NumberFormatException | DateTimeParseException
+                | NullPointerException e) {
             logger.debug("Failed to construct a new product entity with given request body, \n {}", body.toString());
             return ResponseEntity.unprocessableEntity().body(BAD_REQUEST_BODY);
         }
