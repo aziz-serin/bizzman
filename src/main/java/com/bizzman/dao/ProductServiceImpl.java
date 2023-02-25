@@ -48,10 +48,10 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public Iterable<Product> getAllProductsFromSameSupplier(BusinessRelationship businessRelationship) {
+    public Iterable<Product> getAllProductsFromSameSupplier(long businessRelationshipId) {
         List<Product> productList = (List<Product>) productRepository.findAll();
         return productList.stream()
-                .filter(o -> o.getSupplier().equals(businessRelationship))
+                .filter(o -> o.getSupplier().getId() == businessRelationshipId)
                 .collect(Collectors.toList());
     }
 
@@ -67,10 +67,10 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public double getWeightOfAllProductsFromSameSupplier(BusinessRelationship businessRelationship) {
+    public double getWeightOfAllProductsFromSameSupplier(long businessRelationshipId) {
         List<Product> productList = (List<Product>) productRepository.findAll();
         return productList.stream()
-                .filter(o -> o.getSupplier().equals(businessRelationship))
+                .filter(o -> o.getSupplier().getId() == businessRelationshipId)
                 .map(Product::getStockWeight)
                 .reduce(0.0, Double::sum);
     }

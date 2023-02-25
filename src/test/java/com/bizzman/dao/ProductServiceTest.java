@@ -43,10 +43,10 @@ class ProductServiceTest extends AbstractTransactionalJUnit4SpringContextTests {
     public void getWeightOfAllProductsFromSameSupplierReturnsTrueWeight() {
         List<Product> productList = (List<Product>) productService.getAllProducts();
         double productFromSameSupplierWeight = productService
-                .getWeightOfAllProductsFromSameSupplier(productList.get(0).getSupplier());
+                .getWeightOfAllProductsFromSameSupplier(productList.get(0).getSupplier().getId());
         double weight = productList.get(0).getStockWeight() + productList.get(2).getStockWeight();
 
-        assertThat(productFromSameSupplierWeight == weight).isTrue();
+        assertThat(productFromSameSupplierWeight).isEqualTo(weight);
     }
 
     @Test
@@ -71,10 +71,10 @@ class ProductServiceTest extends AbstractTransactionalJUnit4SpringContextTests {
                 .getAllProductsFromSameCategory(Product.ProductCategory.PRICE_BY_WEIGHT);
         List<Product> products = (List<Product>) productService.getAllProducts();
 
-        assertThat(productsFromSameCategory.size() == 2).isTrue();
-        assertThat(productsFromSameCategory.contains(products.get(0))).isTrue();
+        assertThat(productsFromSameCategory.size()).isEqualTo(2);
+        assertThat(productsFromSameCategory).contains(products.get(0));
         assertThat(productsFromSameCategory.get(0).getCategory()).isEqualTo(Product.ProductCategory.PRICE_BY_WEIGHT);
-        assertThat(productsFromSameCategory.contains(products.get(2))).isTrue();
+        assertThat(productsFromSameCategory).contains(products.get(2));
         assertThat(productsFromSameCategory.get(1).getCategory()).isEqualTo(Product.ProductCategory.PRICE_BY_WEIGHT);
         assertThat(productsFromSameCategory.contains(products.get(3))).isFalse();
     }
@@ -85,12 +85,12 @@ class ProductServiceTest extends AbstractTransactionalJUnit4SpringContextTests {
                 .getAllProductsFromSameCategory(Product.ProductCategory.PRICE_BY_QUANTITY);
         List<Product> products = (List<Product>) productService.getAllProducts();
 
-        assertThat(productsFromSameCategory.size() == 2).isTrue();
-        assertThat(productsFromSameCategory.contains(products.get(1))).isTrue();
+        assertThat(productsFromSameCategory.size()).isEqualTo(2);
+        assertThat(productsFromSameCategory).contains(products.get(1));
         assertThat(productsFromSameCategory.get(0).getCategory()).isEqualTo(Product.ProductCategory.PRICE_BY_QUANTITY);
-        assertThat(productsFromSameCategory.contains(products.get(3))).isTrue();
+        assertThat(productsFromSameCategory).contains(products.get(3));
         assertThat(productsFromSameCategory.get(1).getCategory()).isEqualTo(Product.ProductCategory.PRICE_BY_QUANTITY);
-        assertThat(productsFromSameCategory.contains(products.get(0))).isFalse();
+        assertThat(productsFromSameCategory).doesNotContain(products.get(0));
     }
 
     @Test

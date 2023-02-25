@@ -21,13 +21,13 @@ public interface ProductService {
 
     long count();
 
-    Iterable<Product> getAllProductsFromSameSupplier(BusinessRelationship businessRelationship);
+    Iterable<Product> getAllProductsFromSameSupplier(long businessRelationshipId);
 
     Iterable<Product> getAllProducts();
 
     Iterable<BusinessRelationship> getAllProductSuppliers();
 
-    double getWeightOfAllProductsFromSameSupplier(BusinessRelationship businessRelationship);
+    double getWeightOfAllProductsFromSameSupplier(long businessRelationshipId);
 
     LocalDate getOldestDateOfItemEntry();
 
