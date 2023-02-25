@@ -232,16 +232,14 @@ public class ProductController {
             if (productCategory.isEmpty()) {
                 throw new EntityConstructionException("Could not parse the request body!");
             }
-            Double entryUnitPrice = (Double) body.get("entryUnitPrice");
-            Double sellingUnitPrice = (Double) body.get("sellingUnitPrice");
-            Double stockWeight = (Double) body.get("stockWeight");
-            Long quantity = (Long) body.get("quantity");
+            double entryUnitPrice = Double.parseDouble((String) body.get("entryUnitPrice"));
+            double sellingUnitPrice = Double.parseDouble((String) body.get("sellingUnitPrice"));
+            double stockWeight = Double.parseDouble((String) body.get("stockWeight"));
+            long quantity = Long.parseLong((String) body.get("quantity"));
             String imagePath = (String) body.get("imagePath");
-            if (entryUnitPrice == null || sellingUnitPrice == null || stockWeight == null || quantity == null) {
-                throw new EntityConstructionException("Could not parse the request body!");
-            }
+
             LocalDate arrival = LocalDate.parse((String) body.get("arrivalDate"));
-            Long businessRelationshipId = (Long) body.get("businessRelationship");
+            long businessRelationshipId = Long.parseLong((String) body.get("businessRelationship"));
             Optional<BusinessRelationship> businessRelationship
                     = businessRelationshipService.findById(businessRelationshipId);
             if (businessRelationship.isEmpty()) {
@@ -258,7 +256,7 @@ public class ProductController {
             product.setImagePath(imagePath);
 
             Product saved = productService.save(product);
-            return ResponseEntity.ok().body("Created order with id " + saved.getId());
+            return ResponseEntity.ok().body("Created product with id " + saved.getId());
 
         }
         catch (EntityConstructionException | ClassCastException | NumberFormatException | DateTimeParseException e) {
