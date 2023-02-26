@@ -73,7 +73,7 @@ public class ExpenseController {
         return ResponseEntity.status(404).body(REQUESTED_ENTITY_NOT_FOUND);
     }
 
-    @GetMapping("/geTotalExpenseOfEmployee/{id}")
+    @GetMapping("/getTotalExpenseOfEmployee/{id}")
     @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
     public ResponseEntity<?> getTotalExpenseOfEmployee(@PathVariable @NotNull long id) {
         Optional<Employee> employee = employeeService.findEmployeeById(id);
@@ -142,7 +142,7 @@ public class ExpenseController {
         return ResponseEntity.ok().body(expenses);
     }
 
-    @GetMapping("/getAllExpenseWithSameType")
+    @PostMapping("/getAllExpenseWithSameType")
     @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
     public ResponseEntity<?> getAllExpensesWithSameType(@RequestBody @NotNull Map<String, ?> body) {
         Optional<Expense.Type> type = getType(body);
@@ -154,7 +154,7 @@ public class ExpenseController {
         return ResponseEntity.status(404).body(REQUESTED_ENTITY_NOT_FOUND);
     }
 
-    @GetMapping("/getTotalCostWithSameType")
+    @PostMapping("/getTotalCostWithSameType")
     @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
     public ResponseEntity<?> getTotalCostWithSameType(@RequestBody @NotNull Map<String, ?> body) {
         Optional<Expense.Type> type = getType(body);
@@ -197,7 +197,7 @@ public class ExpenseController {
         return ResponseEntity.status(404).body(REQUESTED_ENTITY_NOT_FOUND);
     }
 
-    @GetMapping("/delete/{id}")
+    @DeleteMapping("/delete/{id}")
     @PreAuthorize("hasAnyRole('ADMIN')")
     public ResponseEntity<?> delete(@PathVariable("id") @NotNull long id) {
         try {
@@ -209,7 +209,7 @@ public class ExpenseController {
         }
     }
 
-    @GetMapping("/deleteAll")
+    @DeleteMapping("/deleteAll")
     @PreAuthorize("hasAnyRole('ADMIN')")
     public ResponseEntity<?> deleteAll() {
         expenseService.deleteAll();
