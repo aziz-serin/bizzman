@@ -216,7 +216,7 @@ public class ExpenseController {
         return ResponseEntity.ok().body("Deleted requested resources");
     }
 
-    @PostMapping("/create/")
+    @PostMapping("/create")
     @PreAuthorize("hasAnyRole('ADMIN')")
     public ResponseEntity<?> create(@RequestBody @NotNull Map<String, ?> body) {
         try {
@@ -309,7 +309,7 @@ public class ExpenseController {
             switch (type.toLowerCase()) {
                 case "business":
                     return Optional.of(Expense.Type.BUSINESS);
-                case "employee_expense":
+                case "employee":
                     return Optional.of(Expense.Type.EMPLOYEE_EXPENSE);
                 case "order":
                     return Optional.of(Expense.Type.ORDER);
