@@ -148,7 +148,7 @@ public class ExpenseController {
         Optional<Expense.Type> type = getType(body);
         if (type.isPresent()) {
             Iterable<Expense> expenses = expenseService.getAllExpensesWithSameType(type.get());
-            ResponseEntity.ok().body(expenses);
+            return ResponseEntity.ok().body(expenses);
         }
         logger.debug("Could not find type {}", body.get("type"));
         return ResponseEntity.status(404).body(REQUESTED_ENTITY_NOT_FOUND);
@@ -160,7 +160,7 @@ public class ExpenseController {
         Optional<Expense.Type> type = getType(body);
         if (type.isPresent()) {
             double expense = expenseService.getTotalExpenseCostWithSameType(type.get());
-            ResponseEntity.ok().body(Map.of(
+            return ResponseEntity.ok().body(Map.of(
                     "expense", expense
             ));
         }
@@ -168,7 +168,7 @@ public class ExpenseController {
         return ResponseEntity.status(404).body(REQUESTED_ENTITY_NOT_FOUND);
     }
 
-    @GetMapping("/getAllSameTypeSortedByPrice")
+    @PostMapping("/getAllSameTypeSortedByPrice")
     @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
     public ResponseEntity<?> getAllSameTypeSortedByPrice(@RequestBody @NotNull Map<String, ?> body,
                                                          @RequestParam(required = false, name = "isAscending") String isAscending) {
