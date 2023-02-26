@@ -29,12 +29,6 @@ public class PersonalDetails {
     private long id;
 
     @JsonFormat(shape = JsonFormat.Shape.STRING)
-    @OneToOne
-    @NotNull
-    @JoinColumn(name = "employee")
-    private Employee employee;
-
-    @JsonFormat(shape = JsonFormat.Shape.STRING)
     @Column(name = "passportNumber")
     @NotEmpty
     @Size(max = 44, min = 11, message = "Passport number must have a valid length between 11 and 44!")
@@ -121,13 +115,5 @@ public class PersonalDetails {
     public void setBirthDate(LocalDate birthDate) {
         this.age = (int) ChronoUnit.YEARS.between(LocalDate.now(), birthDate);
         this.birthDate = birthDate;
-    }
-
-    public Employee getEmployee() {
-        return employee;
-    }
-
-    public void setEmployee(Employee employee) {
-        this.employee = employee;
     }
 }

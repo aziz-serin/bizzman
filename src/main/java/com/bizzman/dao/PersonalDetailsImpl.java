@@ -24,30 +24,8 @@ public class PersonalDetailsImpl implements PersonalDetailsService {
     }
 
     @Override
-    public void deleteByEmployeeId(Employee employee) {
-        Optional<PersonalDetails> personalDetails = findByEmployee(employee);
-        if (personalDetails.isPresent()){
-            deleteById(personalDetails.get().getId());
-        } else {
-            throw new PersonalDetailsNotFoundException("Personal Details are not found for the employee: " + employee.getId());
-        }
-    }
-
-    private void deleteById(long id) {
+    public void deleteById(long id) {
         personalDetailsRepository.deleteById(id);
     }
 
-    @Override
-    public Optional<PersonalDetails> findByEmployee(Employee employee) {
-        List<PersonalDetails> personalDetails = (List<PersonalDetails>) personalDetailsRepository.findAll();
-        List<PersonalDetails> filteredList =  personalDetails.stream()
-                .filter(p -> p.getEmployee().equals(employee))
-                .collect(Collectors.toList());
-        if (filteredList.size() > 1) {
-            throw new RuntimeException("You have more than one personal details for the employee, contact your administrator!");
-        } else if (filteredList.size() == 0) {
-            return Optional.empty();
-        }
-        return Optional.of(filteredList.get(0));
-    }
 }

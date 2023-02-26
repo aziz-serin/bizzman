@@ -46,8 +46,8 @@ public class ExpenseController {
     @GetMapping("/getAll")
     @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
     public ResponseEntity<?> getAll() {
-        List<Expense> orders = (List<Expense>) expenseService.getAllExpenses();
-        return ResponseEntity.ok().body(orders);
+        List<Expense> expenses = (List<Expense>) expenseService.getAllExpenses();
+        return ResponseEntity.ok().body(expenses);
     }
 
     @GetMapping("/get/{id}")
@@ -209,9 +209,9 @@ public class ExpenseController {
         }
     }
 
-    @GetMapping("/delete/{id}")
+    @GetMapping("/deleteAll")
     @PreAuthorize("hasAnyRole('ADMIN')")
-    public ResponseEntity<?> deleteAll(@PathVariable("id") @NotNull long id) {
+    public ResponseEntity<?> deleteAll() {
         expenseService.deleteAll();
         return ResponseEntity.ok().body("Deleted requested resources");
     }

@@ -100,12 +100,10 @@ public class InitialDataLoader {
         personalDetails1.setPhoneNumber("84302819489201");
         personalDetails1.setPassportNumber("84930289408239");
         personalDetails1.setPersonalEmail("aziz@mail.com");
-        personalDetails1.setEmployee(employee1);
         employee1.setPersonalDetails(personalDetails1);
         emergencyContactDetail1.setName("Maria");
         emergencyContactDetail1.setRelationship(EmergencyContact.Relationship.PARTNER);
         emergencyContactDetail1.setPhoneNumber("89028139012");
-        emergencyContactDetail1.setEmployee(employee1);
         employee1.setEmergencyContactDetails(new ArrayList<>(List.of(emergencyContactDetail1)));
 
         employee2.setName("B");
@@ -119,12 +117,10 @@ public class InitialDataLoader {
         personalDetails2.setPhoneNumber("84302819489501");
         personalDetails2.setPassportNumber("84930289408239");
         personalDetails2.setPersonalEmail("b@mail.com");
-        personalDetails2.setEmployee(employee2);
         employee2.setPersonalDetails(personalDetails2);
         emergencyContactDetail2.setName("Maria");
         emergencyContactDetail2.setRelationship(EmergencyContact.Relationship.PARTNER);
         emergencyContactDetail2.setPhoneNumber("89028139012");
-        emergencyContactDetail2.setEmployee(employee2);
         employee2.setEmergencyContactDetails(new ArrayList<>(List.of(emergencyContactDetail2)));
 
         return List.of(employee1, employee2);

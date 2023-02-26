@@ -9,7 +9,5 @@ public interface PersonalDetailsService {
 
     PersonalDetails save(PersonalDetails personalDetails);
 
-    void deleteByEmployeeId(Employee employee);
-
-    Optional<PersonalDetails> findByEmployee(Employee employee);
+    void deleteById(long id);
 }

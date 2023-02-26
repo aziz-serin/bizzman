@@ -23,29 +23,7 @@ public class EmergencyContactServiceImpl implements EmergencyContactService {
     }
 
     @Override
-    public Iterable<EmergencyContact> findEmergencyContactDetailsByEmployee(Employee employee) {
-        List<EmergencyContact> emergencyContactDetails
-                = (List<EmergencyContact>) emergencyContactRepository.findAll();
-        return emergencyContactDetails.stream()
-                .filter(e -> e.getEmployee().equals(employee))
-                .collect(Collectors.toList());
-    }
-
-    @Override
-    public void deleteByEmployee(Employee employee, EmergencyContact emergencyContact) {
-        List<EmergencyContact> emergencyContactList
-                = (List<EmergencyContact>) findEmergencyContactDetailsByEmployee(employee);
-        List<EmergencyContact> filteredList = emergencyContactList.stream()
-                .filter(e -> e.equals(emergencyContact))
-                .collect(Collectors.toList());
-        if (filteredList.size() == 0) {
-            throw new EmergencyContactDetailsNotFoundException("Emergency Contact Details " +
-                    emergencyContact.getId() + "not found for the employee " + employee.getId());
-        }
-        deleteById(emergencyContact.getId());
-    }
-
-    private void deleteById(Long id) {
+    public void deleteById(long id) {
         emergencyContactRepository.deleteById(id);
     }
 }

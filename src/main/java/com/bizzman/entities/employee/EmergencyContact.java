@@ -39,11 +39,6 @@ public class EmergencyContact {
     private long id;
 
     @JsonFormat(shape = JsonFormat.Shape.STRING)
-    @NotNull
-    @OneToOne
-    private Employee employee;
-
-    @JsonFormat(shape = JsonFormat.Shape.STRING)
     @Column(name = "phoneNumber")
     @NotEmpty
     @Size(max = 11, min = 10, message = "Phone number must have a valid length!")
@@ -63,14 +58,6 @@ public class EmergencyContact {
 
     public long getId() {
         return id;
-    }
-
-    public Employee getEmployee() {
-        return employee;
-    }
-
-    public void setEmployee(Employee employee) {
-        this.employee = employee;
     }
 
     public String getName() {
