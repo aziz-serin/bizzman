@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.h2.jdbc.JdbcSQLIntegrityConstraintViolationException;
 
 @ControllerAdvice
 public class GlobalExceptionHandler {
@@ -28,6 +29,16 @@ public class GlobalExceptionHandler {
         String errorMessage = String.format(NOT_FOUND_MSG, exception.getMessage());
         logger.error(errorMessage);
         return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                .body(errorMessage);
+    }
+
+    @ExceptionHandler({
+            JdbcSQLIntegrityConstraintViolationException.class
+    })
+    public ResponseEntity<?> handleConstraintViolationException(Exception exception) {
+        String errorMessage = String.format(NOT_FOUND_MSG, exception.getMessage());
+        logger.error(errorMessage);
+        return ResponseEntity.status(HttpStatus.NOT_IMPLEMENTED)
                 .body(errorMessage);
     }
 }
