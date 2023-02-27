@@ -147,6 +147,9 @@ public class EmployeeController {
             double salary = Double.parseDouble((String) body.get("salary"));
             long otherExpenses = Long.parseLong((String) body.get("otherExpenses"));
             LocalDate joiningDate = LocalDate.parse((String) body.get("joiningDate"));
+            if (name == null || workEmail == null || nationalInsurance == null || joiningDate == null) {
+                throw new EntityConstructionException("Could not parse the body, \n " + body.toString());
+            }
             PersonalDetails personalDetails = constructPersonalDetails((Map<String, ?>) body.get("personalDetails"));
             List<EmergencyContact> emergencyContacts = constructEmergencyContacts((List<Map<String, ?>>) body.get("emergencyContact"));
             personalDetailsService.save(personalDetails);
@@ -180,6 +183,10 @@ public class EmployeeController {
             String address = (String) personalDetailsJson.get("address");
             String personalEmail = (String) personalDetailsJson.get("personalEmail");
             LocalDate birthDate = LocalDate.parse((CharSequence) personalDetailsJson.get("birthDate"));
+            if (passportNumber == null || phoneNumber == null ||
+                    address == null || personalEmail == null || birthDate == null) {
+                throw new EntityConstructionException("Could not parse the body, \n " + personalDetailsJson.toString());
+            }
             PersonalDetails personalDetails = new PersonalDetails();
             personalDetails.setPersonalEmail(personalEmail);
             personalDetails.setAddress(address);
@@ -187,7 +194,7 @@ public class EmployeeController {
             personalDetails.setPassportNumber(passportNumber);
             personalDetails.setBirthDate(birthDate);
             return personalDetails;
-        } catch (NumberFormatException | DateTimeParseException |ClassCastException | NullPointerException e) {
+        } catch (NumberFormatException | DateTimeParseException | ClassCastException | NullPointerException e) {
             throw new EntityConstructionException("Could not parse the body, \n " + personalDetailsJson.toString());
         }
     }
@@ -200,6 +207,9 @@ public class EmployeeController {
                     emergencyContact -> {
                         String phoneNumber = (String) emergencyContact.get("phoneNumber");
                         String name = (String) emergencyContact.get("name");
+                        if (name == null || phoneNumber == null ) {
+                            throw new EntityConstructionException("Could not parse the body, \n " + emergencyContactJson.toString());
+                        }
                         EmergencyContact.Relationship relationship =
                                 getRelationship((String) emergencyContact.get("relationship"));
                         EmergencyContact emergencyContact_ = new EmergencyContact();
