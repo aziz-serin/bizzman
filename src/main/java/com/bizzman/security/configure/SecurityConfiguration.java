@@ -75,6 +75,10 @@ public class SecurityConfiguration {
                 .permitAll()
                 .antMatchers("/rest/authentication/introspect")
                 .permitAll()
+                .antMatchers("/actuator/health/liveness")
+                .permitAll()
+                .antMatchers("/actuator/health/readiness")
+                .permitAll()
 
                 // Our private endpoints
                 .anyRequest()
