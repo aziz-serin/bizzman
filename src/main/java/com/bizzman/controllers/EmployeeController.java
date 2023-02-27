@@ -32,7 +32,7 @@ import static com.bizzman.exceptions.ExceptionMessages.REQUESTED_ENTITY_NOT_FOUN
 @RestController
 @RequestMapping(path = "rest/employee",  produces = { MediaType.APPLICATION_JSON_VALUE, MediaTypes.HAL_JSON_VALUE })
 public class EmployeeController {
-    private static final Logger logger = LoggerFactory.getLogger(OrderController.class);
+    private static final Logger logger = LoggerFactory.getLogger(EmployeeController.class);
 
     @Autowired
     private EmployeeService employeeService;
