@@ -9,6 +9,8 @@ import javax.validation.constraints.Positive;
 import javax.validation.constraints.Size;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 import org.springframework.format.annotation.*;
 
 import com.sun.istack.NotNull;
@@ -29,6 +31,7 @@ public class Employee {
 
     @JsonFormat(shape = JsonFormat.Shape.STRING)
     @OneToMany(cascade = {CascadeType.ALL})
+    @LazyCollection(LazyCollectionOption.FALSE)
     @JoinColumn(name = "emergencyContactDetails")
     private List<EmergencyContact> emergencyContactDetails;
 

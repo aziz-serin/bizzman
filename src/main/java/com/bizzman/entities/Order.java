@@ -1,6 +1,8 @@
 package com.bizzman.entities;
 
 import com.sun.istack.NotNull;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 
 import javax.persistence.*;
 import javax.validation.constraints.Future;
@@ -27,12 +29,14 @@ public class Order {
     Type type;
 
     @NotNull
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne()
+    @LazyCollection(LazyCollectionOption.FALSE)
     @JoinColumn(name = "businessRelationship")
     BusinessRelationship businessRelationship;
 
     @NotNull
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany()
+    @LazyCollection(LazyCollectionOption.FALSE)
     @JoinColumn(name = "products")
     List<Product> products;
 
