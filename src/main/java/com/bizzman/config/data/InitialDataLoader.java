@@ -1,7 +1,5 @@
 package com.bizzman.config.data;
 
-import java.io.FileReader;
-import java.io.IOException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -20,10 +18,6 @@ import com.bizzman.entities.employee.PersonalDetails;
 import com.bizzman.entities.user.ERole;
 import com.bizzman.entities.user.Role;
 import com.bizzman.util.PropertiesManager;
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,6 +31,11 @@ import org.springframework.context.annotation.Profile;
 public class InitialDataLoader {
     private final static String DESCRIPTION_FILE = "bizzdescription.properties";
     private final static Logger log = LoggerFactory.getLogger(InitialDataLoader.class);
+
+    final String USERNAME = "username";
+    final String PASSWORD = "password";
+    final String ROLE = "role";
+
     @Autowired
     EmployeeService employeeService;
     @Autowired
@@ -249,33 +248,17 @@ public class InitialDataLoader {
         return properties.getProperty("description");
     }
 
-    private void loadUsers(){
-        String rootPath = System.getProperty("user.dir");
-        String path = rootPath + "/src/main/java/com/bizzman/config/data/resources/users.json";
+    private void loadUser(String file){
+        // Load admin
+        Properties properties = PropertiesManager.readProperties(InitialDataLoader.class, file);
+        String username = properties.getProperty(USERNAME);
+        String password = properties.getProperty(PASSWORD);
+        String role = properties.getProperty(ROLE);
+        createUser(username, password, role);
 
-        JSONParser jsonParser = new JSONParser();
-        JSONArray users;
-
-        try {
-            FileReader reader = new FileReader(path);
-            Object obj = jsonParser.parse(reader);
-
-            users = (JSONArray) obj;
-            users.forEach( usr -> createUsers( (JSONObject) usr ) );
-
-        } catch (ParseException | IOException e) {
-            e.printStackTrace();
-        }
     }
 
-    private void createUsers(JSONObject user){
-        // Make sure to have all these fields in the json file
-        JSONObject userObject = (JSONObject) user.get("user");
-
-        String username = (String) userObject.get("username");
-        String password = (String) userObject.get("password");
-        String role = (String) userObject.get("role");
-
+    private void createUser(String username, String password, String role){
         Role newRole;
         if (role.equals(ERole.ROLE_ADMIN.toString())) {
             newRole = new Role(ERole.ROLE_ADMIN);
@@ -343,7 +326,8 @@ public class InitialDataLoader {
             if (userService.count() > 0) {
                 log.info("Database already populated with users. Skipping user initialisation.");
             } else {
-                loadUsers();
+                loadUser("admin.properties");
+                loadUser("employee.properties");
             }
         };
     }
