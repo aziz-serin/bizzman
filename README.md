@@ -9,15 +9,21 @@ an opportunity to learn more about javascript frontend frameworks.
 
 ## How to run this app
 
-You can use <br> 
+You can use 
 
 `
 mvn clean install 
 `
 
-<br>
-to build the app, and then manually copy the auto generated war file `/target/bizzman-0.1.war`
-into tomcat, and run the application in tomcat. 
+to build the app, and then use the command
+
+`
+java -jar target/bizzman.war
+`
+
+from the root directory of the application to run it. 
+
+To check if the application is alive, you can send a GET request to `/actuator/health/liveness` endpoint of the application.
 
 If you want to run the tests, from the terminal you can run it by using the above method, or run them from your
 choice of IDE.
@@ -37,7 +43,7 @@ from the root directory, then run the docker image with forwarding the port `808
 The dependencies are listed in the pom.xml. This app was developed using `java11` and maven version `3.8.6`
 I have left two files in the repo,`mvnvm.properties` and `.java-version`. These files are used by mvnvm and jenv respectively,
 which are both version managers. You can find more information about these really useful tools [mvnvm](https://mvnvm.org/)
-and [jenv](https://www.jenv.be/)
+and [jenv](https://www.jenv.be/).
 
 ## Contributions
 
